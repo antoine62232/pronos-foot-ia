@@ -97,6 +97,9 @@ def get_forme_defense(equipe, historique):
 
 resultats = []
 
+# Pays hôtes de la Coupe du Monde 2026 (pas de terrain neutre pour eux à domicile)
+pays_hotes = ['United States', 'Canada', 'Mexico']
+
 for _, match in matchs_futurs.iterrows():
 
     equipe_dom = match['home_team']
@@ -110,26 +113,35 @@ for _, match in matchs_futurs.iterrows():
     fifa_dom       = points_fifa.get(equipe_dom, 1200)
     fifa_ext       = points_fifa.get(equipe_ext, 1200)
 
-    # On prépare le tableau de données dans l'ordre exact des features
+    # Pour les matchs de la Coupe du Monde 2026, on force match_neutre = 1
+    # car tous les matchs se jouent en USA/Canada/Mexique sur terrain neutre
+    match_neutre = 1
+
+    # Exception : si l'équipe à domicile EST le pays hôte, ce n'est PAS neutre
+    if equipe_dom in pays_hotes:
+        match_neutre = 0
+
+    # Préparation des données dans l'ordre attendu par le modèle
     donnees_match = pd.DataFrame([[
         forme_att_dom, forme_att_ext,
         forme_def_dom, forme_def_ext,
-        fifa_dom, fifa_ext
+        fifa_dom, fifa_ext,
+        match_neutre
     ]], columns=[
         'forme_attaque_domicile', 'forme_attaque_exterieur',
         'forme_defense_domicile', 'forme_defense_exterieur',
-        'points_fifa_domicile',   'points_fifa_exterieur'
+        'points_fifa_domicile',   'points_fifa_exterieur',
+        'match_neutre'
     ])
 
-    # XGBoost n'a pas besoin de normalisation — on envoie direct
+    # XGBoost n'a pas besoin de normalisation
     probas = modele.predict_proba(donnees_match)[0]
 
-    # modele.classes_ = [0, 1, 2] avec XGBoost
-    # On retraduit en ["1", "2", "N"] grâce à l'encoder
+    # On retraduit les chiffres en lettres grâce à l'encoder
     classes = encoder.inverse_transform(modele.classes_)
     probas_dict = dict(zip(classes, probas))
 
-    # Le pronostic = le résultat avec la probabilité la plus haute
+    # Le pronostic = celui avec la probabilité la plus haute
     pronostic = max(probas_dict, key=probas_dict.get)
 
     resultats.append({

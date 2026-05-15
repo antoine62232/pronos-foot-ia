@@ -18,7 +18,8 @@ features = [
     'forme_defense_domicile',
     'forme_defense_exterieur',
     'points_fifa_domicile',
-    'points_fifa_exterieur'
+    'points_fifa_exterieur',
+    'match_neutre'
 ]
 
 X = df[features]

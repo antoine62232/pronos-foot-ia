@@ -141,8 +141,17 @@ def determiner_resultat(ligne):
 
 df['resultat'] = df.apply(determiner_resultat, axis=1)
 
-# Sauvegarde du nouveau dataset avec les features créées
+# Match sur terrain neutre :
+#   - True  = match sur terrain neutre (Coupe du Monde, finales...)
+#   - False = équipe à domicile joue chez elle
+# On la convertit en 0/1 pour que XGBoost puisse l'utiliser
 
+df['match_neutre'] = df['neutral'].astype(int)
+
+print("✅ Feature 'match_neutre' créée.")
+print(f"   Répartition : {df['match_neutre'].value_counts().to_dict()}")
+
+# Sauvegarde du nouveau dataset avec les features créées
 df = df.fillna(0)
 df.to_csv("data/matchs_entrainement.csv", index=False)
 
