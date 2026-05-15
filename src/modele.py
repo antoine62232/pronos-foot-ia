@@ -6,6 +6,7 @@ from joblib import dump
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
 
 # Chargement des données d'entraînement
 print("Chargement des données d'entraînement...")
@@ -14,8 +15,12 @@ print(f" {df.shape[0]} matchs chargés avec {df.shape[1]} colonnes.")
 
 # Sélection des features (variables d'entrée)
 features = [
-    'forme_attaque_domicile', # Moyenne des buts marqués à domicile sur les 5 derniers matchs
-    'forme_attaque_exterieur' # Moyenne des buts marqués à l'extérieur sur les 5 derniers matchs
+    'forme_attaque_domicile', # Buts marqués en moyenne (5 derniers matchs)
+    'forme_attaque_exterieur', # Buts marqués en moyenne (5 derniers matchs)
+    'forme_defense_domicile', # Buts encaissés en moyenne (5 derniers matchs)
+    'forme_defense_exterieur', # Buts encaissés en moyenne (5 derniers matchs)
+    'points_fifa_domicile',    # Points FIFA officiels de l'équipe à domicile
+    'points_fifa_exterieur'    # Points FIFA officiels de l'équipe à l'extérieur
 ]
 
 X = df[features]
@@ -34,6 +39,13 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nSéparation des données :")
 print(f"Entraînement : {X_train.shape[0]} matchs")
 print(f"Test : {X_test.shape[0]} matchs")
+
+# Mise à l'échelle des données
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+print("Données normalisées avec StandardScaler.")
 
 # Création et entraînement du modèle
 print("\nEntraînement du modèle en cours...")
@@ -58,5 +70,7 @@ os.makedirs("modeles", exist_ok=True)
 
 chemin_modele = "models/modele_football.pkl"
 dump(model, chemin_modele)
+dump(scaler, "models/scaler.pkl")
 
 print(f"\nModèle sauvegardé avec succès dans : {chemin_modele}")
+print(f" Scaler sauvegardé avec succès dans : models/scaler.pkl")
