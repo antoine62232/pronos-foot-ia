@@ -4,7 +4,6 @@ from joblib import load
 
 # CONFIGURATION DE LA PAGE
 
-# Doit toujours être la PREMIÈRE commande Streamlit du fichier
 st.set_page_config(
     page_title="Pronos Foot IA — Coupe du Monde 2026",
     page_icon="⚽",
@@ -14,38 +13,32 @@ st.set_page_config(
 # EN-TÊTE
 
 st.title("⚽ Pronos Foot IA — Coupe du Monde 2026")
-st.markdown("*Pronostics générés par Intelligence Artificielle*")
+st.markdown("*Pronostics générés par Intelligence Artificielle (XGBoost)*")
 st.divider()
 
-# CHARGEMENT DU MODÈLE, DU SCALER ET DES DONNÉES
-
-# @st.cache_resource = Streamlit ne recharge ces fichiers qu'une seule fois
+# CHARGEMENT DU MODÈLE, DE L'ENCODER ET DES DONNÉES
 
 @st.cache_resource
 def charger_modele():
-    # On recharge le modèle IA sauvegardé dans models/
+    # On recharge le modèle XGBoost sauvegardé
     return load("models/modele_football.pkl")
 
 @st.cache_resource
-def charger_scaler():
-    # On recharge le normalisateur sauvegardé dans models/
-    # Il est indispensable pour que les nouvelles données soient
-    # à la même échelle que celles utilisées pendant l'entraînement
-    return load("models/scaler.pkl")
+def charger_encoder():
+    # L'encoder traduit les chiffres (0/1/2) en lettres (1/2/N)
+    # XGBoost prédit en chiffres, on veut afficher en lettres
+    return load("models/label_encoder.pkl")
 
 @st.cache_data
 def charger_matchs():
-    # Les 72 matchs de la Coupe du Monde à prédire
     return pd.read_csv("data/matchs_a_predire.csv")
 
 @st.cache_data
 def charger_historique():
-    # L'historique des matchs avec toutes les features calculées
     return pd.read_csv("data/matchs_entrainement.csv")
 
-# Chargement effectif de tout ce dont on a besoin
 modele = charger_modele()
-scaler = charger_scaler()
+encoder = charger_encoder()
 matchs_futurs = charger_matchs()
 historique = charger_historique()
 
@@ -92,8 +85,7 @@ def get_forme_attaque(equipe, historique):
     return round(tous_les_buts.tail(5).mean(), 2)
 
 def get_forme_defense(equipe, historique):
-    # Moyenne de buts ENCAISSÉS sur les 5 derniers matchs
-    # (moins c'est élevé, meilleure est la défense)
+    # Moyenne de buts encaissés sur les 5 derniers matchs
     buts_encaisses_dom = historique[historique['home_team'] == equipe]['away_score']
     buts_encaisses_ext = historique[historique['away_team'] == equipe]['home_score']
     tous_buts_encaisses = pd.concat([buts_encaisses_dom, buts_encaisses_ext])
@@ -129,12 +121,12 @@ for _, match in matchs_futurs.iterrows():
         'points_fifa_domicile',   'points_fifa_exterieur'
     ])
 
-    # On normalise avec le scaler — INDISPENSABLE
-    donnees_normalisees = scaler.transform(donnees_match)
+    # XGBoost n'a pas besoin de normalisation — on envoie direct
+    probas = modele.predict_proba(donnees_match)[0]
 
-    # Le modèle prédit les probabilités pour chaque résultat
-    probas = modele.predict_proba(donnees_normalisees)[0]
-    classes = modele.classes_
+    # modele.classes_ = [0, 1, 2] avec XGBoost
+    # On retraduit en ["1", "2", "N"] grâce à l'encoder
+    classes = encoder.inverse_transform(modele.classes_)
     probas_dict = dict(zip(classes, probas))
 
     # Le pronostic = le résultat avec la probabilité la plus haute
@@ -158,4 +150,4 @@ st.subheader("📅 Pronostics — 72 matchs de la Coupe du Monde 2026")
 st.dataframe(df_resultats, use_container_width=True)
 
 st.divider()
-st.caption("✅ 72 matchs analysés · Modèle : Régression Logistique · 6 features · Données depuis 2000 · Points FIFA mai 2025")
+st.caption("✅ 72 matchs analysés · Modèle : XGBoost · 6 features · Données depuis 2000 · Points FIFA mai 2025")
