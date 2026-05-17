@@ -6,6 +6,7 @@ from components.styles      import appliquer_styles, afficher_header
 from components.data_loader import charger_tout
 from components.predictions import generer_predictions, compter_pronos_haute_confiance
 from components.match_card  import afficher_carte_match
+from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
 
 
@@ -96,14 +97,9 @@ with tab1:
     for _, match in df_predictions.iterrows():
         afficher_carte_match(match)
 
-# ─── Onglet 2 : Mes pronos (placeholder) ────────────────────
+# ─── Onglet 2 : Mes pronos ────────────────────
 with tab2:
-    st.subheader("Mes pronostics")
-    st.markdown(
-        '<p style="color: #94A3B8;">Saisis tes propres pronostics et compare-toi à l\'IA.</p>',
-        unsafe_allow_html=True
-    )
-    st.info("🚧 Cet onglet sera disponible bientôt !")
+    afficher_onglet_mes_pronos(df_predictions)
 
 # ─── Onglet 3 : L'IA explique ───────────────────────────────
 with tab3:
