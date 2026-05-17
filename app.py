@@ -6,6 +6,7 @@ from components.styles      import appliquer_styles, afficher_header
 from components.data_loader import charger_tout
 from components.predictions import generer_predictions, compter_pronos_haute_confiance
 from components.match_card  import afficher_carte_match
+from components.ia_explain  import afficher_onglet_ia_explique
 
 
 # ============================================================
@@ -104,11 +105,6 @@ with tab2:
     )
     st.info("🚧 Cet onglet sera disponible bientôt !")
 
-# ─── Onglet 3 : L'IA explique (placeholder) ─────────────────
+# ─── Onglet 3 : L'IA explique ───────────────────────────────
 with tab3:
-    st.subheader("Comment l'IA fait ses prédictions")
-    st.markdown(
-        '<p style="color: #94A3B8;">Découvre les coulisses du modèle.</p>',
-        unsafe_allow_html=True
-    )
-    st.info("🚧 Cet onglet sera disponible bientôt !")
+    afficher_onglet_ia_explique(df_predictions)
