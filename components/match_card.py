@@ -1,10 +1,7 @@
 import streamlit as st
 from components.data_loader import get_url_drapeau, get_rang_fifa
 
-
-# ============================================================
 # FONCTION PRINCIPALE
-# ============================================================
 
 def afficher_carte_match(match):
     """
@@ -14,7 +11,7 @@ def afficher_carte_match(match):
         match : Une ligne du DataFrame df_predictions
     """
 
-    # ─── Préparation des données ──────────────────────────────
+    # Préparation des données (extraction et formatage)
     eq_dom = match['equipe_dom']
     eq_ext = match['equipe_ext']
     url_drap_dom = get_url_drapeau(eq_dom)
@@ -25,14 +22,13 @@ def afficher_carte_match(match):
     pN = match['proba_N']
     p2 = match['proba_2']
 
-    pronostic_texte = _formater_pronostic(match['pronostic'], eq_dom, eq_ext)
+    pronostic_texte = formater_pronostic(match['pronostic'], eq_dom, eq_ext)
     rang_dom_txt = f"{rang_dom}ème mondial" if rang_dom else "Non classé"
     rang_ext_txt = f"{rang_ext}ème mondial" if rang_ext else "Non classé"
     couleur_1, couleur_N, couleur_2 = _calculer_couleurs_barres(match['pronostic'])
 
-    # ─── Construction du HTML (sur une seule ligne logique) ───
-    # IMPORTANT : on construit le HTML morceau par morceau pour éviter
-    # les problèmes d'indentation qui font foirer st.markdown
+    # Construction du HTML (sur une seule ligne logique)
+    # IMPORTANT : on construit le HTML morceau par morceau pour éviter les problèmes d'indentation qui font foirer st.markdown
 
     html = (
         f'<div style="background: #141B2D; padding: 20px; border-radius: 12px;'
@@ -87,12 +83,9 @@ def afficher_carte_match(match):
     # On affiche le HTML construit
     st.markdown(html, unsafe_allow_html=True)
 
-
-# ============================================================
 # FONCTIONS INTERNES (helpers)
-# ============================================================
 
-def _formater_pronostic(pronostic, equipe_dom, equipe_ext):
+def formater_pronostic(pronostic, equipe_dom, equipe_ext):
     """Convertit le pronostic brut en texte lisible."""
     if pronostic == '1':
         return f"Victoire {equipe_dom}"

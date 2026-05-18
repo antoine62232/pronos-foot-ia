@@ -1,7 +1,3 @@
-# ============================================================
-# RÔLE    : Toute la logique de prédiction IA
-# ============================================================
-
 import pandas as pd
 import streamlit as st
 
@@ -9,10 +5,7 @@ import streamlit as st
 # (les majuscules indiquent que ce sont des références)
 from components.data_loader import POINTS_FIFA, PAYS_HOTES_CDM_2026
 
-
-# ============================================================
 # FONCTIONS DE CALCUL DE FORME
-# ============================================================
 
 def get_forme_attaque(equipe, historique):
     """
@@ -73,10 +66,7 @@ def get_forme_defense(equipe, historique):
 
     return round(tous_buts_encaisses.tail(5).mean(), 2)
 
-
-# ============================================================
 # GÉNÉRATION DES PRÉDICTIONS
-# ============================================================
 
 # @st.cache_data = on calcule UNE FOIS et on garde en mémoire
 # Sans ça, on recalculerait les 72 prédictions à chaque clic utilisateur
@@ -114,7 +104,7 @@ def generer_predictions(_modele, _encoder, matchs_a_predire, historique):
         equipe_dom = match['home_team']
         equipe_ext = match['away_team']
 
-        # ─── Calcul des 7 features ──────────────────────────────
+        # Calcul des 7 features
         forme_att_dom = get_forme_attaque(equipe_dom, historique)
         forme_att_ext = get_forme_attaque(equipe_ext, historique)
         forme_def_dom = get_forme_defense(equipe_dom, historique)
@@ -128,7 +118,7 @@ def generer_predictions(_modele, _encoder, matchs_a_predire, historique):
         if equipe_dom in PAYS_HOTES_CDM_2026:
             match_neutre = 0
 
-        # ─── Préparation des données pour le modèle ─────────────
+        # Préparation des données pour le modèle
         # IMPORTANT : l'ordre des colonnes DOIT être le même que pendant l'entraînement
         donnees_match = pd.DataFrame([[
             forme_att_dom, forme_att_ext,
@@ -142,7 +132,7 @@ def generer_predictions(_modele, _encoder, matchs_a_predire, historique):
             'match_neutre'
         ])
 
-        # ─── Prédiction ─────────────────────────────────────────
+        # Prédiction du modèle
         # predict_proba() retourne les probabilités pour chaque classe
         probas = _modele.predict_proba(donnees_match)[0]
 

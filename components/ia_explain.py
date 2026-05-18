@@ -1,17 +1,9 @@
-# ============================================================
-# FICHIER : components/ia_explain.py
-# RÔLE    : Onglet "L'IA explique" — pédagogie & insights
-# ============================================================
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-
-# ============================================================
 # FONCTION PRINCIPALE
-# ============================================================
 
 def afficher_onglet_ia_explique(df_predictions):
     """
@@ -41,10 +33,7 @@ def afficher_onglet_ia_explique(df_predictions):
     _section_distribution_pronostics(df_predictions)
     _section_explication_pedagogique()
 
-
-# ============================================================
 # SECTION 1 : Performance du modèle
-# ============================================================
 
 def _section_performance():
     """Affiche la précision du modèle avec contexte explicatif."""
@@ -87,10 +76,7 @@ def _section_performance():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-
-# ============================================================
 # SECTION 2 : Importance des features
-# ============================================================
 
 def _section_importance_features():
     """Affiche le graphique d'importance des 7 features."""
@@ -98,7 +84,7 @@ def _section_importance_features():
     st.markdown("### 🎯 Sur quoi se base l'IA pour décider")
 
     # Données issues de l'entraînement réel du modèle
-    # (extraites de notre exécution de modele.py)
+    # (extraites de l'exécution de modele.py)
     features_data = pd.DataFrame({
         'Feature': [
             'Points FIFA extérieur',
@@ -133,7 +119,7 @@ def _section_importance_features():
         }
     )
 
-    # On personnalise le graphique pour qu'il colle au thème dark
+    # Personnalisation du style du graphique pour l'adapter à notre thème sombre
     fig.update_layout(
         plot_bgcolor='#141B2D',
         paper_bgcolor='#141B2D',
@@ -164,10 +150,7 @@ def _section_importance_features():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-
-# ============================================================
 # SECTION 3 : Distribution des pronostics
-# ============================================================
 
 def _section_distribution_pronostics(df_predictions):
     """Affiche la répartition des 72 pronostics."""
@@ -202,7 +185,7 @@ def _section_distribution_pronostics(df_predictions):
         showlegend=False,
         height=350,
         margin=dict(l=20, r=20, t=20, b=20),
-        # Texte au centre du donut
+        # Texte au centre
         annotations=[dict(
             text=f"<b>{len(df_predictions)}</b><br>matchs",
             x=0.5, y=0.5,
@@ -215,10 +198,7 @@ def _section_distribution_pronostics(df_predictions):
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-
-# ============================================================
 # SECTION 4 : Explication pédagogique
-# ============================================================
 
 def _section_explication_pedagogique():
     """Explique en termes simples comment fonctionne le modèle."""

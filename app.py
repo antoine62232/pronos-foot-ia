@@ -9,10 +9,7 @@ from components.match_card  import afficher_carte_match
 from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
 
-
-# ============================================================
 # CONFIGURATION DE LA PAGE (toujours en premier)
-# ============================================================
 
 st.set_page_config(
     page_title="Pronos Foot IA — Coupe du Monde 2026",
@@ -24,10 +21,7 @@ st.set_page_config(
 # Application du thème Data Sport Pro
 appliquer_styles()
 
-
-# ============================================================
 # CHARGEMENT DES DONNÉES (cache automatique)
-# ============================================================
 
 # Une seule ligne pour tout charger grâce à notre fonction raccourci
 modele, encoder, matchs_futurs, historique = charger_tout()
@@ -35,10 +29,7 @@ modele, encoder, matchs_futurs, historique = charger_tout()
 # Génération des prédictions pour les 72 matchs
 df_predictions = generer_predictions(modele, encoder, matchs_futurs, historique)
 
-
-# ============================================================
 # CALCULS POUR LES STATS DE L'ACCUEIL
-# ============================================================
 
 # Compte à rebours jusqu'à la Coupe du Monde (11 juin 2026)
 date_cdm = datetime(2026, 6, 11)
@@ -47,10 +38,7 @@ jours_restants = max(0, (date_cdm - datetime.now()).days)
 # Nombre de pronos avec une probabilité supérieure à 50%
 pronos_sur = compter_pronos_haute_confiance(df_predictions)
 
-
-# ============================================================
 # AFFICHAGE — Header + Stats
-# ============================================================
 
 # Header avec titre, sous-titre et ligne dégradée
 afficher_header()
@@ -77,14 +65,11 @@ style_metric_cards(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-
-# ============================================================
 # ONGLETS PRINCIPAUX
-# ============================================================
 
 tab1, tab2, tab3 = st.tabs(["📅 Les matchs", "🎯 Mes pronos", "🧠 L'IA explique"])
 
-# ─── Onglet 1 : Liste des matchs ────────────────────────────
+# Onglet 1 : Liste des matchs
 with tab1:
     st.subheader("Tous les matchs de la Coupe du Monde 2026")
     st.markdown(
@@ -97,10 +82,9 @@ with tab1:
     for _, match in df_predictions.iterrows():
         afficher_carte_match(match)
 
-# ─── Onglet 2 : Mes pronos ────────────────────
-with tab2:
+# Onglet 2 : Mes pronos
     afficher_onglet_mes_pronos(df_predictions)
 
-# ─── Onglet 3 : L'IA explique ───────────────────────────────
+# Onglet 3 : L'IA explique
 with tab3:
     afficher_onglet_ia_explique(df_predictions)

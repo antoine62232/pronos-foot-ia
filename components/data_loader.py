@@ -2,14 +2,11 @@ import streamlit as st
 import pandas as pd
 from joblib import load
 
-
-# ============================================================
 # CONSTANTES — Dictionnaires de référence
-# ============================================================
 
 # Tout le projet peut les importer depuis ce fichier
 
-# ─── Points FIFA officiels (source : FIFA.com) ────────
+# Points FIFA officiels (source : FIFA.com)
 POINTS_FIFA = {
     'France': 1877.32, 'Spain': 1876.40, 'Argentina': 1874.81,
     'England': 1825.97, 'Portugal': 1763.83, 'Brazil': 1761.16,
@@ -39,7 +36,7 @@ POINTS_FIFA = {
     'Haiti': 1291.71, 'New Zealand': 1281.57, 'New Caledonia': 1036.95,
 }
 
-# ─── Codes ISO des pays (pour les drapeaux via flagcdn.com) ─────
+# Codes ISO des pays (pour les drapeaux via flagcdn.com)
 CODES_ISO = {
     'France': 'fr', 'Spain': 'es', 'Argentina': 'ar', 'England': 'gb-eng',
     'Portugal': 'pt', 'Brazil': 'br', 'Netherlands': 'nl', 'Morocco': 'ma',
@@ -67,10 +64,7 @@ CODES_ISO = {
 # Ils ont un avantage du terrain quand ils jouent à domicile
 PAYS_HOTES_CDM_2026 = ['United States', 'Canada', 'Mexico']
 
-
-# ============================================================
 # FONCTIONS DE CHARGEMENT
-# ============================================================
 
 # @st.cache_resource = Streamlit ne charge le modèle QU'UNE FOIS
 # Même si l'utilisateur clique partout, le modèle reste en mémoire
@@ -116,10 +110,7 @@ def charger_tout():
         charger_historique()
     )
 
-
-# ============================================================
 # FONCTIONS UTILITAIRES SUR LES ÉQUIPES
-# ============================================================
 
 def get_url_drapeau(equipe):
     """
