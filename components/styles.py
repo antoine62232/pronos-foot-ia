@@ -15,20 +15,17 @@ def appliquer_styles():
 
     st.markdown("""
     <style>
-        /* ===== FOND PRINCIPAL ===== */
-        /* Bleu nuit profond pour toute l'app */
+        /* Fond principal en bleu nuit profond */
         .stApp {
             background-color: #0A0E1A;
         }
 
-        /* ===== TEXTES ===== */
-        /* Blanc cassé pour tous les éléments textuels */
+        /* Tous les textes en blanc casse */
         h1, h2, h3, h4, h5, h6, p, span, label {
             color: #F8FAFC !important;
         }
 
-        /* ===== ONGLETS ===== */
-        /* La barre qui contient tous les onglets */
+        /* Onglets stylés avec dégradé violet/cyan quand actifs */
         .stTabs [data-baseweb="tab-list"] {
             background-color: #141B2D;
             padding: 4px;
@@ -37,7 +34,6 @@ def appliquer_styles():
             border: 0.5px solid #1E293B;
         }
 
-        /* Chaque onglet individuel (état normal) */
         .stTabs [data-baseweb="tab"] {
             background-color: transparent;
             color: #94A3B8;
@@ -47,17 +43,32 @@ def appliquer_styles():
             font-weight: 500;
         }
 
-        /* L'onglet sélectionné (état actif) */
         .stTabs [aria-selected="true"] {
             background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(34,211,238,0.1)) !important;
             color: #A78BFA !important;
         }
 
-        /* ===== ÉLÉMENTS STREAMLIT À CACHER ===== */
-        /* On masque le menu hamburger, le footer et le header par défaut */
+        /* On cache les elements Streamlit par defaut */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;}
+
+        /* On cache le bouton "Manage app" de Streamlit Cloud */
+        .viewerBadge_container__r5tak {
+            display: none !important;
+        }
+
+        [data-testid="stToolbar"] {
+            display: none !important;
+        }
+
+        .stAppDeployButton {
+            display: none !important;
+        }
+
+        [class*="viewerBadge"] {
+            display: none !important;
+        }
     </style>
     """, unsafe_allow_html=True)
 
