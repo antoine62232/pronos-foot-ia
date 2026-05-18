@@ -76,13 +76,13 @@ with tab1:
         '<p style="color: #94A3B8;">Les pronostics de l\'IA pour les 72 matchs.</p>',
         unsafe_allow_html=True
     )
-
     # Pour chaque match, on appelle notre composant
     # C'est tout ! Une seule ligne au lieu de 60 de HTML
     for _, match in df_predictions.iterrows():
         afficher_carte_match(match)
 
 # Onglet 2 : Mes pronos
+with tab2:
     afficher_onglet_mes_pronos(df_predictions)
 
 # Onglet 3 : L'IA explique
