@@ -8,6 +8,7 @@ from components.predictions import generer_predictions, compter_pronos_haute_con
 from components.match_card  import afficher_carte_match
 from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
+from components.phase_eliminatoire_ui import afficher_onglet_phase_eliminatoire
 
 # CONFIGURATION DE LA PAGE (toujours en premier)
 
@@ -67,8 +68,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ONGLETS PRINCIPAUX
 
-tab1, tab2, tab3 = st.tabs(["📅 Les matchs", "🎯 Mes pronos", "🧠 L'IA explique"])
-
+tab1, tab2, tab3, tab4 = st.tabs(["Les matchs", "Mes pronos", "L'IA explique", "Phase Éliminatoire"])
 # Onglet 1 : Liste des matchs
 with tab1:
     st.subheader("Tous les matchs de la Coupe du Monde 2026")
@@ -76,8 +76,7 @@ with tab1:
         '<p style="color: #94A3B8;">Les pronostics de l\'IA pour les 72 matchs.</p>',
         unsafe_allow_html=True
     )
-    # Pour chaque match, on appelle notre composant
-    # C'est tout ! Une seule ligne au lieu de 60 de HTML
+    # Pour chaque match, on appelle notre composant carte de match
     for _, match in df_predictions.iterrows():
         afficher_carte_match(match)
 
@@ -88,3 +87,7 @@ with tab2:
 # Onglet 3 : L'IA explique
 with tab3:
     afficher_onglet_ia_explique(df_predictions)
+
+# Onglet 4 : Phase Éliminatoire
+with tab4:
+    afficher_onglet_phase_eliminatoire(modele, encoder)

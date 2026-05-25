@@ -1,5 +1,4 @@
 # ============================================================
-# FICHIER : src/diagnostic_cdm2026.py
 # ROLE    : Verifier le contenu du fichier des 72 matchs
 # ============================================================
 

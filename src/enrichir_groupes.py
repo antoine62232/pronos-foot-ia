@@ -1,5 +1,4 @@
 # ============================================================
-# FICHIER : src/enrichir_groupes.py
 # ROLE    : Ajouter la colonne 'group' au fichier matchs_a_predire.csv
 # ============================================================
 

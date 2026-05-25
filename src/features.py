@@ -38,6 +38,22 @@ df['forme_defense_exterieur'] = df.groupby('away_team')['home_score'].transform(
 
 print("✅ Features défensives calculées.")
 
+# Forme sur 10 matchs 
+df['forme_attaque_domicile_10'] = df.groupby('home_team')['home_score'].transform(
+    lambda x: x.rolling(10, min_periods=1).mean().shift(1)
+)
+df['forme_attaque_exterieur_10'] = df.groupby('away_team')['away_score'].transform(
+    lambda x: x.rolling(10, min_periods=1).mean().shift(1)
+)
+df['forme_defense_domicile_10'] = df.groupby('home_team')['away_score'].transform(
+    lambda x: x.rolling(10, min_periods=1).mean().shift(1)
+)
+df['forme_defense_exterieur_10'] = df.groupby('away_team')['home_score'].transform(
+    lambda x: x.rolling(10, min_periods=1).mean().shift(1)
+)
+print("✅ Features V2 (10 matchs) calculées.")
+
+
 # Points FIFA officiels (source : FIFA.com)
 
 
