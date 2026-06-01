@@ -1,8 +1,7 @@
-"""Backtest du modele V2 sur l'ensemble des matchs de competition.
+"""Backtest du modele de production sur l'ensemble des matchs de competition.
 
+Modele : forme recente (5 et 10 matchs) + classement Elo.
 Separation temporelle stricte : entrainement avant DATE_CUTOFF, test apres.
-Les features sont calculees une seule fois (rolling + shift) afin de rester
-identiques entre l'entrainement et la prediction.
 """
 
 import pandas as pd
@@ -12,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.utils.class_weight import compute_sample_weight
 
 from metriques import evaluer
-from backtest import POINTS_FIFA
+from elo import calculer_elo
 
 DATE_CUTOFF = "2018-01-01"
 
@@ -26,17 +25,17 @@ def determiner_resultat(ligne):
 
 
 # ============================================================
-# 1. Chargement
+# 1. Chargement + Elo (calculer_elo trie aussi par date)
 # ============================================================
 df = pd.read_csv("data/matchs_entrainement.csv")
 df["date"] = pd.to_datetime(df["date"])
 df["home_score"] = df["home_score"].astype(int)
 df["away_score"] = df["away_score"].astype(int)
-df = df.sort_values(by="date").reset_index(drop=True)
+df = calculer_elo(df)   # ajoute elo_domicile / elo_exterieur, trie par date
 
 
 # ============================================================
-# 2. Features (shift(1) exclut le match courant du calcul de la forme)
+# 2. Features de forme (shift(1) exclut le match courant)
 # ============================================================
 for n in (5, 10):
     suf = "" if n == 5 else "_10"
@@ -45,8 +44,6 @@ for n in (5, 10):
     df[f"forme_defense_domicile{suf}"] = df.groupby("home_team")["away_score"].transform(lambda x: x.rolling(n, min_periods=1).mean().shift(1))
     df[f"forme_defense_exterieur{suf}"] = df.groupby("away_team")["home_score"].transform(lambda x: x.rolling(n, min_periods=1).mean().shift(1))
 
-df["points_fifa_domicile"] = df["home_team"].map(POINTS_FIFA).fillna(1200)
-df["points_fifa_exterieur"] = df["away_team"].map(POINTS_FIFA).fillna(1200)
 df["match_neutre"] = df["neutral"].astype(int)
 df["resultat"] = df.apply(determiner_resultat, axis=1)
 df = df.fillna(0)
@@ -56,7 +53,7 @@ features = [
     "forme_defense_domicile", "forme_defense_exterieur",
     "forme_attaque_domicile_10", "forme_attaque_exterieur_10",
     "forme_defense_domicile_10", "forme_defense_exterieur_10",
-    "points_fifa_domicile", "points_fifa_exterieur",
+    "elo_domicile", "elo_exterieur",
     "match_neutre",
 ]
 
