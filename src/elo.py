@@ -77,3 +77,18 @@ if __name__ == "__main__":
     classement = classement_actuel(df, top=15)
     for rang, ligne in enumerate(classement.itertuples(index=False), start=1):
         print(f"  {rang:2}. {ligne.equipe:20} {round(ligne.elo)}")
+
+def elo_final(df):
+    """Renvoie un dict {equipe: Elo courant} apres TOUS les matchs de l'historique.
+
+    Sert au moment de predire : c'est l'Elo de chaque equipe juste avant son
+    prochain match (donc son niveau actuel).
+    """
+    df = df.sort_values("date")
+    ratings = defaultdict(lambda: 1500.0)
+    for ligne in df.itertuples(index=False):
+        ratings[ligne.home_team], ratings[ligne.away_team] = maj_elo(
+            ratings[ligne.home_team], ratings[ligne.away_team],
+            ligne.home_score, ligne.away_score, bool(ligne.neutral)
+        )
+    return dict(ratings)

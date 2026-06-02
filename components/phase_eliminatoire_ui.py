@@ -4,7 +4,7 @@
 
 import streamlit as st
 import pandas as pd
-from components.data_loader import get_url_drapeau, POINTS_FIFA
+from components.data_loader import get_url_drapeau
 
 def _calculer_classements_groupes():
     """
@@ -135,66 +135,20 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
     # SECTION 2 : L'ARBRE DES PHASES ÉLIMINATOIRES (BRACKET)
     # ----------------------------------------------------------------
     st.markdown("### 🏆 L'Arbre des Matchs Couperets")
-    
-    sub_tab1, sub_tab2, sub_tab3, sub_tab4, sub_tab5 = st.tabs([
-        "1/16 de Finale", "1/8 de Finale", "Quarts", "Demi-Finales", "🏆 LA FINALE"
-    ])
 
+    # On LIT le bracket calcule par predictions_phase_eliminatoire.py (source unique de verite).
     try:
-        df_qualifies = pd.read_csv("data/qualifies_1_16.csv")
+        bracket = pd.read_csv("data/bracket_complet.csv")
+        champion = pd.read_csv("data/vainqueur_final.csv")["equipe"].iloc[0]
     except:
+        st.error("Veuillez d'abord executer le script du bracket dans votre terminal.")
         return
-
-    premiers = df_qualifies[df_qualifies['qualification'].str.startswith('1er')].set_index('groupe')['equipe'].to_dict()
-    deuxiemes = df_qualifies[df_qualifies['qualification'].str.startswith('2eme')].set_index('groupe')['equipe'].to_dict()
-    troisiemes = df_qualifies[df_qualifies['mode'] == 'repechage']['equipe'].tolist()
-
-    matchs_1_16 = [
-        (deuxiemes['A'], deuxiemes['B']), (premiers['C'], deuxiemes['F']),
-        (premiers['E'], troisiemes[0]), (premiers['F'], deuxiemes['C']),
-        (deuxiemes['E'], deuxiemes['I']), (premiers['I'], troisiemes[1]),
-        (premiers['A'], troisiemes[2]), (premiers['L'], troisiemes[3]),
-        (premiers['G'], troisiemes[4]), (premiers['D'], troisiemes[5]),
-        (premiers['H'], deuxiemes['J']), (deuxiemes['K'], deuxiemes['L']),
-        (premiers['B'], troisiemes[6]), (deuxiemes['D'], deuxiemes['G']),
-        (premiers['J'], deuxiemes['H']), (premiers['K'], troisiemes[7])
-    ]
-
-    def _simuler_vainqueur(eq1, eq2):
-        f1 = POINTS_FIFA.get(eq1, 1200)
-        f2 = POINTS_FIFA.get(eq2, 1200)
-        features_cols = [
-            1.5, 1.5, 1.0, 1.0, 1.5, 1.5, 1.0, 1.0, f1, f2, 1
-        ]
-        df_m = pd.DataFrame([features_cols], columns=[
-            'forme_attaque_domicile', 'forme_attaque_exterieur', 'forme_defense_domicile', 'forme_defense_exterieur',
-            'forme_attaque_domicile_10', 'forme_attaque_exterieur_10', 'forme_defense_domicile_10', 'forme_defense_exterieur_10',
-            'points_fifa_domicile', 'points_fifa_exterieur', 'match_neutre'
-        ])
-        p = modele.predict_proba(df_m)[0]
-        if p[0] >= p[1]:
-            return eq1, (p[0] / (p[0] + p[1])) * 100
-        return eq2, (p[1] / (p[0] + p[1])) * 100
-
-    v_1_16 = [_simuler_vainqueur(m[0], m[1]) for m in matchs_1_16]
-    matchs_1_8 = [(v_1_16[i][0], v_1_16[i+1][0]) for i in range(0, 16, 2)]
-    
-    v_1_8 = [_simuler_vainqueur(m[0], m[1]) for m in matchs_1_8]
-    matchs_1_4 = [(v_1_8[i][0], v_1_8[i+1][0]) for i in range(0, 8, 2)]
-    
-    v_1_4 = [_simuler_vainqueur(m[0], m[1]) for m in matchs_1_4]
-    matchs_1_2 = [(v_1_4[i][0], v_1_4[i+1][0]) for i in range(0, 4, 2)]
-    
-    v_1_2 = [_simuler_vainqueur(m[0], m[1]) for m in matchs_1_2]
-    match_finale = (v_1_2[0][0], v_1_2[1][0])
-    
-    champion, conf_champ = _simuler_vainqueur(match_finale[0], match_finale[1])
 
     def _creer_card_match(eq1, eq2, winner, conf):
         flag1, flag2 = get_url_drapeau(eq1), get_url_drapeau(eq2)
         w1_style = "color: #A78BFA; font-weight: bold;" if eq1 == winner else "color: #94A3B8;"
         w2_style = "color: #A78BFA; font-weight: bold;" if eq2 == winner else "color: #94A3B8;"
-        
+
         st.markdown(
             f'<div style="background-color: #141B2D; border: 1px solid #1E293B; '
             f'padding: 12px; border-radius: 8px; margin-bottom: 10px;">'
@@ -219,38 +173,33 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             unsafe_allow_html=True
         )
 
-    with sub_tab1:
-        st.markdown("<br>", unsafe_allow_html=True)
-        for i, m in enumerate(matchs_1_16):
-            _creer_card_match(m[0], m[1], v_1_16[i][0], v_1_16[i][1])
+    # Un sous-onglet par tour. On associe chaque sous-onglet au nom de tour du CSV.
+    sous_onglets = st.tabs(["1/16 de Finale", "1/8 de Finale", "Quarts", "Demi-Finales", "🏆 LA FINALE"])
+    tours_csv = ["1/16 de finale", "1/8 de finale", "Quarts de finale", "Demi-finales", "Finale"]
 
-    with sub_tab2:
-        st.markdown("<br>", unsafe_allow_html=True)
-        for i, m in enumerate(matchs_1_8):
-            _creer_card_match(m[0], m[1], v_1_8[i][0], v_1_8[i][1])
+    for sous_onglet, tour in zip(sous_onglets, tours_csv):
+        with sous_onglet:
+            st.markdown("<br>", unsafe_allow_html=True)
+            matchs_tour = bracket[bracket["tour"] == tour]
 
-    with sub_tab3:
-        st.markdown("<br>", unsafe_allow_html=True)
-        for i, m in enumerate(matchs_1_4):
-            _creer_card_match(m[0], m[1], v_1_4[i][0], v_1_4[i][1])
+            if tour == "Finale":
+                st.markdown(
+                    "<h4 style='text-align: center; color: #FBBF24; margin-bottom: 20px;'>Grande Finale</h4>",
+                    unsafe_allow_html=True
+                )
 
-    with sub_tab4:
-        st.markdown("<br>", unsafe_allow_html=True)
-        for i, m in enumerate(matchs_1_2):
-            _creer_card_match(m[0], m[1], v_1_2[i][0], v_1_2[i][1])
+            for _, m in matchs_tour.iterrows():
+                _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
 
-    with sub_tab5:
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<h4 style='text-align: center; color: #FBBF24; margin-bottom: 20px;'>Grande Finale du 19 Juillet 2026</h4>", unsafe_allow_html=True)
-        _creer_card_match(match_finale[0], match_finale[1], champion, conf_champ)
-        
-        flag_champ = get_url_drapeau(champion)
-        st.markdown(
-            f'<div style="text-align: center; margin-top: 30px; padding: 30px; '
-            f'background: linear-gradient(135deg, #1E1B4B, #141B2D); border: 2px solid #FBBF24; border-radius: 16px; box-shadow: 0px 10px 30px rgba(251, 191, 36, 0.15);">'
-            f'  <h2 style="color: #FBBF24; margin-top:0; letter-spacing: 2px;">🌟 CHAMPION DU MONDE 🌟</h2>'
-            f'  <img src="{flag_champ}" width="140" style="border-radius: 8px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); margin: 20px 0;">'
-            f'  <h1 style="color: #F8FAFC; margin-bottom: 0; font-size: 42px;">{champion.upper()}</h1>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+            # Sur l'onglet Finale, on affiche le grand encart du champion
+            if tour == "Finale":
+                flag_champ = get_url_drapeau(champion)
+                st.markdown(
+                    f'<div style="text-align: center; margin-top: 30px; padding: 30px; '
+                    f'background: linear-gradient(135deg, #1E1B4B, #141B2D); border: 2px solid #FBBF24; border-radius: 16px; box-shadow: 0px 10px 30px rgba(251, 191, 36, 0.15);">'
+                    f'  <h2 style="color: #FBBF24; margin-top:0; letter-spacing: 2px;">🌟 CHAMPION DU MONDE 🌟</h2>'
+                    f'  <img src="{flag_champ}" width="140" style="border-radius: 8px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); margin: 20px 0;">'
+                    f'  <h1 style="color: #F8FAFC; margin-bottom: 0; font-size: 42px;">{champion.upper()}</h1>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )

@@ -1,73 +1,73 @@
 date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,group,pronostic,proba_1,proba_N,proba_2
-2026-06-11,Mexico,South Africa,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.5240051,0.36169496,0.11429989
-2026-06-11,South Korea,Czech Republic,,,FIFA World Cup,Zapopan,Mexico,True,A,N,0.22699331,0.39252698,0.3804797
-2026-06-12,Canada,Bosnia and Herzegovina,,,FIFA World Cup,Toronto,Canada,False,B,N,0.3533781,0.41529605,0.2313258
-2026-06-12,United States,Paraguay,,,FIFA World Cup,Inglewood,United States,False,D,N,0.346683,0.43102413,0.22229289
-2026-06-13,Qatar,Switzerland,,,FIFA World Cup,Santa Clara,United States,True,B,2,0.1187242,0.36589086,0.5153849
-2026-06-13,Brazil,Morocco,,,FIFA World Cup,East Rutherford,United States,True,C,2,0.32536358,0.3348004,0.339836
-2026-06-13,Haiti,Scotland,,,FIFA World Cup,Foxborough,United States,True,C,2,0.122293375,0.34497303,0.5327336
-2026-06-13,Australia,Turkey,,,FIFA World Cup,Vancouver,Canada,True,D,2,0.1572245,0.2841492,0.55862635
-2026-06-14,Germany,Curaçao,,,FIFA World Cup,Houston,United States,True,E,1,0.5408071,0.33394757,0.12524529
-2026-06-14,Ivory Coast,Ecuador,,,FIFA World Cup,Philadelphia,United States,True,E,N,0.23052646,0.57062894,0.19884464
-2026-06-14,Netherlands,Japan,,,FIFA World Cup,Arlington,United States,True,F,N,0.32370117,0.3833958,0.29290304
-2026-06-14,Sweden,Tunisia,,,FIFA World Cup,Guadalupe,Mexico,True,F,N,0.22035111,0.4094862,0.3701627
-2026-06-15,Belgium,Egypt,,,FIFA World Cup,Seattle,United States,True,G,1,0.5004691,0.3434072,0.15612371
-2026-06-15,Iran,New Zealand,,,FIFA World Cup,Inglewood,United States,True,G,1,0.5574853,0.3099265,0.13258816
-2026-06-15,Spain,Cape Verde,,,FIFA World Cup,Atlanta,United States,True,H,1,0.6629089,0.22100845,0.11608263
-2026-06-15,Saudi Arabia,Uruguay,,,FIFA World Cup,Miami Gardens,United States,True,H,2,0.11054509,0.31981784,0.56963706
-2026-06-16,France,Senegal,,,FIFA World Cup,East Rutherford,United States,True,I,1,0.51533794,0.2097112,0.27495083
-2026-06-16,Iraq,Norway,,,FIFA World Cup,Foxborough,United States,True,I,2,0.10788127,0.21707772,0.67504096
-2026-06-16,Argentina,Algeria,,,FIFA World Cup,Kansas City,United States,True,J,1,0.45568743,0.34722695,0.19708562
-2026-06-16,Austria,Jordan,,,FIFA World Cup,Santa Clara,United States,True,J,N,0.30408308,0.4747684,0.2211485
-2026-06-17,Portugal,DR Congo,,,FIFA World Cup,Houston,United States,True,K,N,0.40169758,0.45593107,0.1423714
-2026-06-17,Uzbekistan,Colombia,,,FIFA World Cup,Mexico City,Mexico,True,K,2,0.0887091,0.3324964,0.5787944
-2026-06-17,England,Croatia,,,FIFA World Cup,Arlington,United States,True,L,1,0.6134704,0.14340635,0.2431233
-2026-06-17,Ghana,Panama,,,FIFA World Cup,Toronto,Canada,True,L,2,0.15900017,0.2828262,0.5581736
-2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,A,N,0.23862872,0.41119337,0.35017785
-2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,A,N,0.31010795,0.4770505,0.21284153
-2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,B,N,0.32654393,0.45129895,0.22215714
-2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,0.43059257,0.3378761,0.23153126
-2026-06-19,Scotland,Morocco,,,FIFA World Cup,Foxborough,United States,True,C,2,0.11344297,0.36448434,0.52207273
-2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,0.68570477,0.20396431,0.11033094
-2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,D,N,0.3499237,0.4270958,0.22298054
-2026-06-19,Turkey,Paraguay,,,FIFA World Cup,Santa Clara,United States,True,D,N,0.26575154,0.41903743,0.31521106
-2026-06-20,Germany,Ivory Coast,,,FIFA World Cup,Toronto,Canada,True,E,N,0.35937634,0.39025602,0.25036767
-2026-06-20,Ecuador,Curaçao,,,FIFA World Cup,Kansas City,United States,True,E,1,0.5074297,0.35430667,0.13826363
-2026-06-20,Netherlands,Sweden,,,FIFA World Cup,Houston,United States,True,F,1,0.47489694,0.32029155,0.20481148
-2026-06-20,Tunisia,Japan,,,FIFA World Cup,Guadalupe,Mexico,True,F,2,0.12932625,0.2539702,0.6167035
-2026-06-21,Belgium,Iran,,,FIFA World Cup,Inglewood,United States,True,G,1,0.4240276,0.3294193,0.24655308
-2026-06-21,New Zealand,Egypt,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.073115654,0.2927658,0.6341185
-2026-06-21,Spain,Saudi Arabia,,,FIFA World Cup,Atlanta,United States,True,H,1,0.73448324,0.18232653,0.08319024
-2026-06-21,Uruguay,Cape Verde,,,FIFA World Cup,Miami Gardens,United States,True,H,N,0.37021008,0.44366366,0.18612628
-2026-06-22,France,Iraq,,,FIFA World Cup,Philadelphia,United States,True,I,1,0.75032926,0.18411085,0.06555991
-2026-06-22,Norway,Senegal,,,FIFA World Cup,East Rutherford,United States,True,I,2,0.16075024,0.25823036,0.5810194
-2026-06-22,Argentina,Austria,,,FIFA World Cup,Arlington,United States,True,J,1,0.45926788,0.38800797,0.15272415
-2026-06-22,Jordan,Algeria,,,FIFA World Cup,Santa Clara,United States,True,J,2,0.18151107,0.30744004,0.5110489
-2026-06-23,Portugal,Uzbekistan,,,FIFA World Cup,Houston,United States,True,K,1,0.49340984,0.33718896,0.16940114
-2026-06-23,Colombia,DR Congo,,,FIFA World Cup,Zapopan,Mexico,True,K,N,0.30670887,0.48843363,0.20485756
-2026-06-23,England,Ghana,,,FIFA World Cup,Foxborough,United States,True,L,1,0.6199033,0.27539447,0.10470224
-2026-06-23,Panama,Croatia,,,FIFA World Cup,Toronto,Canada,True,L,2,0.08537523,0.39822263,0.5164021
-2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,N,0.3927238,0.41671917,0.190557
-2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,A,2,0.1251741,0.40438628,0.47043964
-2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.20979148,0.44624963,0.34395888
-2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,2,0.3317631,0.28433624,0.3839007
-2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.074259,0.27569038,0.6500506
-2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,1,0.5667495,0.32359403,0.109656475
-2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,N,0.2516235,0.3919557,0.3564208
-2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,N,0.16970216,0.42145574,0.40884206
-2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.06564382,0.20581974,0.7285365
-2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,2,0.111878805,0.2909222,0.597199
-2026-06-25,Japan,Sweden,,,FIFA World Cup,Arlington,United States,True,F,N,0.31895724,0.47188145,0.20916131
-2026-06-25,Tunisia,Netherlands,,,FIFA World Cup,Kansas City,United States,True,F,2,0.06848359,0.32787606,0.6036404
-2026-06-26,Egypt,Iran,,,FIFA World Cup,Seattle,United States,True,G,2,0.20282869,0.3066481,0.4905232
-2026-06-26,New Zealand,Belgium,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.03619278,0.2963911,0.6674161
-2026-06-26,Cape Verde,Saudi Arabia,,,FIFA World Cup,Houston,United States,True,H,2,0.21186909,0.35838538,0.4297455
-2026-06-26,Uruguay,Spain,,,FIFA World Cup,Zapopan,Mexico,True,H,2,0.057069805,0.18506497,0.7578652
-2026-06-26,Norway,France,,,FIFA World Cup,Foxborough,United States,True,I,2,0.11291696,0.28169826,0.6053847
-2026-06-26,Senegal,Iraq,,,FIFA World Cup,Toronto,Canada,True,I,N,0.39053163,0.4380285,0.17143984
-2026-06-27,Algeria,Austria,,,FIFA World Cup,Kansas City,United States,True,J,2,0.24281774,0.34689692,0.41028535
-2026-06-27,Jordan,Argentina,,,FIFA World Cup,Arlington,United States,True,J,2,0.04857706,0.18439399,0.7670289
-2026-06-27,Colombia,Portugal,,,FIFA World Cup,Miami Gardens,United States,True,K,2,0.12573431,0.33192304,0.5423426
-2026-06-27,DR Congo,Uzbekistan,,,FIFA World Cup,Atlanta,United States,True,K,N,0.27151534,0.41621518,0.3122695
-2026-06-27,Panama,England,,,FIFA World Cup,East Rutherford,United States,True,L,2,0.037465755,0.20795195,0.7545823
-2026-06-27,Croatia,Ghana,,,FIFA World Cup,Philadelphia,United States,True,L,1,0.44885433,0.4319228,0.11922285
+2026-06-11,Mexico,South Africa,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.65377784,0.29229483,0.053927314
+2026-06-11,South Korea,Czech Republic,,,FIFA World Cup,Zapopan,Mexico,True,A,N,0.3176664,0.4619183,0.22041537
+2026-06-12,Canada,Bosnia and Herzegovina,,,FIFA World Cup,Toronto,Canada,False,B,1,0.60827917,0.30639008,0.08533076
+2026-06-12,United States,Paraguay,,,FIFA World Cup,Inglewood,United States,False,D,N,0.2979537,0.3753957,0.3266506
+2026-06-13,Qatar,Switzerland,,,FIFA World Cup,Santa Clara,United States,True,B,2,0.05290629,0.20616066,0.74093306
+2026-06-13,Brazil,Morocco,,,FIFA World Cup,East Rutherford,United States,True,C,N,0.3222146,0.35589635,0.3218891
+2026-06-13,Haiti,Scotland,,,FIFA World Cup,Foxborough,United States,True,C,N,0.20974529,0.40546936,0.38478538
+2026-06-13,Australia,Turkey,,,FIFA World Cup,Vancouver,Canada,True,D,2,0.1395725,0.3948397,0.46558774
+2026-06-14,Germany,Curaçao,,,FIFA World Cup,Houston,United States,True,E,1,0.71963614,0.20070672,0.07965712
+2026-06-14,Ivory Coast,Ecuador,,,FIFA World Cup,Philadelphia,United States,True,E,N,0.05594266,0.7254289,0.21862845
+2026-06-14,Netherlands,Japan,,,FIFA World Cup,Arlington,United States,True,F,N,0.23984502,0.5573596,0.20279539
+2026-06-14,Sweden,Tunisia,,,FIFA World Cup,Guadalupe,Mexico,True,F,N,0.23349406,0.39380285,0.37270308
+2026-06-15,Belgium,Egypt,,,FIFA World Cup,Seattle,United States,True,G,N,0.22558925,0.4860129,0.28839782
+2026-06-15,Iran,New Zealand,,,FIFA World Cup,Inglewood,United States,True,G,1,0.41376644,0.40553853,0.18069501
+2026-06-15,Spain,Cape Verde,,,FIFA World Cup,Atlanta,United States,True,H,1,0.6051821,0.29479,0.100027874
+2026-06-15,Saudi Arabia,Uruguay,,,FIFA World Cup,Miami Gardens,United States,True,H,2,0.0884874,0.27256975,0.63894284
+2026-06-16,France,Senegal,,,FIFA World Cup,East Rutherford,United States,True,I,2,0.2546224,0.325258,0.4201196
+2026-06-16,Iraq,Norway,,,FIFA World Cup,Foxborough,United States,True,I,2,0.09900005,0.29936033,0.6016396
+2026-06-16,Argentina,Algeria,,,FIFA World Cup,Kansas City,United States,True,J,1,0.4150652,0.40948078,0.17545404
+2026-06-16,Austria,Jordan,,,FIFA World Cup,Santa Clara,United States,True,J,1,0.42198774,0.3462448,0.2317674
+2026-06-17,Portugal,DR Congo,,,FIFA World Cup,Houston,United States,True,K,1,0.48356378,0.35826635,0.1581699
+2026-06-17,Uzbekistan,Colombia,,,FIFA World Cup,Mexico City,Mexico,True,K,2,0.13136105,0.40330273,0.4653363
+2026-06-17,England,Croatia,,,FIFA World Cup,Arlington,United States,True,L,N,0.19775824,0.452647,0.34959474
+2026-06-17,Ghana,Panama,,,FIFA World Cup,Toronto,Canada,True,L,2,0.099761955,0.36416647,0.5360716
+2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,A,N,0.32185838,0.3943542,0.2837874
+2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,A,N,0.3369214,0.3790055,0.28407314
+2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,B,1,0.6106951,0.28960174,0.099703155
+2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,0.69294083,0.27189693,0.035162207
+2026-06-19,Scotland,Morocco,,,FIFA World Cup,Foxborough,United States,True,C,2,0.08151797,0.27701432,0.6414677
+2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,0.43598956,0.29154974,0.27246067
+2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,D,N,0.24027292,0.39545634,0.36427075
+2026-06-19,Turkey,Paraguay,,,FIFA World Cup,Santa Clara,United States,True,D,N,0.3563213,0.407508,0.23617072
+2026-06-20,Germany,Ivory Coast,,,FIFA World Cup,Toronto,Canada,True,E,1,0.40977126,0.36675826,0.22347051
+2026-06-20,Ecuador,Curaçao,,,FIFA World Cup,Kansas City,United States,True,E,1,0.7383535,0.18665501,0.07499154
+2026-06-20,Netherlands,Sweden,,,FIFA World Cup,Houston,United States,True,F,1,0.4144026,0.29916164,0.2864357
+2026-06-20,Tunisia,Japan,,,FIFA World Cup,Guadalupe,Mexico,True,F,2,0.10114604,0.3087137,0.5901403
+2026-06-21,Belgium,Iran,,,FIFA World Cup,Inglewood,United States,True,G,N,0.19365865,0.47183695,0.3345044
+2026-06-21,New Zealand,Egypt,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.1952111,0.2162547,0.5885342
+2026-06-21,Spain,Saudi Arabia,,,FIFA World Cup,Atlanta,United States,True,H,1,0.6777585,0.20818205,0.11405944
+2026-06-21,Uruguay,Cape Verde,,,FIFA World Cup,Miami Gardens,United States,True,H,1,0.42147624,0.33469304,0.24383071
+2026-06-22,France,Iraq,,,FIFA World Cup,Philadelphia,United States,True,I,1,0.7001343,0.16700731,0.1328584
+2026-06-22,Norway,Senegal,,,FIFA World Cup,East Rutherford,United States,True,I,2,0.11755083,0.33403906,0.5484101
+2026-06-22,Argentina,Austria,,,FIFA World Cup,Arlington,United States,True,J,1,0.5246008,0.33201566,0.14338359
+2026-06-22,Jordan,Algeria,,,FIFA World Cup,Santa Clara,United States,True,J,2,0.13734543,0.35734186,0.50531274
+2026-06-23,Portugal,Uzbekistan,,,FIFA World Cup,Houston,United States,True,K,1,0.42587993,0.41569474,0.15842538
+2026-06-23,Colombia,DR Congo,,,FIFA World Cup,Zapopan,Mexico,True,K,1,0.44226518,0.39247152,0.16526332
+2026-06-23,England,Ghana,,,FIFA World Cup,Foxborough,United States,True,L,1,0.6626908,0.22634518,0.110964
+2026-06-23,Panama,Croatia,,,FIFA World Cup,Toronto,Canada,True,L,2,0.11328637,0.39291933,0.4937943
+2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.4717451,0.43428946,0.09396548
+2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,A,2,0.09739905,0.29729384,0.60530704
+2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.30864298,0.3679086,0.32344842
+2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,N,0.3130783,0.40687877,0.28004298
+2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.054728378,0.23197843,0.7132932
+2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.35384783,0.39708117,0.24907102
+2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.12739262,0.33046454,0.5421428
+2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,N,0.21750014,0.44897118,0.33352873
+2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.08413171,0.30759636,0.60827196
+2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,N,0.27654186,0.42283455,0.3006236
+2026-06-25,Japan,Sweden,,,FIFA World Cup,Arlington,United States,True,F,1,0.46670875,0.2842392,0.2490521
+2026-06-25,Tunisia,Netherlands,,,FIFA World Cup,Kansas City,United States,True,F,2,0.1107821,0.3232597,0.5659582
+2026-06-26,Egypt,Iran,,,FIFA World Cup,Seattle,United States,True,G,2,0.18091276,0.3526578,0.46642947
+2026-06-26,New Zealand,Belgium,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.17628442,0.2958597,0.5278559
+2026-06-26,Cape Verde,Saudi Arabia,,,FIFA World Cup,Houston,United States,True,H,N,0.20252857,0.44113815,0.3563333
+2026-06-26,Uruguay,Spain,,,FIFA World Cup,Zapopan,Mexico,True,H,2,0.04713793,0.17928596,0.7735761
+2026-06-26,Norway,France,,,FIFA World Cup,Foxborough,United States,True,I,N,0.16432174,0.44488695,0.39079127
+2026-06-26,Senegal,Iraq,,,FIFA World Cup,Toronto,Canada,True,I,1,0.4294986,0.377375,0.19312641
+2026-06-27,Algeria,Austria,,,FIFA World Cup,Kansas City,United States,True,J,2,0.2065033,0.34178662,0.45171005
+2026-06-27,Jordan,Argentina,,,FIFA World Cup,Arlington,United States,True,J,2,0.070706666,0.24236414,0.6869292
+2026-06-27,Colombia,Portugal,,,FIFA World Cup,Miami Gardens,United States,True,K,N,0.25010744,0.40290955,0.34698305
+2026-06-27,DR Congo,Uzbekistan,,,FIFA World Cup,Atlanta,United States,True,K,N,0.13484903,0.43956622,0.4255847
+2026-06-27,Panama,England,,,FIFA World Cup,East Rutherford,United States,True,L,2,0.08846524,0.26991343,0.6416213
+2026-06-27,Croatia,Ghana,,,FIFA World Cup,Philadelphia,United States,True,L,1,0.6567541,0.25885135,0.0843946
