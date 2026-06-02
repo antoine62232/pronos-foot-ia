@@ -9,6 +9,7 @@ from components.match_card  import afficher_carte_match
 from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
 from components.phase_eliminatoire_ui import afficher_onglet_phase_eliminatoire
+from components.intro import afficher_intro
 
 # CONFIGURATION DE LA PAGE (toujours en premier)
 
@@ -21,6 +22,8 @@ st.set_page_config(
 
 # Application du thème Data Sport Pro
 appliquer_styles()
+
+afficher_intro()
 
 # CHARGEMENT DES DONNÉES (cache automatique)
 
