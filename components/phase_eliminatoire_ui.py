@@ -8,7 +8,7 @@ from components.data_loader import get_url_drapeau
 
 def _calculer_classements_groupes():
     """
-    Lit les prédictions des 72 matchs et calcule le classement 
+    Lit les prédictions des 72 matchs et calcule le classement
     exact (Points, Victoires, Nuls, Défaites) pour chaque groupe.
     """
     try:
@@ -18,7 +18,6 @@ def _calculer_classements_groupes():
     except:
         return None, None
 
-    # Initialisation des compteurs pour chaque équipe
     stats = {}
     equipe_to_groupe = {}
 
@@ -35,12 +34,10 @@ def _calculer_classements_groupes():
 
         stats[dom]['J'] += 1
         stats[ext]['J'] += 1
-        
-        # On utilise la probabilité brute comme "différence de buts" virtuelle en cas d'égalité
+
         stats[dom]['force'] += row['proba_1']
         stats[ext]['force'] += row['proba_2']
 
-        # Attribution des points selon le pronostic de l'IA
         if prono == '1':
             stats[dom]['V'] += 1; stats[dom]['Pts'] += 3
             stats[ext]['D'] += 1
@@ -51,66 +48,41 @@ def _calculer_classements_groupes():
             stats[dom]['N'] += 1; stats[ext]['N'] += 1
             stats[dom]['Pts'] += 1; stats[ext]['Pts'] += 1
 
-    # Regroupement par lettre (A à L)
     groupes = {lettre: [] for lettre in 'ABCDEFGHIJKL'}
     for eq, s in stats.items():
         groupes[equipe_to_groupe[eq]].append(s)
 
-    # Tri de chaque groupe (par Points, puis par Force)
     for lettre in groupes:
         groupes[lettre] = sorted(groupes[lettre], key=lambda x: (x['Pts'], x['force']), reverse=True)
 
     return groupes, liste_qualifies
 
 
-# --- FONCTION D'AFFICHAGE PRINCIPALE ---
-def afficher_onglet_phase_eliminatoire(modele, encoder):
-    """
-    Affiche les classements de groupes sous forme de tableaux officiels
-    puis le bracket des phases éliminatoires.
-    """
-    st.subheader("🏆 Tableau de Bord de la Phase Finale")
-    st.markdown(
-        '<p style="color: #94A3B8;">Découvrez les classements finaux des poules et le parcours prédictif de l\'IA.</p>',
-        unsafe_allow_html=True
-    )
-
-    # ----------------------------------------------------------------
-    # SECTION 1 : AFFICHAGE DES 12 GROUPES (Design "Standing Table")
-    # ----------------------------------------------------------------
-    st.markdown("### 📊 Classements Finaux des Groupes")
-    
-    groupes_stats, liste_qualifies = _calculer_classements_groupes()
-    
-    if not groupes_stats:
-        st.error("Veuillez d'abord exécuter le script des groupes dans votre terminal.")
-        return
-
+def _afficher_classements(groupes_stats, liste_qualifies):
+    """Affiche les 12 tableaux de classement (3 par ligne)."""
     groupes_liste = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    
-    # Création des grilles (3 tableaux par ligne)
+
     for row_idx in range(0, 12, 3):
         cols = st.columns(3)
         for col_idx, groupe_lettre in enumerate(groupes_liste[row_idx:row_idx+3]):
             with cols[col_idx]:
                 st.markdown(f"<h5 style='color: #A78BFA; margin-bottom: 5px;'>Groupe {groupe_lettre}</h5>", unsafe_allow_html=True)
-                
-                # Construction du design HTML sans espaces
+
                 html = '<table style="width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; text-align: center; background-color: #141B2D; border-radius: 8px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1E293B;">'
                 html += '<thead style="background-color: #0A0E1A; color: #94A3B8; font-size: 11px; text-transform: uppercase;">'
                 html += '<tr><th style="padding: 8px 6px; text-align: left; width: 50%;">Équipe</th>'
                 html += '<th style="padding: 8px 4px;">J</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">N</th><th style="padding: 8px 4px;">D</th>'
                 html += '<th style="padding: 8px 6px; font-weight: bold; color: #F8FAFC;">Pts</th></tr></thead><tbody>'
-                
+
                 for idx, team_stat in enumerate(groupes_stats[groupe_lettre]):
                     team_name = team_stat['equipe']
                     is_q = team_name in liste_qualifies
-                    
+
                     bg_color = "rgba(16, 185, 129, 0.08)" if is_q else "transparent"
                     border_left = "4px solid #10B981" if is_q else "4px solid transparent"
                     font_weight = "bold" if is_q else "normal"
                     color_text = "#F8FAFC" if is_q else "#CBD5E1"
-                    
+
                     html += f'<tr style="border-top: 1px solid #1E293B; background-color: {bg_color};">'
                     html += f'<td style="padding: 8px 6px; text-align: left; border-left: {border_left};">'
                     html += f'<div style="display: flex; align-items: center; gap: 8px;">'
@@ -124,12 +96,34 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
                     html += f'<td style="padding: 8px 4px; color: #94A3B8;">{team_stat["D"]}</td>'
                     html += f'<td style="padding: 8px 6px; font-weight: bold; color: #F8FAFC; font-size: 14px;">{team_stat["Pts"]}</td>'
                     html += f'</tr>'
-                    
+
                 html += "</tbody></table>"
                 st.markdown(html, unsafe_allow_html=True)
 
-    st.markdown("<hr style='border: 0.5px solid #1E293B; margin-top: 10px; margin-bottom: 30px;'>", unsafe_allow_html=True)
 
+# --- FONCTION D'AFFICHAGE PRINCIPALE ---
+def afficher_onglet_phase_eliminatoire(modele, encoder):
+    """
+    Affiche les classements de groupes (repliables) puis le bracket.
+    """
+    st.subheader("🏆 Tableau de Bord de la Phase Finale")
+    st.markdown(
+        '<p style="color: #94A3B8;">Découvrez le parcours prédictif de l\'IA, des poules à la finale.</p>',
+        unsafe_allow_html=True
+    )
+
+    # ----------------------------------------------------------------
+    # SECTION 1 : LES CLASSEMENTS, REPLIES DANS UN VOLET (fermes par defaut)
+    # ----------------------------------------------------------------
+    groupes_stats, liste_qualifies = _calculer_classements_groupes()
+
+    with st.expander("📊 Voir les classements finaux des groupes", expanded=False):
+        if not groupes_stats:
+            st.error("Veuillez d'abord exécuter le script des groupes dans votre terminal.")
+        else:
+            _afficher_classements(groupes_stats, liste_qualifies)
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ----------------------------------------------------------------
     # SECTION 2 : L'ARBRE DES PHASES ÉLIMINATOIRES (BRACKET)
@@ -173,7 +167,6 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             unsafe_allow_html=True
         )
 
-    # Un sous-onglet par tour. On associe chaque sous-onglet au nom de tour du CSV.
     sous_onglets = st.tabs(["1/16 de Finale", "1/8 de Finale", "Quarts", "Demi-Finales", "🏆 LA FINALE"])
     tours_csv = ["1/16 de finale", "1/8 de finale", "Quarts de finale", "Demi-finales", "Finale"]
 
@@ -183,7 +176,6 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             matchs_tour = bracket[bracket["tour"] == tour]
 
             if tour == "Finale":
-                # Match pour la 3e place : les deux perdants des demi-finales
                 petite = bracket[bracket["tour"] == "Petite finale"]
                 if len(petite) > 0:
                     st.markdown(
@@ -202,7 +194,6 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             for _, m in matchs_tour.iterrows():
                 _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
 
-            # Sur l'onglet Finale, on affiche le grand encart du champion
             if tour == "Finale":
                 flag_champ = get_url_drapeau(champion)
                 st.markdown(
