@@ -23,8 +23,8 @@ def afficher_carte_match(match):
     p2 = match['proba_2']
 
     pronostic_texte = formater_pronostic(match['pronostic'], eq_dom, eq_ext)
-    rang_dom_txt = f"{rang_dom}ème mondial" if rang_dom else "Non classé"
-    rang_ext_txt = f"{rang_ext}ème mondial" if rang_ext else "Non classé"
+    rang_dom_txt = _rang_texte(rang_dom)
+    rang_ext_txt = _rang_texte(rang_ext)
     couleur_1, couleur_N, couleur_2 = _calculer_couleurs_barres(match['pronostic'])
 
     # Construction du HTML (sur une seule ligne logique)
@@ -107,3 +107,9 @@ def _calculer_couleurs_barres(pronostic):
         return GRIS_ETEINT, GRIS_ETEINT, GRADIENT_ACTIF
     else:
         return GRIS_ETEINT, JAUNE_ACTIF, GRIS_ETEINT
+    
+def _rang_texte(rang):
+    """Texte du rang mondial, avec '1er' au lieu de '1ème'."""
+    if not rang:
+        return "Non classé"
+    return f"{rang}er mondial" if rang == 1 else f"{rang}ème mondial"

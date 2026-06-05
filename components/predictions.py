@@ -89,6 +89,7 @@ def generer_predictions(_modele, _encoder, matchs_a_predire, historique):
             "date": match["date"],
             "equipe_dom": dom,
             "equipe_ext": ext,
+            "group": match.get("group", ""),
             "pronostic": pronostic,
             "proba_1": probas_dict.get("1", 0) * 100,
             "proba_N": probas_dict.get("N", 0) * 100,

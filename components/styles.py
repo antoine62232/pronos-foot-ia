@@ -6,25 +6,31 @@ def appliquer_styles():
 
     Cette fonction injecte le CSS personnalisé dans la page Streamlit.
     À appeler UNE FOIS au début de app.py, juste après st.set_page_config().
-
-    Aucun paramètre, aucun retour. Effet de bord : applique le CSS.
     """
-
-    # On utilise st.markdown avec unsafe_allow_html=True
-    # car on injecte du HTML/CSS qui n'est pas du markdown standard
 
     st.markdown("""
     <style>
+        /* @import DOIT etre la toute premiere ligne du CSS pour etre valide */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Outfit:wght@600;700;800&family=Bricolage+Grotesque:wght@600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
         /* ===== FOND PRINCIPAL ===== */
-        /* Bleu nuit profond pour toute l'app */
         .stApp {
             background-color: #0A0E1A;
         }
 
         /* ===== TEXTES ===== */
-        /* Blanc cassé pour tous les éléments textuels */
         h1, h2, h3, h4, h5, h6, p, span, label {
             color: #F8FAFC !important;
+        }
+
+        /* ===== POLICES ===== */
+        /* Police generale de l'app */
+        .stApp, .stApp p, .stApp label, .stApp button, .stApp div {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Police des grands titres */
+        h2, h3 {
+            font-family: 'Space Grotesk', sans-serif !important;
         }
 
         /* ===== ONGLETS ===== */
@@ -37,7 +43,7 @@ def appliquer_styles():
             border: 0.5px solid #1E293B;
         }
 
-        /* Chaque onglet individuel (état normal) */
+        /* Chaque onglet individuel (etat normal) */
         .stTabs [data-baseweb="tab"] {
             background-color: transparent;
             color: #94A3B8;
@@ -47,48 +53,58 @@ def appliquer_styles():
             font-weight: 500;
         }
 
-        /* L'onglet sélectionné (état actif) */
+        /* L'onglet selectionne (etat actif) */
         .stTabs [aria-selected="true"] {
             background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(34,211,238,0.1)) !important;
             color: #A78BFA !important;
         }
 
-        /* ===== ÉLÉMENTS STREAMLIT À CACHER ===== */
-        /* On masque le menu hamburger, le footer et le header par défaut */
+        /* ===== CORRECTION DU TRAIT D'ONGLET ===== */
+        /* Le trait sous l'onglet actif : rouge par defaut -> violet (ton theme) */
+        .stTabs [data-baseweb="tab-highlight"] {
+            background-color: #A78BFA !important;
+        }
+        /* La fine ligne sous toute la rangee d'onglets */
+        .stTabs [data-baseweb="tab-border"] {
+            background-color: #1E293B !important;
+        }
+
+        /* ===== ELEMENTS STREAMLIT A CACHER ===== */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;}
+                
+        /* ===== RESSERRER L'ESPACE EN HAUT ===== */
+        .block-container {
+            padding-top: 2rem !important;
+        }
+                
     </style>
     """, unsafe_allow_html=True)
 
 
 def afficher_header():
-    """
-    Affiche l'en-tête de l'application : titre + sous-titre + ligne dégradée.
+    """Affiche l'en-tête : titre + sous-titre centres + ligne courte centree."""
 
-    Cette fonction encapsule la création visuelle du header pour ne pas
-    polluer app.py avec du HTML.
+    police_titre = "Bricolage Grotesque"
 
-    Aucun paramètre, aucun retour. Effet de bord : affiche le header.
-    """
-
-    # Titre principal — anchor=False enlève l'icône de lien à côté du titre
-    st.title("⚽ Pronos Foot IA", anchor=False)
-
-    # Sous-titre en gris clair
     st.markdown(
-        '<p style="color: #94A3B8; font-size: 14px; margin-top: -10px;">'
-        'Tous les pronostics de la Coupe du Monde 2026</p>',
+        f"""
+        <div style="text-align: center;">
+            <h1 style="font-family: '{police_titre}', sans-serif; font-size: 2.9rem;
+                       font-weight: 800; margin-bottom: 0;">
+                ⚽ Pronos Foot IA
+            </h1>
+            <p style="color: #94A3B8; font-size: 15px; margin-top: 4px;">
+                Tous les pronostics de la Coupe du Monde 2026
+            </p>
+            <!-- Ligne courte et centree sous le titre -->
+            <div style="width: 90px; height: 3px; margin: 14px auto 0 auto;
+                        border-radius: 2px;
+                        background: linear-gradient(90deg, #A78BFA, #22D3EE);"></div>
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
-    # Ligne dégradée violet → cyan
-    st.markdown(
-        '<hr style="border: none; height: 2px; '
-        'background: linear-gradient(90deg, #A78BFA, #22D3EE); '
-        'margin: 16px 0;">',
-        unsafe_allow_html=True
-    )
-
-    # Un peu d'espace avant le contenu
     st.markdown("<br>", unsafe_allow_html=True)

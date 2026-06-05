@@ -71,26 +71,69 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ONGLETS PRINCIPAUX
 
-tab1, tab2, tab3, tab4 = st.tabs(["Les matchs", "Mes pronos", "L'IA explique", "Phase Éliminatoire"])
-# Onglet 1 : Liste des matchs
-with tab1:
-    st.subheader("Tous les matchs de la Coupe du Monde 2026")
-    st.markdown(
-        '<p style="color: #94A3B8;">Les pronostics de l\'IA pour les 72 matchs.</p>',
-        unsafe_allow_html=True
-    )
-    # Pour chaque match, on appelle notre composant carte de match
-    for _, match in df_predictions.iterrows():
-        afficher_carte_match(match)
+tab1, tab2, tab3, tab4 = st.tabs(["Phase de groupes", "Phase Éliminatoire", "Mes pronos", "L'IA explique"])
 
-# Onglet 2 : Mes pronos
+# Onglet 1 : Phase de groupes (matchs regroupes par poule)
+# Onglet 1 : Phase de groupes (avec filtres)
+with tab1:
+    st.subheader("Phase de groupes")
+
+    # --- BARRE DE FILTRES ---
+    # 1er choix : le mode d'affichage
+    mode = st.radio(
+        "Afficher :",
+        ["Tout", "Par groupe", "Par équipe", "Par date"],
+        horizontal=True,
+    )
+
+    # Par defaut on affiche tous les matchs ; on reduit selon le mode choisi.
+    matchs_a_afficher = df_predictions
+
+    # 2e choix : un menu deroulant adapte au mode
+    if mode == "Par groupe":
+        groupe = st.selectbox("Choisis un groupe", sorted(df_predictions["group"].unique()))
+        matchs_a_afficher = df_predictions[df_predictions["group"] == groupe]
+
+    elif mode == "Par équipe":
+        # Liste de toutes les equipes (a domicile ou a l'exterieur), triee
+        equipes = sorted(set(df_predictions["equipe_dom"]) | set(df_predictions["equipe_ext"]))
+        equipe = st.selectbox("Choisis une équipe", equipes)
+        matchs_a_afficher = df_predictions[
+            (df_predictions["equipe_dom"] == equipe) | (df_predictions["equipe_ext"] == equipe)
+        ]
+
+    elif mode == "Par date":
+        date = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()))
+        matchs_a_afficher = df_predictions[df_predictions["date"] == date]
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- AFFICHAGE ---
+    if mode == "Tout":
+        # On garde le regroupement par poule (avec les en-tetes "Groupe X")
+        for lettre in sorted(matchs_a_afficher["group"].unique()):
+            st.markdown(
+                f'<h3 style="color: #F8FAFC; border-left: 4px solid #A78BFA;'
+                f' padding-left: 12px; margin: 28px 0 12px 0;">Groupe {lettre}</h3>',
+                unsafe_allow_html=True
+            )
+            for _, match in matchs_a_afficher[matchs_a_afficher["group"] == lettre].iterrows():
+                afficher_carte_match(match)
+    else:
+        # Dans les autres modes, on affiche simplement la liste filtree
+        if len(matchs_a_afficher) == 0:
+            st.info("Aucun match à afficher pour ce filtre.")
+        for _, match in matchs_a_afficher.iterrows():
+            afficher_carte_match(match)
+            
+# Onglet 2 : Phase Éliminatoire
 with tab2:
+    afficher_onglet_phase_eliminatoire(modele, encoder)
+
+# Onglet 3 : Mes pronos
+with tab3:
     afficher_onglet_mes_pronos(df_predictions)
 
-# Onglet 3 : L'IA explique
-with tab3:
-    afficher_onglet_ia_explique(df_predictions)
-
-# Onglet 4 : Phase Éliminatoire
+# Onglet 4 : L'IA explique
 with tab4:
-    afficher_onglet_phase_eliminatoire(modele, encoder)
+    afficher_onglet_ia_explique(df_predictions)
