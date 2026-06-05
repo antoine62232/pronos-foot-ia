@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from datetime import datetime
 from streamlit_extras.metric_cards import style_metric_cards
 
@@ -33,6 +34,14 @@ modele, encoder, matchs_futurs, historique = charger_tout()
 # Génération des prédictions pour les 72 matchs
 df_predictions = generer_predictions(modele, encoder, matchs_futurs, historique)
 
+# Nombre total de matchs analyses : poules + elimination directe (le bracket simule)
+try:
+    nb_elimination = len(pd.read_csv("data/bracket_complet.csv"))
+except Exception:
+    nb_elimination = 0   # securite : si le fichier manque, on compte juste les poules
+
+nb_matchs_total = len(matchs_futurs) + nb_elimination
+
 # CALCULS POUR LES STATS DE L'ACCUEIL
 
 # Compte à rebours jusqu'à la Coupe du Monde (11 juin 2026)
@@ -51,7 +60,11 @@ afficher_header()
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(label="Matchs analysés", value=len(matchs_futurs))
+    st.metric(
+        label="Matchs analysés",
+        value=nb_matchs_total,
+        help="72 matchs de poules + les matchs à élimination directe simulés à partir des qualifiés prédits."
+    )
 
 with col2:
     st.metric(label="Pronos haute confiance", value=pronos_sur)

@@ -157,14 +157,14 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             f'       <img src="{flag1}" width="20" style="border-radius: 2px;">'
             f'       <span style="{w1_style}">{eq1}</span>'
             f'    </div>'
-            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Qualifié</span>" if eq1 == winner else "" }'
+            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Vainqueur</span>" if eq1 == winner else "" }'
             f'  </div>'
             f'  <div style="display: flex; justify-content: space-between; align-items: center;">'
             f'    <div style="display: flex; align-items: center; gap: 8px;">'
             f'       <img src="{flag2}" width="20" style="border-radius: 2px;">'
             f'       <span style="{w2_style}">{eq2}</span>'
             f'    </div>'
-            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Qualifié</span>" if eq2 == winner else "" }'
+            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Vainqueur</span>" if eq2 == winner else "" }'
             f'  </div>'
             f'  <div style="font-size: 11px; color: #64748B; margin-top: 8px; text-align: right; border-top: 1px dashed #1E293B; padding-top: 4px;">'
             f'     Confiance IA : {conf:.1f}%'
@@ -183,6 +183,17 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
             matchs_tour = bracket[bracket["tour"] == tour]
 
             if tour == "Finale":
+                # Match pour la 3e place : les deux perdants des demi-finales
+                petite = bracket[bracket["tour"] == "Petite finale"]
+                if len(petite) > 0:
+                    st.markdown(
+                        "<h4 style='text-align: center; color: #CD7F32; margin-bottom: 16px;'>🥉 Match pour la 3e place</h4>",
+                        unsafe_allow_html=True
+                    )
+                    for _, m in petite.iterrows():
+                        _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
+                    st.markdown("<br>", unsafe_allow_html=True)
+
                 st.markdown(
                     "<h4 style='text-align: center; color: #FBBF24; margin-bottom: 20px;'>Grande Finale</h4>",
                     unsafe_allow_html=True

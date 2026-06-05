@@ -83,6 +83,8 @@ matchs = [
 noms_tours = ["1/16 de finale", "1/8 de finale", "Quarts de finale", "Demi-finales", "Finale"]
 historique_bracket = []
 champion = ""
+troisieme = ""
+perdants_demis = []   # les 2 perdants des demi-finales (pour la petite finale)
 
 for tour in noms_tours:
     vainqueurs = []
@@ -91,13 +93,26 @@ for tour in noms_tours:
         vainqueurs.append(gagnant)
         historique_bracket.append({"tour": tour, "equipe_1": eq1, "equipe_2": eq2,
                                     "vainqueur": gagnant, "confiance": round(conf, 1)})
+        # On retient les perdants des demi-finales pour le match de la 3e place
+        if tour == "Demi-finales":
+            perdants_demis.append(eq2 if gagnant == eq1 else eq1)
     if len(vainqueurs) > 1:
         matchs = [(vainqueurs[i], vainqueurs[i + 1]) for i in range(0, len(vainqueurs), 2)]
     else:
         champion = vainqueurs[0]
 
+    # Petite finale : les 2 perdants des demi-finales jouent pour la 3e place
+if len(perdants_demis) == 2:
+    troisieme, conf3 = simuler_match_couperet(perdants_demis[0], perdants_demis[1])
+    historique_bracket.append({"tour": "Petite finale", "equipe_1": perdants_demis[0],
+                               "equipe_2": perdants_demis[1], "vainqueur": troisieme,
+                               "confiance": round(conf3, 1)})
+
 # 4. Sauvegarde
 pd.DataFrame(historique_bracket).to_csv("data/bracket_complet.csv", index=False)
-pd.DataFrame([{"role": "Champion", "equipe": champion}]).to_csv("data/vainqueur_final.csv", index=False)
+pd.DataFrame([
+    {"role": "Champion", "equipe": champion},
+    {"role": "3e place", "equipe": troisieme},
+]).to_csv("data/vainqueur_final.csv", index=False)
 print(f"CHAMPION PREDIT : {champion}")
 print("bracket_complet.csv + vainqueur_final.csv sauvegardes.")
