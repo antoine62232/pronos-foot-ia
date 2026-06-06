@@ -26,7 +26,8 @@ def afficher_carte_match(match):
     pronostic_texte = formater_pronostic(match['pronostic'], eq_dom, eq_ext)
     rang_dom_txt = _rang_texte(rang_dom)
     rang_ext_txt = _rang_texte(rang_ext)
-    couleur_1, couleur_N, couleur_2 = _calculer_couleurs_barres(match['pronostic'])
+    # Une couleur fixe par issue : violet (domicile) / jaune (nul) / cyan (exterieur)
+    C_DOM, C_NUL, C_EXT = "#A78BFA", "#FBBF24", "#22D3EE"
 
     # Construction du HTML (sur une seule ligne logique)
     # IMPORTANT : on construit le HTML morceau par morceau pour éviter les problèmes d'indentation qui font foirer st.markdown
@@ -67,15 +68,15 @@ def afficher_carte_match(match):
         f' padding: 3px 10px; border-radius: 6px; font-size: 11px;'
         f' font-weight: 500; margin-left: auto;">{pronostic_texte}</span>'
         f'</div>'
-        f'<div style="display: flex; gap: 4px; height: 8px;">'
-        f'<div style="flex: {p1}; background: {couleur_1}; border-radius: 4px;"></div>'
-        f'<div style="flex: {pN}; background: {couleur_N}; border-radius: 4px;"></div>'
-        f'<div style="flex: {p2}; background: {couleur_2}; border-radius: 4px;"></div>'
+        f'<div style="display: flex; gap: 3px; height: 8px;">'
+        f'<div style="flex: {p1}; background: {C_DOM}; border-radius: 4px;"></div>'
+        f'<div style="flex: {pN}; background: {C_NUL}; border-radius: 4px;"></div>'
+        f'<div style="flex: {p2}; background: {C_EXT}; border-radius: 4px;"></div>'
         f'</div>'
         f'<div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px;">'
-        f'<span style="color: #94A3B8;">{eq_dom} <strong style="color: #F8FAFC;">{p1:.0f}%</strong></span>'
-        f'<span style="color: #FBBF24;">Nul <strong>{pN:.0f}%</strong></span>'
-        f'<span style="color: #A78BFA;">{eq_ext} <strong>{p2:.0f}%</strong></span>'
+        f'<span style="color: #94A3B8;"><span style="color:{C_DOM};">&#9679;</span> {eq_dom} <strong style="color:#F8FAFC;">{p1:.0f}%</strong></span>'
+        f'<span style="color: #94A3B8;"><span style="color:{C_NUL};">&#9679;</span> Nul <strong style="color:#F8FAFC;">{pN:.0f}%</strong></span>'
+        f'<span style="color: #94A3B8;"><span style="color:{C_EXT};">&#9679;</span> {eq_ext} <strong style="color:#F8FAFC;">{p2:.0f}%</strong></span>'
         f'</div>'
         f'</div>'
         f'</div>'
