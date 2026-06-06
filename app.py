@@ -11,7 +11,7 @@ from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
 from components.phase_eliminatoire_ui import afficher_onglet_phase_eliminatoire
 from components.intro import afficher_intro
-from components.resultats import afficher_onglet_resultats
+from components.resultats import afficher_onglet_resultats, _date_fr
 
 # CONFIGURATION DE LA PAGE (toujours en premier)
 
@@ -117,7 +117,7 @@ with tab1:
         ]
 
     elif mode == "Par date":
-        date = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()))
+        date = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()), format_func=_date_fr)
         matchs_a_afficher = df_predictions[df_predictions["date"] == date]
 
     st.markdown("<br>", unsafe_allow_html=True)

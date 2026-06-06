@@ -1,5 +1,6 @@
 import streamlit as st
 from components.data_loader import get_url_drapeau, get_rang_fifa
+from components.resultats import _date_fr
 
 # FONCTION PRINCIPALE
 
@@ -37,7 +38,7 @@ def afficher_carte_match(match):
         f'<div style="position: absolute; top: 0; left: 0; right: 0; height: 2px;'
         f' background: linear-gradient(90deg, #A78BFA, #22D3EE);"></div>'
         f'<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">'
-        f'<span style="color: #94A3B8; font-size: 12px;">📅 {match["date"]}</span>'
+        f'<span style="color: #94A3B8; font-size: 12px;">📅 {_date_fr(match["date"])}</span>'
         f'<span style="background: rgba(34,211,238,0.15); color: #22D3EE; padding: 3px 10px;'
         f' border-radius: 6px; font-size: 10px; font-weight: 500;'
         f' border: 0.5px solid rgba(34,211,238,0.3);">COUPE DU MONDE 2026</span>'
