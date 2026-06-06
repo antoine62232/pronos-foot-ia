@@ -99,7 +99,7 @@ def comparer_predictions(df_predictions):
         if str(p["date"]) > aujourd_hui or cle not in index_reel:
             lignes.append({"dom": p["equipe_dom"], "ext": p["equipe_ext"],
                            "prono": p["pronostic"], "statut": "attente",
-                           "score": None, "correct": None})
+                           "score": None, "correct": None, "date": p["date"]})
             continue
 
         # On oriente le score selon TON domicile/exterieur (l'API peut les inverser)
@@ -111,9 +111,21 @@ def comparer_predictions(df_predictions):
         nb_corrects += int(correct)
         lignes.append({"dom": p["equipe_dom"], "ext": p["equipe_ext"],
                        "prono": p["pronostic"], "statut": "joue",
-                       "score": (sd, se), "correct": correct})
+                       "score": (sd, se), "correct": correct, "date": p["date"]})
 
     return lignes, nb_corrects, nb_joues
+
+# Conversion '2026-06-11' -> '11 juin 2026' (sans dependre de la locale du systeme)
+MOIS_FR = {1: "janvier", 2: "février", 3: "mars", 4: "avril", 5: "mai", 6: "juin",
+           7: "juillet", 8: "août", 9: "septembre", 10: "octobre", 11: "novembre", 12: "décembre"}
+
+def _date_fr(date_iso):
+    """Convertit une date ISO en joli format francais. Renvoie la chaine brute si souci."""
+    try:
+        d = datetime.date.fromisoformat(str(date_iso))
+        return f"{d.day} {MOIS_FR[d.month]} {d.year}"
+    except Exception:
+        return str(date_iso)
 
 # ====================================================================
 # L'ONGLET VISIBLE
@@ -176,7 +188,7 @@ def afficher_onglet_resultats(df_predictions):
                 f' display:flex; justify-content:space-between; align-items:center;">'
                 f'  <div>'
                 f'    <div style="color:#F8FAFC; font-weight:600;">{l["dom"]} {sd} - {se} {l["ext"]}</div>'
-                f'    <div style="color:#94A3B8; font-size:12px; margin-top:2px;">Pronostic IA : {_texte_prono(l["prono"], l["dom"], l["ext"])}</div>'
+                f'    <div style="color:#94A3B8; font-size:12px; margin-top:2px;">{_date_fr(l["date"])} · Pronostic IA : {_texte_prono(l["prono"], l["dom"], l["ext"])}</div>'
                 f'  </div>'
                 f'  <div style="font-size:13px;">{badge}</div>'
                 f'</div>',
@@ -189,6 +201,7 @@ def afficher_onglet_resultats(df_predictions):
             for l in attente:
                 st.markdown(
                     f'<div style="padding:6px 0; border-bottom:1px solid #1E293B;">'
+                    f'<span style="color:#64748B; font-size:12px;">{_date_fr(l["date"])} · </span>'
                     f'<span style="color:#CBD5E1;">{l["dom"]} vs {l["ext"]}</span>'
                     f'<span style="color:#64748B; font-size:12px;"> — Pronostic IA : {_texte_prono(l["prono"], l["dom"], l["ext"])}</span>'
                     f'</div>',
