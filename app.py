@@ -11,7 +11,8 @@ from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
 from components.phase_eliminatoire_ui import afficher_onglet_phase_eliminatoire
 from components.intro import afficher_intro
-from components.resultats import afficher_onglet_resultats, _date_fr
+from components.resultats import afficher_onglet_resultats
+from components.dates import _date_fr
 
 # CONFIGURATION DE LA PAGE (toujours en premier)
 

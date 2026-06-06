@@ -5,6 +5,7 @@
 import requests
 import streamlit as st
 import datetime
+from components.dates import _date_fr
 
 
 def _parser_matchs(data):
@@ -114,18 +115,6 @@ def comparer_predictions(df_predictions):
                        "score": (sd, se), "correct": correct, "date": p["date"]})
 
     return lignes, nb_corrects, nb_joues
-
-# Conversion '2026-06-11' -> '11 juin 2026' (sans dependre de la locale du systeme)
-MOIS_FR = {1: "janvier", 2: "février", 3: "mars", 4: "avril", 5: "mai", 6: "juin",
-           7: "juillet", 8: "août", 9: "septembre", 10: "octobre", 11: "novembre", 12: "décembre"}
-
-def _date_fr(date_iso):
-    """Convertit une date ISO en joli format francais. Renvoie la chaine brute si souci."""
-    try:
-        d = datetime.date.fromisoformat(str(date_iso))
-        return f"{d.day} {MOIS_FR[d.month]} {d.year}"
-    except Exception:
-        return str(date_iso)
 
 # ====================================================================
 # L'ONGLET VISIBLE

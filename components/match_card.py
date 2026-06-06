@@ -1,6 +1,6 @@
 import streamlit as st
 from components.data_loader import get_url_drapeau, get_rang_fifa
-from components.resultats import _date_fr
+from components.dates import _date_fr
 
 # FONCTION PRINCIPALE
 
