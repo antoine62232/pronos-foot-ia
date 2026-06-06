@@ -140,28 +140,39 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
 
     def _creer_card_match(eq1, eq2, winner, conf):
         flag1, flag2 = get_url_drapeau(eq1), get_url_drapeau(eq2)
-        w1_style = "color: #A78BFA; font-weight: bold;" if eq1 == winner else "color: #94A3B8;"
-        w2_style = "color: #A78BFA; font-weight: bold;" if eq2 == winner else "color: #94A3B8;"
+        w1_style = "color: #A78BFA; font-weight: bold;" if eq1 == winner else "color: #CBD5E1;"
+        w2_style = "color: #A78BFA; font-weight: bold;" if eq2 == winner else "color: #CBD5E1;"
+
+        # Badge vert "✓ Vainqueur" colle juste apres le nom de l'equipe gagnante
+        badge = ('<span style="display:inline-flex; align-items:center; gap:4px;'
+                 ' background:rgba(16,185,129,0.15); color:#10B981; font-size:10px;'
+                 ' font-weight:bold; padding:2px 8px; border-radius:6px; margin-left:8px;">'
+                 '✓ Vainqueur</span>')
+        badge1 = badge if eq1 == winner else ""
+        badge2 = badge if eq2 == winner else ""
 
         st.markdown(
-            f'<div style="background-color: #141B2D; border: 1px solid #1E293B; '
-            f'padding: 12px; border-radius: 8px; margin-bottom: 10px;">'
-            f'  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">'
-            f'    <div style="display: flex; align-items: center; gap: 8px;">'
-            f'       <img src="{flag1}" width="20" style="border-radius: 2px;">'
-            f'       <span style="{w1_style}">{eq1}</span>'
-            f'    </div>'
-            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Vainqueur</span>" if eq1 == winner else "" }'
+            f'<div style="background-color: #141B2D; border: 1px solid #1E293B;'
+            f' padding: 14px 18px; border-radius: 8px; margin-bottom: 10px;'
+            f' display: flex; justify-content: space-between; align-items: center;">'
+            f'  <div style="display: flex; align-items: center; gap: 14px; flex: 1;">'
+            f'     <div style="width: 30px; height: 30px; border-radius: 50%; background: #0A0E1A;'
+            f'          border: 1px solid #1E293B; color: #475569; font-size: 10px; font-weight: 700;'
+            f'          display: flex; align-items: center; justify-content: center; flex-shrink: 0;">VS</div>'
+            f'     <div style="flex: 1;">'
+            f'        <div style="display: flex; align-items: center; margin-bottom: 6px;">'
+            f'           <img src="{flag1}" width="22" style="border-radius: 2px; margin-right: 8px;">'
+            f'           <span style="{w1_style}">{eq1}</span>{badge1}'
+            f'        </div>'
+            f'        <div style="display: flex; align-items: center;">'
+            f'           <img src="{flag2}" width="22" style="border-radius: 2px; margin-right: 8px;">'
+            f'           <span style="{w2_style}">{eq2}</span>{badge2}'
+            f'        </div>'
+            f'     </div>'
             f'  </div>'
-            f'  <div style="display: flex; justify-content: space-between; align-items: center;">'
-            f'    <div style="display: flex; align-items: center; gap: 8px;">'
-            f'       <img src="{flag2}" width="20" style="border-radius: 2px;">'
-            f'       <span style="{w2_style}">{eq2}</span>'
-            f'    </div>'
-            f'    { "<span style=\'color: #10B981; font-size: 11px; font-weight: bold;\'>Vainqueur</span>" if eq2 == winner else "" }'
-            f'  </div>'
-            f'  <div style="font-size: 11px; color: #64748B; margin-top: 8px; text-align: right; border-top: 1px dashed #1E293B; padding-top: 4px;">'
-            f'     Confiance IA : {conf:.1f}%'
+            f'  <div style="text-align: right; flex-shrink: 0; padding-left: 16px;">'
+            f'     <div style="color: #64748B; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Confiance IA</div>'
+            f'     <div style="color: #94A3B8; font-size: 20px; font-weight: 700;">{conf:.0f}%</div>'
             f'  </div>'
             f'</div>',
             unsafe_allow_html=True
