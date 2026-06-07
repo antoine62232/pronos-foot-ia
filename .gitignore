@@ -1,3 +1,5 @@
 venv/ 
 __pycache__/ 
 .streamlit/secrets.toml
+test_api.py
+test_heures.py
