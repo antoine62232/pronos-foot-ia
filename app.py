@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, date
 from streamlit_extras.metric_cards import style_metric_cards
 
 from components.styles      import appliquer_styles, afficher_header
@@ -48,8 +48,8 @@ nb_matchs_total = len(matchs_futurs) + nb_elimination
 # CALCULS POUR LES STATS DE L'ACCUEIL
 
 # Compte à rebours jusqu'à la Coupe du Monde (11 juin 2026)
-date_cdm = datetime(2026, 6, 11)
-jours_restants = max(0, (date_cdm - datetime.now()).days)
+date_cdm = date(2026, 6, 11)
+jours_restants = max(0, (date_cdm - date.today()).days)
 
 # Nombre de pronos avec une probabilité supérieure à 50%
 pronos_sur = compter_pronos_haute_confiance(df_predictions)
