@@ -13,6 +13,7 @@ from components.phase_eliminatoire_ui import afficher_onglet_phase_eliminatoire
 from components.intro import afficher_intro
 from components.resultats import afficher_onglet_resultats
 from components.dates import _date_fr
+from components.compteur import afficher_compteur_visites
 
 # CONFIGURATION DE LA PAGE (toujours en premier)
 
@@ -57,6 +58,9 @@ pronos_sur = compter_pronos_haute_confiance(df_predictions)
 
 # Header avec titre, sous-titre et ligne dégradée
 afficher_header()
+
+# Compteur de visites (service externe gratuit, sans inscription)
+afficher_compteur_visites()
 
 # 3 cartes de stats côte à côte
 col1, col2, col3 = st.columns(3)
