@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
+import json
+from streamlit_local_storage import LocalStorage
 from components.match_card import afficher_carte_match, formater_pronostic
+from components.dates import _date_fr
 
 
 def afficher_onglet_mes_pronos(df_predictions):
@@ -20,14 +23,23 @@ def afficher_onglet_mes_pronos(df_predictions):
     # On verifie si la cle "mes_pronos" existe deja dans la session
     # Si non, on l'initialise avec un dictionnaire vide
     # Ce dictionnaire survivra aux re-executions de Streamlit
+    # Stockage navigateur : les pronos survivent a la fermeture du site (sans compte)
+    localS = LocalStorage()
+    sauvegarde = localS.getItem("mes_pronos_cdm")
+
     if "mes_pronos" not in st.session_state:
         st.session_state.mes_pronos = {}
 
+    # Au retour de l'utilisateur, on recharge ses pronos une seule fois (des qu'ils arrivent du navigateur)
+    if sauvegarde and not st.session_state.get("pronos_charges"):
+        st.session_state.mes_pronos = sauvegarde if isinstance(sauvegarde, dict) else json.loads(sauvegarde)
+        st.session_state["pronos_charges"] = True
+
     # HEADER
 
-    st.subheader("Defie l'Intelligence Artificielle")
+    st.subheader("Défie l'Intelligence Artificielle")
     st.markdown(
-        '<p style="color: #94A3B8;">Selectionne un match et compare ton pronostic a celui de la machine. Tes pronos sont memorises pendant ta session.</p>',
+        '<p style="color: #94A3B8;">Sélectionne un match et compare ton pronostic a celui de la machine. Tes pronos sont mémorises, meme si tu reviens plus tard.</p>',
         unsafe_allow_html=True
     )
 
@@ -63,7 +75,7 @@ def afficher_onglet_mes_pronos(df_predictions):
     # SELECTION DU MATCH
 
     liste_matchs_texte = [
-        f"{row['equipe_dom']} vs {row['equipe_ext']} ({row['date']})"
+        f"{row['equipe_dom']} vs {row['equipe_ext']} ({_date_fr(row['date'])})"
         for _, row in df_predictions.iterrows()
     ]
 
@@ -132,6 +144,9 @@ def afficher_onglet_mes_pronos(df_predictions):
                 "accord_avec_ia": accord_avec_ia,
             }
 
+            # On ecrit aussi dans le navigateur pour que le choix soit conserve
+            localS.setItem("mes_pronos_cdm", json.dumps(st.session_state.mes_pronos))
+
             st.success("Pronostic enregistre !")
 
             # Recap visuel apres validation
@@ -170,7 +185,7 @@ def afficher_onglet_mes_pronos(df_predictions):
         liste_pour_tableau = []
         for cle, prono in st.session_state.mes_pronos.items():
             liste_pour_tableau.append({
-                "Date": prono["date"],
+                "Date": _date_fr(prono["date"]),
                 "Match": f"{prono['equipe_dom']} vs {prono['equipe_ext']}",
                 "Mon prono": prono["mon_choix"],
                 "Prono IA": prono["choix_ia"],
@@ -232,4 +247,5 @@ def afficher_onglet_mes_pronos(df_predictions):
             # st.rerun() force Streamlit a recharger la page pour reflet
             if st.button("Reinitialiser tous mes pronos", use_container_width=True):
                 st.session_state.mes_pronos = {}
+                localS.setItem("mes_pronos_cdm", json.dumps({}))
                 st.rerun()
