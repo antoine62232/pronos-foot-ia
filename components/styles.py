@@ -83,22 +83,26 @@ def appliquer_styles():
     """, unsafe_allow_html=True)
 
 
+import streamlit as st
+
 def afficher_header():
-    """Affiche l'en-tête : titre + sous-titre centres + ligne courte centree."""
+    """Affiche l'en-tête : titre + sous-titre centrés + ligne courte centrée."""
 
     police_titre = "Bricolage Grotesque"
 
+    # On modifie la balise <h1> pour y inclure les mots-clés forts pour le SEO (Google)
+    # Les termes "Coupe du Monde 2026" remontent dans le <h1> pour un impact maximal
     st.markdown(
         f"""
         <div style="text-align: center;">
             <h1 style="font-family: '{police_titre}', sans-serif; font-size: 2.9rem;
                        font-weight: 800; margin-bottom: 0;">
-                ⚽ Pronos Foot IA
+                ⚽ Prediktora : Coupe du Monde 2026
             </h1>
             <p style="color: #94A3B8; font-size: 15px; margin-top: 4px;">
-                Tous les pronostics de la Coupe du Monde 2026
+                Prédictions 100% Data & Machine Learning
             </p>
-            <!-- Ligne courte et centree sous le titre -->
+            <!-- Ligne courte et centrée sous le titre -->
             <div style="width: 90px; height: 3px; margin: 14px auto 0 auto;
                         border-radius: 2px;
                         background: linear-gradient(90deg, #A78BFA, #22D3EE);"></div>

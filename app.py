@@ -18,7 +18,7 @@ from components.compteur import afficher_compteur_visites
 # CONFIGURATION DE LA PAGE (toujours en premier)
 
 st.set_page_config(
-    page_title="Pronos Foot IA — Coupe du Monde 2026",
+    page_title="Prediktora — Coupe du Monde 2026",
     page_icon="⚽",
     layout="wide",
     initial_sidebar_state="collapsed"

@@ -1,4 +1,4 @@
-# ⚽ Pronos Foot IA — Prédictions Coupe du Monde 2026
+# ⚽ Prediktora — Prédictions Coupe du Monde 2026
 
 > Une IA qui prédit la Coupe du Monde 2026, de la phase de groupes au vainqueur final, à partir d'un classement Elo maison et de la forme récente des équipes.
 
@@ -53,11 +53,11 @@ Le modèle est évalué par un **backtest à séparation temporelle stricte** : 
 
 L'évaluation ne se limite pas à l'accuracy : elle inclut le **Brier score**, la **log loss** et le **RPS**, qui mesurent la qualité des probabilités (et pas seulement le pronostic final).
 
-| Type de matchs | Nombre | Accuracy | Brier |
-|---|---|---|---|
-| Phases finales (matchs équilibrés) | 2 741 | **53,2 %** | 0,579 |
-| Qualifications | 3 081 | 61,6 % | 0,489 |
-| **Ensemble des compétitions** | 5 822 | **57,7 %** | 0,531 |
+| Type de matchs                     | Nombre | Accuracy   | Brier |
+| ---------------------------------- | ------ | ---------- | ----- |
+| Phases finales (matchs équilibrés) | 2 741  | **53,2 %** | 0,579 |
+| Qualifications                     | 3 081  | 61,6 %     | 0,489 |
+| **Ensemble des compétitions**      | 5 822  | **57,7 %** | 0,531 |
 
 Repères : un pronostic au hasard donnerait environ 33 % d'accuracy et un Brier de 0,667.
 
@@ -69,10 +69,10 @@ Le chiffre le plus représentatif pour la Coupe du Monde est celui des **phases 
 
 ## 📈 Évolution du modèle
 
-| Modèle | Force d'équipe | Accuracy (phases finales) |
-|---|---|---|
-| Version initiale | Points FIFA (figés) | 51,3 % |
-| **Version actuelle** | **Classement Elo (variable dans le temps)** | **53,2 %** |
+| Modèle               | Force d'équipe                              | Accuracy (phases finales) |
+| -------------------- | ------------------------------------------- | ------------------------- |
+| Version initiale     | Points FIFA (figés)                         | 51,3 %                    |
+| **Version actuelle** | **Classement Elo (variable dans le temps)** | **53,2 %**                |
 
 La démarche : estimer la performance honnêtement via le backtest, comparer plusieurs jeux de variables, puis ne retenir que ce qui apporte un gain réel et mesuré.
 
@@ -80,16 +80,16 @@ La démarche : estimer la performance honnêtement via le backtest, comparer plu
 
 ## 🛠️ Stack technique
 
-| Catégorie | Outil | Rôle |
-|---|---|---|
-| Langage | Python 3.11 | Backend |
-| Manipulation | Pandas | DataFrames |
-| Calculs | NumPy | Opérations vectorielles |
-| Machine Learning | XGBoost | Classification 1/N/2 |
-| Utilitaires ML | Scikit-learn | Encodage, pondération des classes |
-| Interface | Streamlit | Application web |
-| Hébergement | Streamlit Cloud | Mise en ligne |
-| Versioning | Git / GitHub | Code source |
+| Catégorie        | Outil           | Rôle                              |
+| ---------------- | --------------- | --------------------------------- |
+| Langage          | Python 3.11     | Backend                           |
+| Manipulation     | Pandas          | DataFrames                        |
+| Calculs          | NumPy           | Opérations vectorielles           |
+| Machine Learning | XGBoost         | Classification 1/N/2              |
+| Utilitaires ML   | Scikit-learn    | Encodage, pondération des classes |
+| Interface        | Streamlit       | Application web                   |
+| Hébergement      | Streamlit Cloud | Mise en ligne                     |
+| Versioning       | Git / GitHub    | Code source                       |
 
 ---
 
