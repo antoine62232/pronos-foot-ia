@@ -56,11 +56,12 @@ pronos_sur = compter_pronos_haute_confiance(df_predictions)
 
 # AFFICHAGE — Header + Stats
 
+# Compteur de visites (service externe gratuit, sans inscription)
+afficher_compteur_visites()
+
 # Header avec titre, sous-titre et ligne dégradée
 afficher_header()
 
-# Compteur de visites (service externe gratuit, sans inscription)
-afficher_compteur_visites()
 
 # 3 cartes de stats côte à côte
 col1, col2, col3 = st.columns(3)

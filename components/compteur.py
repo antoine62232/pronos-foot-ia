@@ -30,10 +30,11 @@ def afficher_compteur_visites():
         return   # service indispo : on n'affiche simplement pas le compteur
 
     total = f"{valeur:,}".replace(",", " ")   # 1234 -> "1 234"
+    total = f"{valeur:,}".replace(",", " ")   # 1234 -> "1 234"
     st.markdown(
-        f'<div style="text-align:center; margin: 0 0 18px;">'
+        f'<div style="text-align: right; margin: 0 0 8px;">'
         f'<span style="display:inline-flex; align-items:center; gap:6px; background:#141B2D;'
-        f' border:1px solid #1E293B; color:#94A3B8; font-size:13px; padding:4px 14px; border-radius:20px;">'
+        f' border:1px solid #1E293B; color:#94A3B8; font-size:13px; padding:5px 14px; border-radius:20px;">'
         f'👀 <strong style="color:#F8FAFC;">{total}</strong> visites</span>'
         f'</div>',
         unsafe_allow_html=True
