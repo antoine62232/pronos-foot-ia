@@ -91,7 +91,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ONGLETS PRINCIPAUX
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Phase de groupes", "Phase Éliminatoire", "Mes pronos", "L'IA explique", "Réalité VS IA"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Phase de groupes", "Phase Éliminatoire", "Mes pronos", "Réalité VS IA","L'IA explique"])
 
 # Onglet 1 : Phase de groupes (matchs regroupes par poule)
 # Onglet 1 : Phase de groupes (avec filtres)
@@ -154,10 +154,10 @@ with tab2:
 with tab3:
     afficher_onglet_mes_pronos(df_predictions)
 
-# Onglet 4 : L'IA explique
+# Onglet 4 : Résultats & Score de l'IA
 with tab4:
-    afficher_onglet_ia_explique(df_predictions)
-
-# Onglet 5 : Résultats & Score de l'IA
-with tab5:
     afficher_onglet_resultats(df_predictions)
+
+# Onglet 5 : L'IA explique
+with tab5:
+    afficher_onglet_ia_explique(df_predictions)
