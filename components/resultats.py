@@ -1,65 +1,48 @@
 # ====================================================================
-# ROLE : Recuperer les resultats reels des matchs via l'API-Football
+# ROLE : Confronter les pronostics de l'IA aux resultats reels,
+#        lus dans data/resultats_reels.csv (rempli par le robot GitHub Actions)
 # ====================================================================
 
-import requests
 import streamlit as st
-import datetime
+import pandas as pd
+from pathlib import Path
+
 from components.dates import _date_fr
 
-
-def _parser_matchs(data):
-    """Extrait uniquement les matchs TERMINES (statut FT) d'une reponse API."""
-    matchs = []
-    for m in data.get("response", []):
-        if m["fixture"]["status"]["short"] != "FT":
-            continue  # on ignore les matchs pas termines (NS = pas commence, live, etc.)
-        matchs.append({
-            "equipe_dom": m["teams"]["home"]["name"],
-            "equipe_ext": m["teams"]["away"]["name"],
-            "score_dom":  m["goals"]["home"],
-            "score_ext":  m["goals"]["away"],
-            "ligue":      m["league"]["name"],
-        })
-    return matchs
+FICHIER_RESULTATS = Path("data/resultats_reels.csv")
 
 
-# @st.cache_data : Streamlit GARDE le resultat en memoire pendant 15 min (ttl=900s)
-# et le PARTAGE entre tous les visiteurs. => meme avec 500 visiteurs, on n'appelle
-# l'API qu'une fois toutes les 15 min. C'est ce qui protege ton quota de 100/jour.
-@st.cache_data(ttl=900)
-def recuperer_matchs_termines(date):
-    """
-    Recupere les matchs termines d'une date donnee (format 'AAAA-MM-JJ').
-    Renvoie une liste de dictionnaires (vide en cas de probleme reseau).
-    """
-    cle = st.secrets["API_FOOTBALL_KEY"]   # lue depuis secrets.toml, jamais en dur
-    url = "https://v3.football.api-sports.io/fixtures"
-
+def _charger_resultats():
+    """Lit les resultats reels et renvoie un index {paire d'equipes -> score}.
+    Tant qu'aucun match n'est joue, le fichier est vide -> on renvoie {}."""
+    if not FICHIER_RESULTATS.exists():
+        return {}
     try:
-        reponse = requests.get(
-            url,
-            headers={"x-apisports-key": cle},
-            params={"date": date},
-            timeout=10,   # on n'attend pas plus de 10s (evite que l'app se fige)
-        )
-        data = reponse.json()
-    except Exception:
-        return []   # souci reseau -> liste vide, l'app continue sans planter
+        df = pd.read_csv(FICHIER_RESULTATS)
+    except pd.errors.EmptyDataError:
+        return {}
 
-    return _parser_matchs(data)
+    index = {}
+    for _, m in df.iterrows():
+        cle = frozenset({m["equipe_domicile"], m["equipe_exterieur"]})
+        index[cle] = {
+            "home": m["equipe_domicile"],
+            "sd": int(m["buts_domicile"]),
+            "se": int(m["buts_exterieur"]),
+        }
+    return index
 
-# Dictionnaire de correspondance : TON nom d'equipe  ->  nom utilise par l'API.
-# A COMPLETER le 11 juin avec les vrais ecarts (ex: "South Korea": "Korea Republic").
+
+# Correspondance : TON nom d'equipe  ->  nom utilise dans le CSV (football-data.org).
+# A completer le 11 juin si un nom differe (ex: "South Korea": "Korea Republic").
 # Si une equipe n'est pas ici, on suppose que les deux noms sont identiques.
 CORRESPONDANCE_NOMS = {
     # "South Korea": "Korea Republic",
-    # "Czech Republic": "Czechia",
 }
 
 
-def _nom_api(equipe):
-    """Renvoie le nom tel que l'API l'ecrit (via le dico), sinon le nom inchange."""
+def _nom_reel(equipe):
+    """Renvoie le nom tel qu'il apparait dans le CSV (via le dico), sinon inchange."""
     return CORRESPONDANCE_NOMS.get(equipe, equipe)
 
 
@@ -76,36 +59,26 @@ def comparer_predictions(df_predictions):
     """
     Compare chaque prediction de poule au resultat reel (si le match est joue).
     Renvoie (lignes, nb_corrects, nb_joues).
-    - lignes : liste de dicts {dom, ext, prono, statut, score, correct}
+    - lignes : liste de dicts {dom, ext, prono, statut, score, correct, date}
     - statut : "joue" ou "attente"
     """
-    aujourd_hui = datetime.date.today().isoformat()
+    index_reel = _charger_resultats()
 
-    # 1) On rassemble les resultats reels des dates deja passees (les futures = 0 appel)
-    index_reel = {}
-    for d in sorted(set(df_predictions["date"].astype(str))):
-        if d > aujourd_hui:
-            continue  # match a venir : rien a recuperer
-        for m in recuperer_matchs_termines(d):
-            cle = frozenset({m["equipe_dom"], m["equipe_ext"]})
-            index_reel[cle] = {"home": m["equipe_dom"], "sd": m["score_dom"], "se": m["score_ext"]}
-
-    # 2) On compare chaque prediction au resultat reel correspondant
     lignes, nb_corrects, nb_joues = [], 0, 0
     for _, p in df_predictions.iterrows():
-        api_dom, api_ext = _nom_api(p["equipe_dom"]), _nom_api(p["equipe_ext"])
-        cle = frozenset({api_dom, api_ext})
+        dom_n, ext_n = _nom_reel(p["equipe_dom"]), _nom_reel(p["equipe_ext"])
+        cle = frozenset({dom_n, ext_n})
 
-        # Match futur OU resultat pas encore trouve -> en attente
-        if str(p["date"]) > aujourd_hui or cle not in index_reel:
+        # Pas (encore) dans le CSV -> match a venir
+        if cle not in index_reel:
             lignes.append({"dom": p["equipe_dom"], "ext": p["equipe_ext"],
                            "prono": p["pronostic"], "statut": "attente",
                            "score": None, "correct": None, "date": p["date"]})
             continue
 
-        # On oriente le score selon TON domicile/exterieur (l'API peut les inverser)
+        # On oriente le score selon TON domicile/exterieur (le CSV peut les inverser)
         r = index_reel[cle]
-        sd, se = (r["sd"], r["se"]) if r["home"] == api_dom else (r["se"], r["sd"])
+        sd, se = (r["sd"], r["se"]) if r["home"] == dom_n else (r["se"], r["sd"])
         correct = (_issue(sd, se) == p["pronostic"])
 
         nb_joues += 1
@@ -184,7 +157,7 @@ def afficher_onglet_resultats(df_predictions):
                 unsafe_allow_html=True
             )
 
-    # --- Les matchs a venir (replies) ---
+    # --- Les matchs a venir ---
     if attente:
         with st.expander(f"⏳ Matchs à venir ({len(attente)})"):
             for l in attente:
