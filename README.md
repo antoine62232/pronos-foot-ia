@@ -2,7 +2,7 @@
 
 > Une IA qui prédit la Coupe du Monde 2026, de la phase de groupes au vainqueur final, à partir d'un classement Elo maison et de la forme récente des équipes.
 
-[![Streamlit App](https://img.shields.io/badge/Demo-Streamlit_Cloud-FF4B4B?logo=streamlit)](https://pronos-foot-ia.streamlit.app/)
+[![Streamlit App](https://img.shields.io/badge/Demo-Streamlit_Cloud-FF4B4B?logo=streamlit)](https://prediktora.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-orange)](https://xgboost.readthedocs.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -21,7 +21,7 @@ Le détail complet (classements des 12 groupes, 32 qualifiés, et l'intégralit�
 
 ## 🚀 Démo en ligne
 
-**[Tester l'application](https://pronos-foot-ia.streamlit.app/)**
+**[Tester l'application](https://prediktora.streamlit.app/)**
 
 ---
 
@@ -29,7 +29,8 @@ Le détail complet (classements des 12 groupes, 32 qualifiés, et l'intégralit�
 
 - **Phase de groupes** : prédiction des 72 matchs, classement des 12 groupes, et identification des 32 qualifiés (24 directs + 8 meilleurs troisièmes).
 - **Phase à élimination directe** : simulation du bracket complet (1/16 jusqu'à la finale), avec un départage automatique en cas de match nul prédit.
-- **Interface** : 4 onglets (les matchs, mes pronos, l'IA explique, phase éliminatoire), un système de pronostics utilisateur pour se comparer à l'IA, et des probabilités affichées pour chaque match.
+- **Réalité VS IA** : pendant le tournoi, chaque pronostic de l'IA est confronté au vrai résultat, avec un taux de réussite mis à jour automatiquement (voir « Résultats en direct »).
+- **Interface** : 5 onglets (les matchs, mes pronos, l'IA explique, phase éliminatoire, Réalité VS IA), un système de pronostics utilisateur pour se comparer à l'IA, et des probabilités affichées pour chaque match.
 
 ---
 
@@ -44,6 +45,20 @@ Il s'appuie sur **11 variables** :
 - **Le contexte** : match sur terrain neutre ou non.
 
 Le classement Elo a remplacé un précédent indicateur de force figé (les points FIFA), ce qui a amélioré les prédictions tout en supprimant tout risque de « fuite de données » au backtest.
+
+---
+
+## 🤖 Résultats en direct
+
+Pendant la compétition, l'application ne se contente pas de prédire : elle se confronte à la réalité. Un **robot GitHub Actions** s'exécute automatiquement toutes les deux heures, interroge l'API **football-data.org** pour récupérer les scores des matchs terminés, et enregistre le tout dans `data/resultats_reels.csv` (committé directement dans le dépôt).
+
+L'application lit ensuite ce fichier — et non l'API en direct. Ce choix d'architecture a trois avantages :
+
+- **Quota préservé** : quel que soit le nombre de visiteurs, ils lisent un fichier ; aucun appel API n'est déclenché côté application.
+- **Indépendant de la mise en veille** : les résultats restent à jour même quand l'application dort, puisque le robot tourne sur les serveurs de GitHub.
+- **Historique versionné** : chaque mise à jour est un commit, ce qui conserve une trace datée des résultats.
+
+L'onglet **Réalité VS IA** affiche alors, en direct, le pourcentage de pronostics corrects de l'IA ainsi que le détail match par match.
 
 ---
 
@@ -80,16 +95,18 @@ La démarche : estimer la performance honnêtement via le backtest, comparer plu
 
 ## 🛠️ Stack technique
 
-| Catégorie        | Outil           | Rôle                              |
-| ---------------- | --------------- | --------------------------------- |
-| Langage          | Python 3.11     | Backend                           |
-| Manipulation     | Pandas          | DataFrames                        |
-| Calculs          | NumPy           | Opérations vectorielles           |
-| Machine Learning | XGBoost         | Classification 1/N/2              |
-| Utilitaires ML   | Scikit-learn    | Encodage, pondération des classes |
-| Interface        | Streamlit       | Application web                   |
-| Hébergement      | Streamlit Cloud | Mise en ligne                     |
-| Versioning       | Git / GitHub    | Code source                       |
+| Catégorie        | Outil             | Rôle                                |
+| ---------------- | ----------------- | ----------------------------------- |
+| Langage          | Python 3.11       | Backend                             |
+| Manipulation     | Pandas            | DataFrames                          |
+| Calculs          | NumPy             | Opérations vectorielles             |
+| Machine Learning | XGBoost           | Classification 1/N/2                |
+| Utilitaires ML   | Scikit-learn      | Encodage, pondération des classes   |
+| Interface        | Streamlit         | Application web                     |
+| Résultats réels  | football-data.org | Récupération des scores du tournoi  |
+| Automatisation   | GitHub Actions    | Mise à jour planifiée des résultats |
+| Hébergement      | Streamlit Cloud   | Mise en ligne                       |
+| Versioning       | Git / GitHub      | Code source                         |
 
 ---
 
@@ -105,7 +122,8 @@ pronos-foot-ia/
 │   ├── predictions_groupes.csv        # Predictions de la phase de groupes
 │   ├── qualifies_1_16.csv             # 32 qualifies
 │   ├── bracket_complet.csv            # Bracket d'elimination directe
-│   └── vainqueur_final.csv            # Champion predit
+│   ├── vainqueur_final.csv            # Champion predit
+│   └── resultats_reels.csv            # Resultats reels du tournoi (rempli par le robot)
 │
 ├── src/                               # Scripts Python
 │   ├── elo.py                         # Classement Elo (calcul + classement courant)
@@ -117,7 +135,12 @@ pronos-foot-ia/
 │   ├── predictions_groupes.py         # Prediction des classements de groupes
 │   └── predictions_phase_eliminatoire.py  # Simulation du bracket
 │
-├── components/                        # Interface Streamlit (modulaire)
+├── components/                        # Interface Streamlit (dont l'onglet "Realite VS IA")
+├── scripts/
+│   └── maj_resultats.py               # Robot : recupere les scores via football-data.org
+├── .github/
+│   └── workflows/
+│       └── maj-resultats.yml          # Planification du robot (GitHub Actions)
 ├── models/                            # Modele entraine (.pkl)
 ├── app.py                             # Point d'entree de l'application
 ├── requirements.txt
@@ -176,6 +199,7 @@ python src/backtest_complet.py
 - Backtest fiable sur 5 822 matchs avec métriques probabilistes et analyse de calibration.
 - Classement Elo maison, adopté en production à la place des points FIFA.
 - Application déployée, prédisant le tournoi complet de bout en bout.
+- Mise à jour automatique des résultats réels pendant le tournoi (robot GitHub Actions + football-data.org) et onglet « Réalité VS IA » de suivi en direct.
 
 ### 🔄 En cours / à venir
 - Enrichir le modèle avec de nouvelles sources de données (cotes des bookmakers, valeur marchande des effectifs).
@@ -201,5 +225,6 @@ MIT. Voir le fichier `LICENSE`.
 ## 🙏 Remerciements
 
 - **football-data.co.uk** et les jeux de données publics de résultats internationaux pour l'historique des matchs.
+- **football-data.org** pour les scores en direct pendant la compétition.
 - **Streamlit Cloud** pour l'hébergement.
 - La communauté Python et Data Science pour les outils open source.
