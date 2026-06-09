@@ -3,7 +3,7 @@ from datetime import date
 from streamlit_extras.metric_cards import style_metric_cards
 
 # Importations de tes composants
-from components.styles      import appliquer_styles, afficher_header
+from components.styles      import appliquer_styles, afficher_header, afficher_description_onglet
 from components.data_loader import charger_tout
 from components.predictions import generer_predictions, compter_pronos_haute_confiance
 from components.match_card  import afficher_carte_match
@@ -14,6 +14,10 @@ from components.intro import afficher_intro
 from components.resultats import afficher_onglet_resultats
 from components.dates import _date_fr
 from components.compteur import afficher_compteur_visites
+
+# Nombre total de matchs de la CdM 2026 (72 en poules + 32 en phase finale).
+# Format officiel FIFA fixe : on l'affiche comme repere pour le visiteur.
+NB_MATCHS_TOURNOI = 104
 
 # Configuration
 st.set_page_config(
@@ -46,7 +50,7 @@ afficher_compteur_visites()
 afficher_header()
 
 col1, col2, col3 = st.columns(3)
-with col1: st.metric("Matchs analysés", len(matchs_futurs))
+with col1: st.metric("Matchs analysés", NB_MATCHS_TOURNOI)
 with col2: st.metric("Pronos haute confiance", pronos_sur)
 with col3: st.metric("Coup d'envoi", f"J - {jours_restants}")
 
@@ -54,7 +58,7 @@ style_metric_cards(background_color="#141B2D", border_left_color="#A78BFA", bord
 
 # Badge horaire discret, aligne a droite sous les cartes
 st.markdown("""
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
         <span style="font-size: 12px; color: #64748B; font-style: italic;
                      padding: 4px 10px; border-radius: 6px;
                      background: rgba(255,255,255,0.03);">
@@ -63,7 +67,18 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
+# Bloc de bienvenue : presente le site en deux phrases avant la navigation
+st.markdown("""
+<div style="background-color: #141B2D; border: 1px solid #1E293B;
+            border-radius: 10px; padding: 16px 20px; margin-bottom: 30px;">
+    <p style="color: #CBD5E1; font-size: 14px; line-height: 1.6; margin: 0;">
+        <span style="color: #F8FAFC; font-weight: 600;">Bienvenue sur Prediktora.</span>
+        Une IA analyse des milliers de matchs internationaux pour prédire la Coupe du Monde 2026,
+        du premier match de poule jusqu'au sacre final. Aucun pari, aucune intuition : juste des données.
+        À toi de voir si tu es d'accord avec la machine.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 # NAVIGATION
 options_onglets = ["Phase de groupes", "Phase Éliminatoire", "Mes pronos VS IA", "Réalité VS IA", "L'IA explique"]
@@ -72,6 +87,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 if onglet_actif == "Phase de groupes":
     st.subheader("Phase de groupes")
+    afficher_description_onglet("Les 72 matchs de poules, avec le pronostic de l'IA et ses probabilités pour chaque rencontre.")
     # Label custom pour remplacer celui, masque, du radio natif
     st.markdown("<p style='color: #94A3B8; margin-bottom: 8px; font-size: 14px;'>Afficher :</p>", unsafe_allow_html=True)
     mode = st.radio("Afficher :", ["Tout", "Par groupe", "Par équipe", "Par date"], horizontal=True, label_visibility="collapsed")

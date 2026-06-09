@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from components.styles import afficher_description_onglet
 
 # FONCTION PRINCIPALE
 
@@ -20,10 +21,7 @@ def afficher_onglet_ia_explique(df_predictions):
     """
 
     st.subheader("Comment l'IA fait ses prédictions")
-    st.markdown(
-        '<p style="color: #94A3B8;">Découvre les coulisses du modèle d\'intelligence artificielle.</p>',
-        unsafe_allow_html=True
-    )
+    afficher_description_onglet("Sur quels critères l'IA s'appuie pour décider, et le poids de chacun.")
 
     _section_performance()
     _section_importance_features()

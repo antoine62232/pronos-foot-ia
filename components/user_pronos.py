@@ -4,6 +4,7 @@ import json
 from streamlit_local_storage import LocalStorage
 from components.match_card import afficher_carte_match, formater_pronostic
 from components.dates import _date_fr
+from components.styles import afficher_description_onglet
 
 
 def afficher_onglet_mes_pronos(df_predictions):
@@ -38,10 +39,7 @@ def afficher_onglet_mes_pronos(df_predictions):
     # HEADER
 
     st.subheader("Défie l'Intelligence Artificielle")
-    st.markdown(
-        '<p style="color: #94A3B8;">Sélectionne un match et compare ton pronostic a celui de la machine. Tes pronos sont mémorises, meme si tu reviens plus tard.</p>',
-        unsafe_allow_html=True
-    )
+    afficher_description_onglet("Fais tes propres pronostics et compare-les à ceux de la machine. Tes choix sont mémorisés, même si tu reviens plus tard.")
 
     st.markdown("<br>", unsafe_allow_html=True)
 

@@ -6,8 +6,8 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-
 from components.dates import _date_fr
+from components.styles import afficher_description_onglet
 
 FICHIER_RESULTATS = Path("data/resultats_reels.csv")
 
@@ -105,11 +105,7 @@ def _texte_prono(prono, dom, ext):
 def afficher_onglet_resultats(df_predictions):
     """Onglet : confronte les pronostics de l'IA aux vrais resultats."""
     st.subheader("Réalité VS IA")
-    st.markdown(
-        '<p style="color: #94A3B8;">Le duel : les pronostics de l\'IA face aux vrais résultats, '
-        'mis à jour automatiquement pendant la compétition.</p>',
-        unsafe_allow_html=True
-    )
+    afficher_description_onglet("Les vrais résultats du tournoi, confrontés aux prédictions de l'IA, mis à jour automatiquement pendant la compétition.")
 
     lignes, nb_corrects, nb_joues = comparer_predictions(df_predictions)
 
