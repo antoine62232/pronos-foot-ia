@@ -112,18 +112,12 @@ def charger_tout():
 
 # FONCTIONS UTILITAIRES SUR LES ÉQUIPES
 
-def get_url_drapeau(equipe):
-    """
-    Retourne l'URL de l'image du drapeau d'une équipe.
-
-    Paramètre :
-        equipe (str) : Le nom de l'équipe (ex: 'France')
-
-    Retour :
-        str : L'URL du drapeau via flagcdn.com (résolution 80px)
-    """
-    code = CODES_ISO.get(equipe, 'un')  # 'un' = drapeau ONU par défaut
-    return f"https://flagcdn.com/w80/{code}.png"
+def get_url_drapeau(equipe, largeur=40):
+    """URL du drapeau d'une equipe. largeur = taille demandee a flagcdn (en px)."""
+    code = CODES_ISO.get(equipe, 'un')
+    # flagcdn ne propose que certaines largeurs : 20, 40, 80, 160, 320...
+    # On demande la plus proche de l'affichage reel pour limiter le poids telecharge.
+    return f"https://flagcdn.com/w{largeur}/{code}.png"
 
 
 def get_rang_fifa(equipe):
