@@ -26,14 +26,15 @@ st.set_page_config(
 appliquer_styles()
 afficher_intro()
 
-# Chargement données
-modele, encoder, matchs_futurs, historique = charger_tout()
-
 @st.cache_data
 def get_predictions_cached(_mode_ia, _enc, _matchs, _hist):
     return generer_predictions(_mode_ia, _enc, _matchs, _hist)
 
-df_predictions = get_predictions_cached(modele, encoder, matchs_futurs, historique)
+# Chargement + predictions. Au tout premier lancement le cache est vide, d'ou
+# le spinner : il rend l'attente explicite plutot que de laisser un blanc.
+with st.spinner("Préparation des prédictions..."):
+    modele, encoder, matchs_futurs, historique = charger_tout()
+    df_predictions = get_predictions_cached(modele, encoder, matchs_futurs, historique)
 
 # Stats
 date_cdm = date(2026, 6, 11)
@@ -44,37 +45,34 @@ pronos_sur = compter_pronos_haute_confiance(df_predictions)
 afficher_compteur_visites()
 afficher_header()
 
-with st.expander("Afficher / Masquer les statistiques", expanded=True):
-    col1, col2, col3 = st.columns(3)
-    with col1: st.metric("Matchs analysés", len(matchs_futurs))
-    with col2: st.metric("Pronos haute confiance", pronos_sur)
-    with col3: st.metric("Coup d'envoi", f"J - {jours_restants}")
+col1, col2, col3 = st.columns(3)
+with col1: st.metric("Matchs analysés", len(matchs_futurs))
+with col2: st.metric("Pronos haute confiance", pronos_sur)
+with col3: st.metric("Coup d'envoi", f"J - {jours_restants}")
 
 style_metric_cards(background_color="#141B2D", border_left_color="#A78BFA", border_color="#1E293B", border_radius_px=10)
 
-# Badge horaire discret et aligné à droite
+# Badge horaire discret, aligne a droite sous les cartes
 st.markdown("""
     <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-        <span style="font-size: 12px; color: #64748B; font-style: italic; 
-                     padding: 4px 10px; border-radius: 6px; 
+        <span style="font-size: 12px; color: #64748B; font-style: italic;
+                     padding: 4px 10px; border-radius: 6px;
                      background: rgba(255,255,255,0.03);">
             🌎 Dates basées sur le fuseau horaire de l'Amérique du Nord (UTC-5)
         </span>
     </div>
 """, unsafe_allow_html=True)
 
-style_metric_cards(background_color="#141B2D", border_left_color="#A78BFA", border_color="#1E293B", border_radius_px=10)
-
 st.markdown("<br>", unsafe_allow_html=True)
 
 # NAVIGATION
 options_onglets = ["Phase de groupes", "Phase Éliminatoire", "Mes pronos VS IA", "Réalité VS IA", "L'IA explique"]
 onglet_actif = st.radio("Navigation", options_onglets, horizontal=True, label_visibility="collapsed", key="nav")
-st.markdown("<br>", unsafe_allow_html=True) # <-- AJOUTÉ
+st.markdown("<br>", unsafe_allow_html=True)
 
 if onglet_actif == "Phase de groupes":
     st.subheader("Phase de groupes")
-    # Remplace le label natif par ton label custom
+    # Label custom pour remplacer celui, masque, du radio natif
     st.markdown("<p style='color: #94A3B8; margin-bottom: 8px; font-size: 14px;'>Afficher :</p>", unsafe_allow_html=True)
     mode = st.radio("Afficher :", ["Tout", "Par groupe", "Par équipe", "Par date"], horizontal=True, label_visibility="collapsed")
 
@@ -103,7 +101,7 @@ if onglet_actif == "Phase de groupes":
             st.info("Aucun match à afficher.")
         for _, match in matchs_a_afficher.iterrows():
             afficher_carte_match(match)
-            
+
 elif onglet_actif == "Phase Éliminatoire":
     afficher_onglet_phase_eliminatoire(modele, encoder)
 elif onglet_actif == "Mes pronos VS IA":

@@ -115,7 +115,9 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
     # ----------------------------------------------------------------
     # SECTION 1 : LES CLASSEMENTS, REPLIES DANS UN VOLET (fermes par defaut)
     # ----------------------------------------------------------------
-    groupes_stats, liste_qualifies = _calculer_classements_groupes()
+    # Le spinner rassure l'utilisateur pendant le 1er calcul (ensuite c'est en cache)
+    with st.spinner("Analyse des classements et du bracket en cours..."):
+        groupes_stats, liste_qualifies = _calculer_classements_groupes()
 
     with st.expander("📊 Voir les classements finaux des groupes", expanded=False):
         if not groupes_stats:
@@ -206,7 +208,7 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
                 _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
 
             if tour == "Finale":
-                flag_champ = get_url_drapeau(champion)
+                flag_champ = get_url_drapeau(champion, largeur=320)
                 st.markdown(
                     f'<div style="text-align: center; margin-top: 30px; padding: 30px; '
                     f'background: linear-gradient(135deg, #1E1B4B, #141B2D); border: 2px solid #FBBF24; border-radius: 16px; box-shadow: 0px 10px 30px rgba(251, 191, 36, 0.15);">'

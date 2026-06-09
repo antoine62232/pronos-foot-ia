@@ -192,27 +192,13 @@ def appliquer_styles():
 
 
 def afficher_header():
-    """Affiche l'en-tete : titre, sous-titre, badge horaire et trait degrade."""
+    """Affiche l'en-tete : titre, sous-titre et trait degrade."""
     police_titre = "Bricolage Grotesque"
-
-    # Style du badge sorti dans une variable pour garder le HTML a plat :
-    # pas de ligne vide ni d'indentation profonde, sinon Streamlit traite le
-    # bloc comme du code et l'affiche en clair (au lieu de l'interpreter).
-    badge_style = (
-        "background-color: rgba(167,139,250,0.08); "
-        "border: 1px solid rgba(167,139,250,0.2); "
-        "padding: 6px 14px; border-radius: 20px; font-size: 13px; color: #CBD5E1; "
-        "display: inline-flex; align-items: center; gap: 8px; "
-        "box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
-    )
 
     st.markdown(
         f"""<div style="text-align: center;">
 <h1 style="font-family: '{police_titre}', sans-serif; font-size: 2.9rem; font-weight: 800; margin-bottom: 0;">⚽ Prediktora : Coupe du Monde 2026</h1>
 <p style="color: #94A3B8; font-size: 15px; margin-top: 4px; margin-bottom: 12px;">Prédictions 100% Data &amp; Machine Learning</p>
-<div style="display: flex; justify-content: center; margin-bottom: 18px;">
-<span style="{badge_style}"><span style="font-size: 15px;">🌎</span> Les dates et horaires affichés sont à l'heure locale (Amérique du Nord)</span>
-</div>
 <div style="width: 90px; height: 3px; margin: 0 auto; border-radius: 2px; background: linear-gradient(90deg, #A78BFA, #22D3EE);"></div>
 </div>""",
         unsafe_allow_html=True,
