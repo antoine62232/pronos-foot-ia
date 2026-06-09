@@ -1,8 +1,8 @@
 import streamlit as st
-import pandas as pd
-from datetime import datetime, date
+from datetime import date
 from streamlit_extras.metric_cards import style_metric_cards
 
+# Importations de tes composants
 from components.styles      import appliquer_styles, afficher_header
 from components.data_loader import charger_tout
 from components.predictions import generer_predictions, compter_pronos_haute_confiance
@@ -15,8 +15,7 @@ from components.resultats import afficher_onglet_resultats
 from components.dates import _date_fr
 from components.compteur import afficher_compteur_visites
 
-# CONFIGURATION DE LA PAGE (toujours en premier)
-
+# Configuration
 st.set_page_config(
     page_title="Prediktora — Coupe du Monde 2026",
     page_icon="⚽",
@@ -24,140 +23,92 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Application du thème Data Sport Pro
 appliquer_styles()
-
 afficher_intro()
 
-# CHARGEMENT DES DONNÉES (cache automatique)
-
-# Une seule ligne pour tout charger grâce à notre fonction raccourci
+# Chargement données
 modele, encoder, matchs_futurs, historique = charger_tout()
 
-# Génération des prédictions pour les 72 matchs
-df_predictions = generer_predictions(modele, encoder, matchs_futurs, historique)
+@st.cache_data
+def get_predictions_cached(_mode_ia, _enc, _matchs, _hist):
+    return generer_predictions(_mode_ia, _enc, _matchs, _hist)
 
-# Nombre total de matchs analyses : poules + elimination directe (le bracket simule)
-try:
-    nb_elimination = len(pd.read_csv("data/bracket_complet.csv"))
-except Exception:
-    nb_elimination = 0   # securite : si le fichier manque, on compte juste les poules
+df_predictions = get_predictions_cached(modele, encoder, matchs_futurs, historique)
 
-nb_matchs_total = len(matchs_futurs) + nb_elimination
-
-# CALCULS POUR LES STATS DE L'ACCUEIL
-
-# Compte à rebours jusqu'à la Coupe du Monde (11 juin 2026)
+# Stats
 date_cdm = date(2026, 6, 11)
 jours_restants = max(0, (date_cdm - date.today()).days)
-
-# Nombre de pronos avec une probabilité supérieure à 50%
 pronos_sur = compter_pronos_haute_confiance(df_predictions)
 
-# AFFICHAGE — Header + Stats
-
-# Compteur de visites (service externe gratuit, sans inscription)
+# Affichage
 afficher_compteur_visites()
-
-# Header avec titre, sous-titre et ligne dégradée
 afficher_header()
 
+with st.expander("Afficher / Masquer les statistiques", expanded=True):
+    col1, col2, col3 = st.columns(3)
+    with col1: st.metric("Matchs analysés", len(matchs_futurs))
+    with col2: st.metric("Pronos haute confiance", pronos_sur)
+    with col3: st.metric("Coup d'envoi", f"J - {jours_restants}")
 
-# 3 cartes de stats côte à côte
-col1, col2, col3 = st.columns(3)
+style_metric_cards(background_color="#141B2D", border_left_color="#A78BFA", border_color="#1E293B", border_radius_px=10)
 
-with col1:
-    st.metric(
-        label="Matchs analysés",
-        value=nb_matchs_total,
-        help="72 matchs de poules + les matchs à élimination directe simulés à partir des qualifiés prédits."
-    )
+# Badge horaire discret et aligné à droite
+st.markdown("""
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+        <span style="font-size: 12px; color: #64748B; font-style: italic; 
+                     padding: 4px 10px; border-radius: 6px; 
+                     background: rgba(255,255,255,0.03);">
+            🌎 Dates basées sur le fuseau horaire de l'Amérique du Nord (UTC-5)
+        </span>
+    </div>
+""", unsafe_allow_html=True)
 
-with col2:
-    st.metric(label="Pronos haute confiance", value=pronos_sur)
-
-with col3:
-    st.metric(label="Coup d'envoi", value=f"J - {jours_restants}")
-
-# Style appliqué automatiquement à toutes les st.metric ci-dessus
-style_metric_cards(
-    background_color="#141B2D",
-    border_left_color="#A78BFA",
-    border_color="#1E293B",
-    border_radius_px=10
-)
+style_metric_cards(background_color="#141B2D", border_left_color="#A78BFA", border_color="#1E293B", border_radius_px=10)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ONGLETS PRINCIPAUX
+# NAVIGATION
+options_onglets = ["Phase de groupes", "Phase Éliminatoire", "Mes pronos VS IA", "Réalité VS IA", "L'IA explique"]
+onglet_actif = st.radio("Navigation", options_onglets, horizontal=True, label_visibility="collapsed", key="nav")
+st.markdown("<br>", unsafe_allow_html=True) # <-- AJOUTÉ
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Phase de groupes", "Phase Éliminatoire", "Mes pronos VS IA", "Réalité VS IA","L'IA explique"])
-
-# Onglet 1 : Phase de groupes (matchs regroupes par poule)
-# Onglet 1 : Phase de groupes (avec filtres)
-with tab1:
+if onglet_actif == "Phase de groupes":
     st.subheader("Phase de groupes")
+    # Remplace le label natif par ton label custom
+    st.markdown("<p style='color: #94A3B8; margin-bottom: 8px; font-size: 14px;'>Afficher :</p>", unsafe_allow_html=True)
+    mode = st.radio("Afficher :", ["Tout", "Par groupe", "Par équipe", "Par date"], horizontal=True, label_visibility="collapsed")
 
-    # --- BARRE DE FILTRES ---
-    # 1er choix : le mode d'affichage
-    mode = st.radio(
-        "Afficher :",
-        ["Tout", "Par groupe", "Par équipe", "Par date"],
-        horizontal=True,
-    )
-
-    # Par defaut on affiche tous les matchs ; on reduit selon le mode choisi.
     matchs_a_afficher = df_predictions
 
-    # 2e choix : un menu deroulant adapte au mode
     if mode == "Par groupe":
         groupe = st.selectbox("Choisis un groupe", sorted(df_predictions["group"].unique()))
         matchs_a_afficher = df_predictions[df_predictions["group"] == groupe]
-
     elif mode == "Par équipe":
-        # Liste de toutes les equipes (a domicile ou a l'exterieur), triee
         equipes = sorted(set(df_predictions["equipe_dom"]) | set(df_predictions["equipe_ext"]))
         equipe = st.selectbox("Choisis une équipe", equipes)
-        matchs_a_afficher = df_predictions[
-            (df_predictions["equipe_dom"] == equipe) | (df_predictions["equipe_ext"] == equipe)
-        ]
-
+        matchs_a_afficher = df_predictions[(df_predictions["equipe_dom"] == equipe) | (df_predictions["equipe_ext"] == equipe)]
     elif mode == "Par date":
-        date = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()), format_func=_date_fr)
-        matchs_a_afficher = df_predictions[df_predictions["date"] == date]
+        date_selectionnee = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()), format_func=_date_fr)
+        matchs_a_afficher = df_predictions[df_predictions["date"] == date_selectionnee]
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # --- AFFICHAGE ---
     if mode == "Tout":
-        # On garde le regroupement par poule (avec les en-tetes "Groupe X")
         for lettre in sorted(matchs_a_afficher["group"].unique()):
-            st.markdown(
-                f'<h3 style="color: #F8FAFC; border-left: 4px solid #A78BFA;'
-                f' padding-left: 12px; margin: 28px 0 12px 0;">Groupe {lettre}</h3>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<h3 style="color: #F8FAFC; border-left: 4px solid #A78BFA; padding-left: 12px; margin: 28px 0 12px 0;">Groupe {lettre}</h3>', unsafe_allow_html=True)
             for _, match in matchs_a_afficher[matchs_a_afficher["group"] == lettre].iterrows():
                 afficher_carte_match(match)
     else:
-        # Dans les autres modes, on affiche simplement la liste filtree
         if len(matchs_a_afficher) == 0:
-            st.info("Aucun match à afficher pour ce filtre.")
+            st.info("Aucun match à afficher.")
         for _, match in matchs_a_afficher.iterrows():
             afficher_carte_match(match)
             
-# Onglet 2 : Phase Éliminatoire
-with tab2:
+elif onglet_actif == "Phase Éliminatoire":
     afficher_onglet_phase_eliminatoire(modele, encoder)
-
-# Onglet 3 : Mes pronos
-with tab3:
+elif onglet_actif == "Mes pronos VS IA":
     afficher_onglet_mes_pronos(df_predictions)
-
-# Onglet 4 : Résultats & Score de l'IA
-with tab4:
+elif onglet_actif == "Réalité VS IA":
     afficher_onglet_resultats(df_predictions)
-
-# Onglet 5 : L'IA explique
-with tab5:
+elif onglet_actif == "L'IA explique":
     afficher_onglet_ia_explique(df_predictions)
