@@ -5,6 +5,7 @@
 import streamlit as st
 import pandas as pd
 from components.data_loader import get_url_drapeau
+from components.styles import afficher_description_onglet
 
 def _calculer_classements_groupes():
     """
@@ -107,10 +108,7 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
     Affiche les classements de groupes (repliables) puis le bracket.
     """
     st.subheader("🏆 Tableau de Bord de la Phase Finale")
-    st.markdown(
-        '<p style="color: #94A3B8;">Découvrez le parcours prédictif de l\'IA, des poules à la finale.</p>',
-        unsafe_allow_html=True
-    )
+    afficher_description_onglet("Le parcours prédit par l'IA, des 16es de finale à la grande finale, et son champion du monde.")
 
     # ----------------------------------------------------------------
     # SECTION 1 : LES CLASSEMENTS, REPLIES DANS UN VOLET (fermes par defaut)

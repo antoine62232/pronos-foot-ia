@@ -205,3 +205,10 @@ def afficher_header():
     )
 
     st.markdown("<br>", unsafe_allow_html=True)
+
+def afficher_description_onglet(texte):
+    """Affiche une courte description grise sous le titre d'un onglet."""
+    st.markdown(
+        f'<p style="color: #94A3B8; font-size: 14px; margin: -8px 0 20px 0;">{texte}</p>',
+        unsafe_allow_html=True
+    )
