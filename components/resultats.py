@@ -37,7 +37,7 @@ def _charger_resultats():
 # A completer le 11 juin si un nom differe (ex: "South Korea": "Korea Republic").
 # Si une equipe n'est pas ici, on suppose que les deux noms sont identiques.
 CORRESPONDANCE_NOMS = {
-    # "South Korea": "Korea Republic",
+    "Czech Republic": "Czechia",   # mon prono dit "Czech Republic", la source CSV dit "Czechia"
 }
 
 
