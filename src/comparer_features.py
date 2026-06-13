@@ -11,6 +11,19 @@ from backtest import POINTS_FIFA
 
 DATE_CUTOFF = "2018-01-01"
 
+# Test : la valeur marchande n'ameliore pas le RPS par-dessus l'Elo (info redondante).
+# Mesure sur 2741 matchs de phases finales : RPS 0.197 inchange. Hypothese rejetee
+MARKET_VALUE = {
+    "England": 1345, "France": 1195, "Brazil": 1135, "Portugal": 1000,
+    "Spain": 861, "Argentina": 821, "Germany": 775, "Netherlands": 672,
+    "Belgium": 549, "Uruguay": 424, "Denmark": 347, "Croatia": 326,
+    "Morocco": 318, "Serbia": 292, "Japan": 285, "Switzerland": 282,
+    "United States": 270, "Poland": 254, "Ghana": 242, "Ecuador": 236,
+    "Senegal": 212, "Canada": 185, "South Korea": 184, "Cameroon": 176,
+    "Wales": 175, "Mexico": 165, "Tunisia": 54, "Iran": 51,
+    "Australia": 41, "Saudi Arabia": 15, "Qatar": 14, "Costa Rica": 12,
+}
+
 
 def determiner_resultat(ligne):
     if ligne["home_score"] > ligne["away_score"]:
@@ -56,6 +69,9 @@ for n in (5, 10):
 
 df["points_fifa_domicile"] = df["home_team"].map(POINTS_FIFA).fillna(1200)
 df["points_fifa_exterieur"] = df["away_team"].map(POINTS_FIFA).fillna(1200)
+# Valeur marchande dom/ext. Defaut bas (20 M€) pour les equipes hors dico.
+df["valeur_domicile"] = df["home_team"].map(MARKET_VALUE).fillna(20)
+df["valeur_exterieur"] = df["away_team"].map(MARKET_VALUE).fillna(20)
 df["match_neutre"] = df["neutral"].astype(int)
 df["resultat"] = df.apply(determiner_resultat, axis=1)
 df = df.fillna(0)
@@ -72,12 +88,12 @@ forme = [
 fifa = ["points_fifa_domicile", "points_fifa_exterieur"]
 elo = ["elo_domicile", "elo_exterieur"]
 
-configs = {
-    "Forme + FIFA (V2 actuel)": forme + fifa + ["match_neutre"],
-    "Forme + Elo": forme + elo + ["match_neutre"],
-    "Forme + FIFA + Elo": forme + fifa + elo + ["match_neutre"],
-}
+valeur = ["valeur_domicile", "valeur_exterieur"]
 
+configs = {
+    "Forme + Elo (prod actuel)": forme + elo + ["match_neutre"],
+    "Forme + Elo + Valeur":       forme + elo + valeur + ["match_neutre"],
+}
 # ============================================================
 # 3. Separation temporelle + comparaison
 # ============================================================
