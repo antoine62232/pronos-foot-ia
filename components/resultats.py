@@ -38,6 +38,7 @@ def _charger_resultats():
 # Si une equipe n'est pas ici, on suppose que les deux noms sont identiques.
 CORRESPONDANCE_NOMS = {
     "Czech Republic": "Czechia",   # mon prono dit "Czech Republic", la source CSV dit "Czechia"
+    "Bosnia and Herzegovina": "Bosnia-Herzegovina",
 }
 
 
