@@ -5,7 +5,7 @@ from streamlit_extras.metric_cards import style_metric_cards
 # Importations de tes composants
 from components.styles      import appliquer_styles, afficher_header, afficher_description_onglet
 from components.data_loader import charger_tout
-from components.predictions import generer_predictions, compter_pronos_haute_confiance
+from components.predictions import generer_predictions, compter_pronos_haute_confiance, charger_predictions_groupes_live
 from components.match_card  import afficher_carte_match
 from components.user_pronos import afficher_onglet_mes_pronos
 from components.ia_explain  import afficher_onglet_ia_explique
@@ -89,22 +89,34 @@ st.markdown("<br>", unsafe_allow_html=True)
 if onglet_actif == "Phase de groupes":
     st.subheader("Phase de groupes")
     afficher_description_onglet("Les 72 matchs de poules, avec le pronostic de l'IA et ses probabilités pour chaque rencontre.")
+    # Interrupteur gele / live : ne concerne que cet onglet.
+    # "Avant le tournoi" = prediction figee ; "Mise a jour live" = recalculee avec les vrais resultats.
+    vue = st.radio("Vue des prédictions", ["Avant le tournoi", "Mise à jour live"],
+                   horizontal=True, key="vue_groupes")
+    if vue == "Mise à jour live":
+        df_groupes = charger_predictions_groupes_live()
+        if df_groupes is None:
+            st.warning("Prédiction live pas encore disponible — affichage d'avant-tournoi.")
+            df_groupes = df_predictions
+    else:
+        df_groupes = df_predictions
+
     # Label custom pour remplacer celui, masque, du radio natif
     st.markdown("<p style='color: #94A3B8; margin-bottom: 8px; font-size: 14px;'>Afficher :</p>", unsafe_allow_html=True)
     mode = st.radio("Afficher :", ["Tout", "Par groupe", "Par équipe", "Par date"], horizontal=True, label_visibility="collapsed")
 
-    matchs_a_afficher = df_predictions
+    matchs_a_afficher = df_groupes
 
     if mode == "Par groupe":
-        groupe = st.selectbox("Choisis un groupe", sorted(df_predictions["group"].unique()))
-        matchs_a_afficher = df_predictions[df_predictions["group"] == groupe]
+        groupe = st.selectbox("Choisis un groupe", sorted(df_groupes["group"].unique()))
+        matchs_a_afficher = df_groupes[df_groupes["group"] == groupe]
     elif mode == "Par équipe":
-        equipes = sorted(set(df_predictions["equipe_dom"]) | set(df_predictions["equipe_ext"]))
+        equipes = sorted(set(df_groupes["equipe_dom"]) | set(df_groupes["equipe_ext"]))
         equipe = st.selectbox("Choisis une équipe", equipes)
-        matchs_a_afficher = df_predictions[(df_predictions["equipe_dom"] == equipe) | (df_predictions["equipe_ext"] == equipe)]
+        matchs_a_afficher = df_groupes[(df_groupes["equipe_dom"] == equipe) | (df_groupes["equipe_ext"] == equipe)]
     elif mode == "Par date":
-        date_selectionnee = st.selectbox("Choisis une date", sorted(df_predictions["date"].unique()), format_func=_date_fr)
-        matchs_a_afficher = df_predictions[df_predictions["date"] == date_selectionnee]
+        date_selectionnee = st.selectbox("Choisis une date", sorted(df_groupes["date"].unique()), format_func=_date_fr)
+        matchs_a_afficher = df_groupes[df_groupes["date"] == date_selectionnee]
 
     st.markdown("<br>", unsafe_allow_html=True)
 
