@@ -151,9 +151,10 @@ def simuler_match_couperet(eq1, eq2, elos, historique):
     return eq2, p2 / (p1 + p2) * 100
 
 
-def simuler_bracket(elos, historique):
-    """Re-simule tout le tableau et renvoie (bracket, champion, troisieme)."""
-    premiers, deuxiemes, troisiemes = qualifies(predire_groupes(elos, historique))
+def simuler_bracket(premiers, deuxiemes, troisiemes, elos, historique):
+    """Re-simule tout le tableau a partir des qualifies fournis et renvoie
+    (bracket, champion, troisieme). Les matchs couperets restent predits par le
+    modele (ils ne sont pas encore joues)."""
     t = list(troisiemes)
     matchs = [
         (deuxiemes["A"], deuxiemes["B"]), (premiers["C"], deuxiemes["F"]),
@@ -215,6 +216,30 @@ def resultats_reels_format_nous():
     return pd.DataFrame(lignes)
 
 
+def appliquer_resultats_reels(pred, wc):
+    """Pour les matchs DEJA joues, on remplace la prediction par le vrai resultat
+    (certitude 100%). Les matchs a venir gardent la prediction du modele. Sans ca,
+    le classement live pourrait contredire un resultat connu (ex: 'Espagne bat
+    Cap-Vert' alors qu'ils ont fait nul)."""
+    reel = {frozenset({m["home_team"], m["away_team"]}): m for _, m in wc.iterrows()}
+    pred = pred.copy()
+    for i, p in pred.iterrows():
+        m = reel.get(frozenset({p["home_team"], p["away_team"]}))
+        if m is None:
+            continue
+        # On oriente le score reel selon le domicile/exterieur de notre fixture.
+        if m["home_team"] == p["home_team"]:
+            sd, se = m["home_score"], m["away_score"]
+        else:
+            sd, se = m["away_score"], m["home_score"]
+        iss = "1" if sd > se else ("N" if sd == se else "2")
+        pred.at[i, "pronostic"] = iss
+        pred.at[i, "proba_1"] = 1.0 if iss == "1" else 0.0
+        pred.at[i, "proba_N"] = 1.0 if iss == "N" else 0.0
+        pred.at[i, "proba_2"] = 1.0 if iss == "2" else 0.0
+    return pred
+
+
 def main():
     # Etat gele d'avant-tournoi
     historique = pd.read_csv("data/matchs_entrainement.csv")
@@ -237,9 +262,11 @@ def main():
     wc["date"] = pd.to_datetime(wc["date"])
     historique_live = pd.concat([historique, wc], ignore_index=True).sort_values("date")
 
-    # Predictions live
+    # Predictions live, puis on FIGE les matchs deja joues sur leur vrai resultat.
     pred_live = predire_groupes(elos_live, historique_live)
-    bracket_live, champion, troisieme = simuler_bracket(elos_live, historique_live)
+    pred_live = appliquer_resultats_reels(pred_live, wc)
+    premiers, deuxiemes, troisiemes = qualifies(pred_live)
+    bracket_live, champion, troisieme = simuler_bracket(premiers, deuxiemes, troisiemes, elos_live, historique_live)
 
     # Sauvegarde dans des fichiers SEPARES (on ne touche pas aux fichiers geles)
     pred_live.to_csv("data/predictions_groupes_live.csv", index=False)
