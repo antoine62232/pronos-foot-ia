@@ -14,6 +14,7 @@ from components.intro import afficher_intro
 from components.resultats import afficher_onglet_resultats
 from components.dates import _date_fr
 from components.compteur import afficher_compteur_visites
+from components.prediction_live import afficher_encart_champion_live
 
 # Nombre total de matchs de la CdM 2026 (72 en poules + 32 en phase finale).
 # Format officiel FIFA fixe : on l'affiche comme repere pour le visiteur.
@@ -119,6 +120,7 @@ if onglet_actif == "Phase de groupes":
             afficher_carte_match(match)
 
 elif onglet_actif == "Phase Éliminatoire":
+    afficher_encart_champion_live()
     afficher_onglet_phase_eliminatoire(modele, encoder)
 elif onglet_actif == "Mes pronos VS IA":
     afficher_onglet_mes_pronos(df_predictions)
