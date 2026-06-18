@@ -39,6 +39,8 @@ def _charger_resultats():
 CORRESPONDANCE_NOMS = {
     "Czech Republic": "Czechia",   # mon prono dit "Czech Republic", la source CSV dit "Czechia"
     "Bosnia and Herzegovina": "Bosnia-Herzegovina",
+    "Cape Verde": "Cape Verde Islands",
+    "DR Congo": "Congo DR",
 }
 
 
