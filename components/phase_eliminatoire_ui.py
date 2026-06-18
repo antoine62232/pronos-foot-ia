@@ -4,17 +4,19 @@
 
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 from components.data_loader import get_url_drapeau
 from components.styles import afficher_description_onglet
 
-def _calculer_classements_groupes():
+def _calculer_classements_groupes(fichier_preds="data/predictions_groupes.csv",
+                                  fichier_qualifies="data/qualifies_1_16.csv"):
     """
     Lit les prédictions des 72 matchs et calcule le classement
     exact (Points, Victoires, Nuls, Défaites) pour chaque groupe.
     """
     try:
-        df_preds = pd.read_csv("data/predictions_groupes.csv")
-        df_qualifies = pd.read_csv("data/qualifies_1_16.csv")
+        df_preds = pd.read_csv(fichier_preds)
+        df_qualifies = pd.read_csv(fichier_qualifies)
         liste_qualifies = df_qualifies['equipe'].tolist()
     except:
         return None, None
@@ -103,19 +105,42 @@ def _afficher_classements(groupes_stats, liste_qualifies):
 
 
 # --- FONCTION D'AFFICHAGE PRINCIPALE ---
-def afficher_onglet_phase_eliminatoire(modele, encoder):
+def afficher_onglet_phase_eliminatoire(modele, encoder, live=False):
     """
     Affiche les classements de groupes (repliables) puis le bracket.
+
+    live=True -> on lit les fichiers *_live.csv (recalcules avec les resultats
+    reels). Si une version live est demandee mais qu'un fichier manque encore,
+    on retombe proprement sur les fichiers geles d'avant-tournoi.
     """
     st.subheader("🏆 Tableau de Bord de la Phase Finale")
     afficher_description_onglet("Le parcours prédit par l'IA, des 16es de finale à la grande finale, et son champion du monde.")
+
+    # Jeu de fichiers a lire : gele par defaut, live si demande ET disponible.
+    fichiers = {
+        "preds": "data/predictions_groupes.csv",
+        "qualifies": "data/qualifies_1_16.csv",
+        "bracket": "data/bracket_complet.csv",
+        "vainqueur": "data/vainqueur_final.csv",
+    }
+    if live:
+        live_fichiers = {
+            "preds": "data/predictions_groupes_live.csv",
+            "qualifies": "data/qualifies_1_16_live.csv",
+            "bracket": "data/bracket_complet_live.csv",
+            "vainqueur": "data/vainqueur_final_live.csv",
+        }
+        if all(Path(f).exists() for f in live_fichiers.values()):
+            fichiers = live_fichiers
+        else:
+            st.warning("Prédiction live pas encore disponible — affichage d'avant-tournoi.")
 
     # ----------------------------------------------------------------
     # SECTION 1 : LES CLASSEMENTS, REPLIES DANS UN VOLET (fermes par defaut)
     # ----------------------------------------------------------------
     # Le spinner rassure l'utilisateur pendant le 1er calcul (ensuite c'est en cache)
     with st.spinner("Analyse des classements et du bracket en cours..."):
-        groupes_stats, liste_qualifies = _calculer_classements_groupes()
+        groupes_stats, liste_qualifies = _calculer_classements_groupes(fichiers["preds"], fichiers["qualifies"])
 
     with st.expander("📊 Voir les classements finaux des groupes", expanded=False):
         if not groupes_stats:
@@ -132,8 +157,8 @@ def afficher_onglet_phase_eliminatoire(modele, encoder):
 
     # On LIT le bracket calcule par predictions_phase_eliminatoire.py (source unique de verite).
     try:
-        bracket = pd.read_csv("data/bracket_complet.csv")
-        champion = pd.read_csv("data/vainqueur_final.csv")["equipe"].iloc[0]
+        bracket = pd.read_csv(fichiers["bracket"])
+        champion = pd.read_csv(fichiers["vainqueur"])["equipe"].iloc[0]
     except:
         st.error("Veuillez d'abord executer le script du bracket dans votre terminal.")
         return
