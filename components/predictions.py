@@ -102,3 +102,27 @@ def generer_predictions(_modele, _encoder, matchs_a_predire, historique):
 def compter_pronos_haute_confiance(df_predictions, seuil=50):
     proba_max = df_predictions[["proba_1", "proba_N", "proba_2"]].max(axis=1)
     return int((proba_max >= seuil).sum())
+
+@st.cache_data
+def charger_predictions_groupes_live(fichier="data/predictions_groupes_live.csv"):
+    """Charge les predictions live (ecrites par diff_live.py) au format d'affichage.
+
+    Le fichier live utilise les colonnes du pipeline (home_team, probas en 0-1) ;
+    on les renomme et on passe les probas en pourcentage, comme generer_predictions.
+    Renvoie None si le fichier n'existe pas encore (robot pas encore passe) : l'appelant
+    retombe alors sur la prediction d'avant-tournoi.
+    """
+    from pathlib import Path
+    if not Path(fichier).exists():
+        return None
+    df = pd.read_csv(fichier)
+    return pd.DataFrame({
+        "date": df["date"],
+        "equipe_dom": df["home_team"],
+        "equipe_ext": df["away_team"],
+        "group": df["group"],
+        "pronostic": df["pronostic"],
+        "proba_1": df["proba_1"] * 100,
+        "proba_N": df["proba_N"] * 100,
+        "proba_2": df["proba_2"] * 100,
+    })
