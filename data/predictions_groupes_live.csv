@@ -1,6 +1,6 @@
 date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,group,pronostic,proba_1,proba_N,proba_2
-2026-06-11,Mexico,South Africa,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.7093396,0.24481489,0.045845464
-2026-06-11,South Korea,Czech Republic,,,FIFA World Cup,Zapopan,Mexico,True,A,1,0.48276645,0.31894276,0.19829078
+2026-06-11,Mexico,South Africa,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.65061027,0.29137713,0.05801257
+2026-06-11,South Korea,Czech Republic,,,FIFA World Cup,Zapopan,Mexico,True,A,1,0.40076607,0.3695068,0.22972709
 2026-06-12,Canada,Bosnia and Herzegovina,,,FIFA World Cup,Toronto,Canada,False,B,1,0.57221335,0.35665786,0.07112875
 2026-06-12,United States,Paraguay,,,FIFA World Cup,Inglewood,United States,False,D,2,0.28708968,0.34187508,0.37103525
 2026-06-13,Qatar,Switzerland,,,FIFA World Cup,Santa Clara,United States,True,B,2,0.06242839,0.26318178,0.6743898
@@ -23,7 +23,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-17,Uzbekistan,Colombia,,,FIFA World Cup,Mexico City,Mexico,True,K,2,0.12530783,0.38348833,0.4912038
 2026-06-17,England,Croatia,,,FIFA World Cup,Arlington,United States,True,L,2,0.26834795,0.30583864,0.42581338
 2026-06-17,Ghana,Panama,,,FIFA World Cup,Toronto,Canada,True,L,2,0.16069137,0.39494106,0.44436756
-2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,A,N,0.32607776,0.3945012,0.27942103
+2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,A,N,0.31000498,0.3976942,0.29230088
 2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,A,N,0.36715144,0.45217112,0.18067744
 2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,B,1,0.47587767,0.38496876,0.13915356
 2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,0.7183527,0.24883454,0.032812763
@@ -47,7 +47,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-23,Colombia,DR Congo,,,FIFA World Cup,Zapopan,Mexico,True,K,1,0.49138275,0.37005094,0.13856632
 2026-06-23,England,Ghana,,,FIFA World Cup,Foxborough,United States,True,L,1,0.64327574,0.2063844,0.15033986
 2026-06-23,Panama,Croatia,,,FIFA World Cup,Toronto,Canada,True,L,2,0.08443398,0.24995036,0.6656157
-2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.61749345,0.298112,0.0843945
+2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.5822776,0.32555798,0.09216437
 2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,A,2,0.10259364,0.3023506,0.5950558
 2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.33706984,0.3774417,0.28548843
 2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,N,0.33830807,0.39617053,0.26552144
