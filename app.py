@@ -15,6 +15,7 @@ from components.resultats import afficher_onglet_resultats
 from components.dates import _date_fr
 from components.compteur import afficher_compteur_visites
 from components.prediction_live import afficher_encart_champion_live
+from components.nouveaute import afficher_banniere_nouveaute
 
 # Nombre total de matchs de la CdM 2026 (72 en poules + 32 en phase finale).
 # Format officiel FIFA fixe : on l'affiche comme repere pour le visiteur.
@@ -80,6 +81,8 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
+
+afficher_banniere_nouveaute()
 
 # NAVIGATION
 options_onglets = ["Phase de groupes", "Phase Éliminatoire", "Mes pronos VS IA", "Réalité VS IA", "L'IA explique"]
