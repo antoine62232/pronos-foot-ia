@@ -122,6 +122,25 @@ def qualifies(df_predictions):
     return premiers, deuxiemes, troisiemes.head(8)["equipe"].tolist()
 
 
+def qualifies_df(df_predictions):
+    """Construit le tableau des qualifies au format de qualifies_1_16.csv
+    (colonnes qualification, equipe, groupe, mode), pour la version live."""
+    classements = {l: classement_groupe(df_predictions[df_predictions["group"] == l], eqs)
+                   for l, eqs in GROUPES.items()}
+    troisiemes = pd.DataFrame([
+        {"groupe": l, "equipe": d.iloc[2]["equipe"], "points": d.iloc[2]["points"], "force": d.iloc[2]["force_predite"]}
+        for l, d in classements.items()
+    ]).sort_values(["points", "force"], ascending=[False, False]).reset_index(drop=True)
+    lignes = []
+    for l, d in classements.items():
+        lignes.append({"qualification": f"1er Groupe {l}", "equipe": d.iloc[0]["equipe"], "groupe": l, "mode": "direct"})
+        lignes.append({"qualification": f"2eme Groupe {l}", "equipe": d.iloc[1]["equipe"], "groupe": l, "mode": "direct"})
+    for _, r in troisiemes.head(8).iterrows():
+        lignes.append({"qualification": f"3eme Groupe {r['groupe']} (repechage)",
+                       "equipe": r["equipe"], "groupe": r["groupe"], "mode": "repechage"})
+    return pd.DataFrame(lignes)
+
+
 def simuler_match_couperet(eq1, eq2, elos, historique):
     """Match a elimination directe (terrain neutre) : force un vainqueur, pas de nul."""
     X = pd.DataFrame([_features_match(eq1, eq2, elos, historique, 1)], columns=FEATURES)
@@ -224,12 +243,13 @@ def main():
 
     # Sauvegarde dans des fichiers SEPARES (on ne touche pas aux fichiers geles)
     pred_live.to_csv("data/predictions_groupes_live.csv", index=False)
+    qualifies_df(pred_live).to_csv("data/qualifies_1_16_live.csv", index=False)
     bracket_live.to_csv("data/bracket_complet_live.csv", index=False)
     pd.DataFrame([{"role": "Champion", "equipe": champion},
                   {"role": "3e place", "equipe": troisieme}]).to_csv("data/vainqueur_final_live.csv", index=False)
 
     print(f"CHAMPION LIVE : {champion} (3e : {troisieme})")
-    print("Ecrits : predictions_groupes_live.csv, bracket_complet_live.csv, vainqueur_final_live.csv")
+    print("Ecrits : predictions_groupes_live.csv, qualifies_1_16_live.csv, bracket_complet_live.csv, vainqueur_final_live.csv")
 
 
 if __name__ == "__main__":

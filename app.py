@@ -133,7 +133,9 @@ if onglet_actif == "Phase de groupes":
 
 elif onglet_actif == "Phase Éliminatoire":
     afficher_encart_champion_live()
-    afficher_onglet_phase_eliminatoire(modele, encoder)
+    vue_e = st.radio("Vue des prédictions", ["Avant le tournoi", "Mise à jour live"],
+                     horizontal=True, key="vue_elim")
+    afficher_onglet_phase_eliminatoire(modele, encoder, live=(vue_e == "Mise à jour live"))
 elif onglet_actif == "Mes pronos VS IA":
     afficher_onglet_mes_pronos(df_predictions)
 elif onglet_actif == "Réalité VS IA":
