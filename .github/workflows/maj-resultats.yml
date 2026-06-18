@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: "0 */2 * * *"
 
-# necessaire pour que le job puisse committer le CSV dans le repo
+# necessaire pour que le job puisse committer les CSV dans le repo
 permissions:
   contents: write
 
@@ -20,21 +20,26 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install requests pandas
+      # maj_resultats a besoin de requests ; diff_live charge le modele (xgboost/sklearn).
+      # On epingle les memes versions que requirements.txt pour charger le .pkl sans souci.
+      - run: pip install requests "pandas==3.0.3" "numpy==2.4.4" "scikit-learn==1.8.0" "xgboost==3.2.0" "joblib==1.5.3"
 
-      - name: Lancer le robot
+      - name: Recuperer les resultats reels
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: python scripts/maj_resultats.py
 
-      - name: Commit si le fichier a change
+      - name: Recalculer la prediction live
+        run: python scripts/diff_live.py
+
+      - name: Commit si quelque chose a change
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/resultats_reels.csv
+          git add data/resultats_reels.csv data/predictions_groupes_live.csv data/bracket_complet_live.csv data/vainqueur_final_live.csv
           if git diff --staged --quiet; then
-            echo "Aucun nouveau resultat, rien a committer."
+            echo "Aucun changement, rien a committer."
           else
-            git commit -m "Maj resultats reels (auto)"
+            git commit -m "Maj resultats + prediction live (auto)"
             git push
           fi
