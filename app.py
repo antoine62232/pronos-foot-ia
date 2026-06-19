@@ -30,6 +30,25 @@ st.set_page_config(
 )
 
 appliquer_styles()
+
+# Barre "Vue des prédictions" collante : reste visible en haut au scroll,
+# pour basculer gelé/live sans devoir remonter. (sticky, pas fixed : reste dans le flux)
+st.markdown("""
+<style>
+.st-key-vue_groupes, .st-key-vue_elim {
+    position: -webkit-sticky;
+    position: sticky !important;
+    top: 0;
+    z-index: 100;
+    width: 100% !important;
+    background-color: #0A0E1A;
+    padding: 10px 0 8px 0;
+    border-bottom: 1px solid #1E293B;
+    margin-bottom: 8px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 afficher_intro()
 
 @st.cache_data
