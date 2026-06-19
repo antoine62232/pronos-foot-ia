@@ -26,7 +26,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,A,N,0.0,1.0,0.0
 2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,A,N,0.36715144,0.45217112,0.18067744
 2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,B,1,1.0,0.0,0.0
-2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,0.7183527,0.24883454,0.032812763
+2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,1.0,0.0,0.0
 2026-06-19,Scotland,Morocco,,,FIFA World Cup,Foxborough,United States,True,C,2,0.065184355,0.26541117,0.66940445
 2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,0.46686634,0.30027124,0.23286238
 2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,D,2,0.26299948,0.34072855,0.39627194
@@ -49,8 +49,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-23,Panama,Croatia,,,FIFA World Cup,Toronto,Canada,True,L,2,0.08443398,0.24995036,0.6656157
 2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.5822776,0.32555798,0.09216437
 2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,A,2,0.10259364,0.3023506,0.5950558
-2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.31121397,0.40317672,0.28560928
-2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,N,0.33389434,0.39100188,0.27510378
+2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.31253612,0.4214237,0.2660402
+2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,N,0.34391984,0.3824133,0.2736669
 2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.05511488,0.23188359,0.71300155
 2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.37489465,0.4049496,0.22015572
 2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.23917753,0.3205855,0.44023702
