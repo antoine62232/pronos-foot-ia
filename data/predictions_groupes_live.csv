@@ -31,7 +31,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,1.0,0.0,0.0
 2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,D,1,1.0,0.0,0.0
 2026-06-19,Turkey,Paraguay,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.0,0.0,1.0
-2026-06-20,Germany,Ivory Coast,,,FIFA World Cup,Toronto,Canada,True,E,N,0.30307302,0.46560076,0.23132625
+2026-06-20,Germany,Ivory Coast,,,FIFA World Cup,Toronto,Canada,True,E,1,1.0,0.0,0.0
 2026-06-20,Ecuador,Curaçao,,,FIFA World Cup,Kansas City,United States,True,E,1,0.7022119,0.24944563,0.04834249
 2026-06-20,Netherlands,Sweden,,,FIFA World Cup,Houston,United States,True,F,1,1.0,0.0,0.0
 2026-06-20,Tunisia,Japan,,,FIFA World Cup,Guadalupe,Mexico,True,F,2,0.10127033,0.24381064,0.654919
@@ -55,8 +55,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.3494246,0.47557065,0.17500472
 2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.2470126,0.3104953,0.44249207
 2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.21644671,0.3894592,0.39409408
-2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.07675833,0.27040392,0.65283775
-2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,N,0.1849952,0.5447052,0.2702996
+2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.09982424,0.24513912,0.6550367
+2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,N,0.17629382,0.5190846,0.30462164
 2026-06-25,Japan,Sweden,,,FIFA World Cup,Arlington,United States,True,F,1,0.5056051,0.20469132,0.2897036
 2026-06-25,Tunisia,Netherlands,,,FIFA World Cup,Kansas City,United States,True,F,2,0.11509373,0.31868237,0.5662239
 2026-06-26,Egypt,Iran,,,FIFA World Cup,Seattle,United States,True,G,2,0.17718783,0.35426155,0.46855062
