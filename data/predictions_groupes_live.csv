@@ -28,9 +28,9 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,B,1,1.0,0.0,0.0
 2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,B,1,1.0,0.0,0.0
 2026-06-19,Scotland,Morocco,,,FIFA World Cup,Foxborough,United States,True,C,2,0.0,0.0,1.0
-2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,0.46686634,0.30027124,0.23286238
+2026-06-19,Brazil,Haiti,,,FIFA World Cup,Philadelphia,United States,True,C,1,1.0,0.0,0.0
 2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,D,1,1.0,0.0,0.0
-2026-06-19,Turkey,Paraguay,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.2272201,0.31901214,0.45376778
+2026-06-19,Turkey,Paraguay,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.0,0.0,1.0
 2026-06-20,Germany,Ivory Coast,,,FIFA World Cup,Toronto,Canada,True,E,N,0.30307302,0.46560076,0.23132625
 2026-06-20,Ecuador,Curaçao,,,FIFA World Cup,Kansas City,United States,True,E,1,0.7022119,0.24944563,0.04834249
 2026-06-20,Netherlands,Sweden,,,FIFA World Cup,Houston,United States,True,F,1,0.395601,0.2970865,0.30731246
@@ -52,9 +52,9 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,N,0.31253612,0.4214237,0.2660402
 2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,N,0.34391984,0.3824133,0.2736669
 2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.067703046,0.23988202,0.6924149
-2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.35913777,0.43638468,0.20447753
-2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.23021081,0.31823003,0.45155916
-2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,N,0.203699,0.40715224,0.38914877
+2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.3494246,0.47557065,0.17500472
+2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.2470126,0.3104953,0.44249207
+2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.21644671,0.3894592,0.39409408
 2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.07675833,0.27040392,0.65283775
 2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,N,0.1849952,0.5447052,0.2702996
 2026-06-25,Japan,Sweden,,,FIFA World Cup,Arlington,United States,True,F,1,0.4693689,0.28585932,0.24477173
