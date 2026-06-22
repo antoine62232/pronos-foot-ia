@@ -36,7 +36,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-20,Netherlands,Sweden,,,FIFA World Cup,Houston,United States,True,F,1,1.0,0.0,0.0
 2026-06-20,Tunisia,Japan,,,FIFA World Cup,Guadalupe,Mexico,True,F,2,0.0,0.0,1.0
 2026-06-21,Belgium,Iran,,,FIFA World Cup,Inglewood,United States,True,G,N,0.0,1.0,0.0
-2026-06-21,New Zealand,Egypt,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.16848421,0.33243975,0.49907604
+2026-06-21,New Zealand,Egypt,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.0,0.0,1.0
 2026-06-21,Spain,Saudi Arabia,,,FIFA World Cup,Atlanta,United States,True,H,1,1.0,0.0,0.0
 2026-06-21,Uruguay,Cape Verde,,,FIFA World Cup,Miami Gardens,United States,True,H,N,0.0,1.0,0.0
 2026-06-22,France,Iraq,,,FIFA World Cup,Philadelphia,United States,True,I,1,0.72952986,0.17595719,0.094512895
@@ -59,8 +59,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-25,Ecuador,Germany,,,FIFA World Cup,East Rutherford,United States,True,E,N,0.18102664,0.45513165,0.36384168
 2026-06-25,Japan,Sweden,,,FIFA World Cup,Arlington,United States,True,F,1,0.49300036,0.22451837,0.28248128
 2026-06-25,Tunisia,Netherlands,,,FIFA World Cup,Kansas City,United States,True,F,2,0.080301896,0.24408488,0.67561316
-2026-06-26,Egypt,Iran,,,FIFA World Cup,Seattle,United States,True,G,2,0.1698132,0.37140048,0.45878628
-2026-06-26,New Zealand,Belgium,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.17787977,0.2985372,0.52358305
+2026-06-26,Egypt,Iran,,,FIFA World Cup,Seattle,United States,True,G,N,0.19685344,0.40223575,0.4009108
+2026-06-26,New Zealand,Belgium,,,FIFA World Cup,Vancouver,Canada,True,G,2,0.15660541,0.31055215,0.53284246
 2026-06-26,Cape Verde,Saudi Arabia,,,FIFA World Cup,Houston,United States,True,H,N,0.22866023,0.39166266,0.37967712
 2026-06-26,Uruguay,Spain,,,FIFA World Cup,Zapopan,Mexico,True,H,2,0.060135372,0.27499658,0.66486806
 2026-06-26,Norway,France,,,FIFA World Cup,Foxborough,United States,True,I,2,0.13886577,0.38829678,0.47283748
