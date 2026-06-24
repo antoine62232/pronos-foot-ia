@@ -44,7 +44,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-22,Argentina,Austria,,,FIFA World Cup,Arlington,United States,True,J,1,1.0,0.0,0.0
 2026-06-22,Jordan,Algeria,,,FIFA World Cup,Santa Clara,United States,True,J,2,0.0,0.0,1.0
 2026-06-23,Portugal,Uzbekistan,,,FIFA World Cup,Houston,United States,True,K,1,1.0,0.0,0.0
-2026-06-23,Colombia,DR Congo,,,FIFA World Cup,Zapopan,Mexico,True,K,1,0.49138275,0.37005094,0.13856632
+2026-06-23,Colombia,DR Congo,,,FIFA World Cup,Zapopan,Mexico,True,K,1,1.0,0.0,0.0
 2026-06-23,England,Ghana,,,FIFA World Cup,Foxborough,United States,True,L,N,0.0,1.0,0.0
 2026-06-23,Panama,Croatia,,,FIFA World Cup,Toronto,Canada,True,L,2,0.0,0.0,1.0
 2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,A,1,0.5025342,0.35402048,0.14344531
@@ -67,7 +67,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-26,Senegal,Iraq,,,FIFA World Cup,Toronto,Canada,True,I,1,0.45752308,0.32114068,0.22133622
 2026-06-27,Algeria,Austria,,,FIFA World Cup,Kansas City,United States,True,J,2,0.2614726,0.3540907,0.3844367
 2026-06-27,Jordan,Argentina,,,FIFA World Cup,Arlington,United States,True,J,2,0.061869685,0.23654327,0.7015871
-2026-06-27,Colombia,Portugal,,,FIFA World Cup,Miami Gardens,United States,True,K,N,0.2875191,0.38824946,0.32423148
-2026-06-27,DR Congo,Uzbekistan,,,FIFA World Cup,Atlanta,United States,True,K,2,0.20056503,0.39518517,0.40424982
+2026-06-27,Colombia,Portugal,,,FIFA World Cup,Miami Gardens,United States,True,K,2,0.24327762,0.3656788,0.3910436
+2026-06-27,DR Congo,Uzbekistan,,,FIFA World Cup,Atlanta,United States,True,K,2,0.19974002,0.39355963,0.40670034
 2026-06-27,Panama,England,,,FIFA World Cup,East Rutherford,United States,True,L,2,0.05375378,0.21049419,0.735752
 2026-06-27,Croatia,Ghana,,,FIFA World Cup,Philadelphia,United States,True,L,1,0.5677144,0.27855143,0.15373418
