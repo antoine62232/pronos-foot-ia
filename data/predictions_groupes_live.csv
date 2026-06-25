@@ -51,8 +51,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,g
 2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,A,2,0.087941766,0.2573912,0.6546671
 2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,B,2,0.0,0.0,1.0
 2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,B,1,1.0,0.0,0.0
-2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.067703046,0.23988202,0.6924149
-2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,N,0.3494246,0.47557065,0.17500472
+2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,C,2,0.0,0.0,1.0
+2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,C,1,1.0,0.0,0.0
 2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,D,2,0.2470126,0.3104953,0.44249207
 2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,D,2,0.21644671,0.3894592,0.39409408
 2026-06-25,Curaçao,Ivory Coast,,,FIFA World Cup,Philadelphia,United States,True,E,2,0.104193166,0.2442298,0.6515771
