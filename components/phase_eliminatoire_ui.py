@@ -32,7 +32,8 @@ def _calculer_classements_groupes(fichier_preds="data/predictions_groupes.csv",
 
         for eq in [dom, ext]:
             if eq not in stats:
-                stats[eq] = {'equipe': eq, 'J': 0, 'V': 0, 'N': 0, 'D': 0, 'Pts': 0, 'force': 0}
+                stats[eq] = {'equipe': eq, 'J': 0, 'V': 0, 'N': 0, 'D': 0,
+                             'Bp': 0, 'Bc': 0, 'Dif': 0, 'Pts': 0, 'force': 0}
                 equipe_to_groupe[eq] = grp
 
         stats[dom]['J'] += 1
@@ -40,6 +41,13 @@ def _calculer_classements_groupes(fichier_preds="data/predictions_groupes.csv",
 
         stats[dom]['force'] += row['proba_1']
         stats[ext]['force'] += row['proba_2']
+
+        # buts reels si le fichier les contient (version live)
+        bd = row.get('buts_dom')
+        be = row.get('buts_ext')
+        if pd.notna(bd) and pd.notna(be):
+            stats[dom]['Bp'] += bd; stats[dom]['Bc'] += be
+            stats[ext]['Bp'] += be; stats[ext]['Bc'] += bd
 
         if prono == '1':
             stats[dom]['V'] += 1; stats[dom]['Pts'] += 3
@@ -53,10 +61,14 @@ def _calculer_classements_groupes(fichier_preds="data/predictions_groupes.csv",
 
     groupes = {lettre: [] for lettre in 'ABCDEFGHIJKL'}
     for eq, s in stats.items():
+        s['Dif'] = s['Bp'] - s['Bc']
         groupes[equipe_to_groupe[eq]].append(s)
 
+    # ordre FIFA : points, difference de buts, buts marques
     for lettre in groupes:
-        groupes[lettre] = sorted(groupes[lettre], key=lambda x: (x['Pts'], x['force']), reverse=True)
+        groupes[lettre] = sorted(groupes[lettre],
+                                 key=lambda x: (x['Pts'], x['Dif'], x['Bp'], x['force']),
+                                 reverse=True)
 
     return groupes, liste_qualifies
 
@@ -73,8 +85,9 @@ def _afficher_classements(groupes_stats, liste_qualifies):
 
                 html = '<table style="width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; text-align: center; background-color: #141B2D; border-radius: 8px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1E293B;">'
                 html += '<thead style="background-color: #0A0E1A; color: #94A3B8; font-size: 11px; text-transform: uppercase;">'
-                html += '<tr><th style="padding: 8px 6px; text-align: left; width: 50%;">Équipe</th>'
+                html += '<tr><th style="padding: 8px 6px; text-align: left; width: 46%;">Équipe</th>'
                 html += '<th style="padding: 8px 4px;">J</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">N</th><th style="padding: 8px 4px;">D</th>'
+                html += '<th style="padding: 8px 4px;">Dif</th>'
                 html += '<th style="padding: 8px 6px; font-weight: bold; color: #F8FAFC;">Pts</th></tr></thead><tbody>'
 
                 for idx, team_stat in enumerate(groupes_stats[groupe_lettre]):
@@ -85,6 +98,10 @@ def _afficher_classements(groupes_stats, liste_qualifies):
                     border_left = "4px solid #10B981" if is_q else "4px solid transparent"
                     font_weight = "bold" if is_q else "normal"
                     color_text = "#F8FAFC" if is_q else "#CBD5E1"
+
+                    dif = team_stat["Dif"]
+                    dif_txt = f"+{dif}" if dif > 0 else str(dif)
+                    dif_color = "#10B981" if dif > 0 else "#EF4444" if dif < 0 else "#94A3B8"
 
                     html += f'<tr style="border-top: 1px solid #1E293B; background-color: {bg_color};">'
                     html += f'<td style="padding: 8px 6px; text-align: left; border-left: {border_left};">'
@@ -97,6 +114,7 @@ def _afficher_classements(groupes_stats, liste_qualifies):
                     html += f'<td style="padding: 8px 4px; color: #94A3B8;">{team_stat["V"]}</td>'
                     html += f'<td style="padding: 8px 4px; color: #94A3B8;">{team_stat["N"]}</td>'
                     html += f'<td style="padding: 8px 4px; color: #94A3B8;">{team_stat["D"]}</td>'
+                    html += f'<td style="padding: 8px 4px; color: {dif_color};">{dif_txt}</td>'
                     html += f'<td style="padding: 8px 6px; font-weight: bold; color: #F8FAFC; font-size: 14px;">{team_stat["Pts"]}</td>'
                     html += f'</tr>'
 

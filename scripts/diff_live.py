@@ -16,6 +16,7 @@ from joblib import load
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.elo import maj_elo
+from src.bracket_fifa import construire_seiziemes, simuler_tableau
 
 PAYS_HOTES = ["United States", "Canada", "Mexico"]
 
@@ -95,7 +96,7 @@ def predire_groupes(elos, historique):
 
 
 def classement_groupe(df_groupe, equipes):
-    c = {e: {"equipe": e, "points": 0, "force_predite": 0.0} for e in equipes}
+    c = {e: {"equipe": e, "points": 0, "bp": 0, "bc": 0, "force_predite": 0.0} for e in equipes}
     for _, m in df_groupe.iterrows():
         dom, ext, p = m["home_team"], m["away_team"], m["pronostic"]
         if p == "1":
@@ -105,21 +106,31 @@ def classement_groupe(df_groupe, equipes):
         else:
             c[dom]["points"] += 1
             c[ext]["points"] += 1
+        bd = m["buts_dom"] if "buts_dom" in m else pd.NA
+        be = m["buts_ext"] if "buts_ext" in m else pd.NA
+        if pd.notna(bd) and pd.notna(be):
+            c[dom]["bp"] += bd; c[dom]["bc"] += be
+            c[ext]["bp"] += be; c[ext]["bc"] += bd
         c[dom]["force_predite"] += m["proba_1"]
         c[ext]["force_predite"] += m["proba_2"]
-    return pd.DataFrame(c.values()).sort_values(["points", "force_predite"], ascending=[False, False]).reset_index(drop=True)
+    df = pd.DataFrame(c.values())
+    df["dif"] = df["bp"] - df["bc"]
+    # ordre FIFA : points, difference de buts, buts marques
+    return df.sort_values(["points", "dif", "bp", "force_predite"], ascending=False).reset_index(drop=True)
 
 
 def qualifies(df_predictions):
     classements = {l: classement_groupe(df_predictions[df_predictions["group"] == l], eqs)
                    for l, eqs in GROUPES.items()}
     troisiemes = pd.DataFrame([
-        {"groupe": l, "equipe": d.iloc[2]["equipe"], "points": d.iloc[2]["points"], "force": d.iloc[2]["force_predite"]}
+        {"groupe": l, "equipe": d.iloc[2]["equipe"], "points": d.iloc[2]["points"],
+         "dif": d.iloc[2]["dif"], "bp": d.iloc[2]["bp"], "force": d.iloc[2]["force_predite"]}
         for l, d in classements.items()
-    ]).sort_values(["points", "force"], ascending=[False, False]).reset_index(drop=True)
+    ]).sort_values(["points", "dif", "bp", "force"], ascending=False).reset_index(drop=True)
     premiers = {l: d.iloc[0]["equipe"] for l, d in classements.items()}
     deuxiemes = {l: d.iloc[1]["equipe"] for l, d in classements.items()}
-    return premiers, deuxiemes, troisiemes.head(8)["equipe"].tolist()
+    troisiemes_par_groupe = {r["groupe"]: r["equipe"] for _, r in troisiemes.head(8).iterrows()}
+    return premiers, deuxiemes, troisiemes_par_groupe
 
 
 def qualifies_df(df_predictions):
@@ -128,9 +139,10 @@ def qualifies_df(df_predictions):
     classements = {l: classement_groupe(df_predictions[df_predictions["group"] == l], eqs)
                    for l, eqs in GROUPES.items()}
     troisiemes = pd.DataFrame([
-        {"groupe": l, "equipe": d.iloc[2]["equipe"], "points": d.iloc[2]["points"], "force": d.iloc[2]["force_predite"]}
+        {"groupe": l, "equipe": d.iloc[2]["equipe"], "points": d.iloc[2]["points"],
+         "dif": d.iloc[2]["dif"], "bp": d.iloc[2]["bp"], "force": d.iloc[2]["force_predite"]}
         for l, d in classements.items()
-    ]).sort_values(["points", "force"], ascending=[False, False]).reset_index(drop=True)
+    ]).sort_values(["points", "dif", "bp", "force"], ascending=False).reset_index(drop=True)
     lignes = []
     for l, d in classements.items():
         lignes.append({"qualification": f"1er Groupe {l}", "equipe": d.iloc[0]["equipe"], "groupe": l, "mode": "direct"})
@@ -149,42 +161,6 @@ def simuler_match_couperet(eq1, eq2, elos, historique):
     if p1 >= p2:
         return eq1, p1 / (p1 + p2) * 100
     return eq2, p2 / (p1 + p2) * 100
-
-
-def simuler_bracket(premiers, deuxiemes, troisiemes, elos, historique):
-    """Re-simule tout le tableau a partir des qualifies fournis et renvoie
-    (bracket, champion, troisieme). Les matchs couperets restent predits par le
-    modele (ils ne sont pas encore joues)."""
-    t = list(troisiemes)
-    matchs = [
-        (deuxiemes["A"], deuxiemes["B"]), (premiers["C"], deuxiemes["F"]),
-        (premiers["E"], t.pop(0)), (premiers["F"], deuxiemes["C"]),
-        (deuxiemes["E"], deuxiemes["I"]), (premiers["I"], t.pop(0)),
-        (premiers["A"], t.pop(0)), (premiers["L"], t.pop(0)),
-        (premiers["G"], t.pop(0)), (premiers["D"], t.pop(0)),
-        (premiers["H"], deuxiemes["J"]), (deuxiemes["K"], deuxiemes["L"]),
-        (premiers["B"], t.pop(0)), (deuxiemes["D"], deuxiemes["G"]),
-        (premiers["J"], deuxiemes["H"]), (premiers["K"], t.pop(0)),
-    ]
-    bracket, champion, troisieme, perdants_demis = [], "", "", []
-    for tour in ["1/16 de finale", "1/8 de finale", "Quarts de finale", "Demi-finales", "Finale"]:
-        vainqueurs = []
-        for eq1, eq2 in matchs:
-            gagnant, conf = simuler_match_couperet(eq1, eq2, elos, historique)
-            vainqueurs.append(gagnant)
-            bracket.append({"tour": tour, "equipe_1": eq1, "equipe_2": eq2,
-                            "vainqueur": gagnant, "confiance": round(conf, 1)})
-            if tour == "Demi-finales":
-                perdants_demis.append(eq2 if gagnant == eq1 else eq1)
-        if len(vainqueurs) > 1:
-            matchs = [(vainqueurs[i], vainqueurs[i + 1]) for i in range(0, len(vainqueurs), 2)]
-        else:
-            champion = vainqueurs[0]
-    if len(perdants_demis) == 2:
-        troisieme, conf3 = simuler_match_couperet(perdants_demis[0], perdants_demis[1], elos, historique)
-        bracket.append({"tour": "Petite finale", "equipe_1": perdants_demis[0],
-                        "equipe_2": perdants_demis[1], "vainqueur": troisieme, "confiance": round(conf3, 1)})
-    return pd.DataFrame(bracket), champion, troisieme
 
 
 def resultats_reels_format_nous():
@@ -217,17 +193,14 @@ def resultats_reels_format_nous():
 
 
 def appliquer_resultats_reels(pred, wc):
-    """Pour les matchs DEJA joues, on remplace la prediction par le vrai resultat
-    (certitude 100%). Les matchs a venir gardent la prediction du modele. Sans ca,
-    le classement live pourrait contredire un resultat connu (ex: 'Espagne bat
-    Cap-Vert' alors qu'ils ont fait nul)."""
     reel = {frozenset({m["home_team"], m["away_team"]}): m for _, m in wc.iterrows()}
     pred = pred.copy()
+    pred["buts_dom"] = pd.NA
+    pred["buts_ext"] = pd.NA
     for i, p in pred.iterrows():
         m = reel.get(frozenset({p["home_team"], p["away_team"]}))
         if m is None:
             continue
-        # On oriente le score reel selon le domicile/exterieur de notre fixture.
         if m["home_team"] == p["home_team"]:
             sd, se = m["home_score"], m["away_score"]
         else:
@@ -237,6 +210,8 @@ def appliquer_resultats_reels(pred, wc):
         pred.at[i, "proba_1"] = 1.0 if iss == "1" else 0.0
         pred.at[i, "proba_N"] = 1.0 if iss == "N" else 0.0
         pred.at[i, "proba_2"] = 1.0 if iss == "2" else 0.0
+        pred.at[i, "buts_dom"] = sd
+        pred.at[i, "buts_ext"] = se
     return pred
 
 
@@ -265,8 +240,11 @@ def main():
     # Predictions live, puis on FIGE les matchs deja joues sur leur vrai resultat.
     pred_live = predire_groupes(elos_live, historique_live)
     pred_live = appliquer_resultats_reels(pred_live, wc)
-    premiers, deuxiemes, troisiemes = qualifies(pred_live)
-    bracket_live, champion, troisieme = simuler_bracket(premiers, deuxiemes, troisiemes, elos_live, historique_live)
+    premiers, deuxiemes, troisiemes_par_groupe = qualifies(pred_live)
+    seiziemes = construire_seiziemes(premiers, deuxiemes, troisiemes_par_groupe)
+    sim = lambda a, b: simuler_match_couperet(a, b, elos_live, historique_live)
+    lignes_bracket, champion, troisieme = simuler_tableau(seiziemes, sim)
+    bracket_live = pd.DataFrame(lignes_bracket)
 
     # Sauvegarde dans des fichiers SEPARES (on ne touche pas aux fichiers geles)
     pred_live.to_csv("data/predictions_groupes_live.csv", index=False)
