@@ -16,7 +16,7 @@ from joblib import load
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.elo import maj_elo
-from src.bracket_fifa import construire_seiziemes, simuler_tableau
+from src.bracket_fifa import construire_seiziemes, simuler_tableau, charger_resultats_elim
 
 PAYS_HOTES = ["United States", "Canada", "Mexico"]
 
@@ -243,7 +243,10 @@ def main():
     premiers, deuxiemes, troisiemes_par_groupe = qualifies(pred_live)
     seiziemes = construire_seiziemes(premiers, deuxiemes, troisiemes_par_groupe)
     sim = lambda a, b: simuler_match_couperet(a, b, elos_live, historique_live)
-    lignes_bracket, champion, troisieme = simuler_tableau(seiziemes, sim)
+    # Matchs a elimination directe deja joues : on fige le vrai vainqueur (a.p./t.a.b. inclus).
+    reel_records = pd.read_csv("data/resultats_reels.csv").to_dict("records")
+    reels_elim = charger_resultats_elim(reel_records, normaliser=lambda n: NOMS_CSV_VERS_NOUS.get(n, n))
+    lignes_bracket, champion, troisieme = simuler_tableau(seiziemes, sim, resultats_reels=reels_elim)
     bracket_live = pd.DataFrame(lignes_bracket)
 
     # Sauvegarde dans des fichiers SEPARES (on ne touche pas aux fichiers geles)

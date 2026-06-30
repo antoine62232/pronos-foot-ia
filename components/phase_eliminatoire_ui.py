@@ -181,21 +181,53 @@ def afficher_onglet_phase_eliminatoire(modele, encoder, live=False):
         st.error("Veuillez d'abord executer le script du bracket dans votre terminal.")
         return
 
-    def _creer_card_match(eq1, eq2, winner, conf):
+    def _creer_card_match(m):
+        eq1, eq2, winner = m["equipe_1"], m["equipe_2"], m["vainqueur"]
+        conf = m["confiance"]
+        # Colonnes presentes seulement sur le bracket live ; absentes -> valeurs neutres.
+        reel = str(m.get("reel", "")).strip().lower() == "true"
+        score = m.get("score", "")
+        score = "" if pd.isna(score) else str(score)
+        decision = m.get("decision", "")
+        decision = "" if pd.isna(decision) else str(decision)
+
         flag1, flag2 = get_url_drapeau(eq1), get_url_drapeau(eq2)
         w1_style = "color: #A78BFA; font-weight: bold;" if eq1 == winner else "color: #CBD5E1;"
         w2_style = "color: #A78BFA; font-weight: bold;" if eq2 == winner else "color: #CBD5E1;"
 
-        # Badge vert "✓ Vainqueur" colle juste apres le nom de l'equipe gagnante
-        badge = ('<span style="display:inline-flex; align-items:center; gap:4px;'
-                 ' background:rgba(16,185,129,0.15); color:#10B981; font-size:10px;'
-                 ' font-weight:bold; padding:2px 8px; border-radius:6px; margin-left:8px;">'
-                 '✓ Vainqueur</span>')
+        # Badge colle apres le nom du gagnant : vert "Joué" si match reel, sinon violet "Vainqueur IA".
+        if reel:
+            badge = ('<span style="display:inline-flex; align-items:center; gap:4px;'
+                     ' background:rgba(16,185,129,0.15); color:#10B981; font-size:10px;'
+                     ' font-weight:bold; padding:2px 8px; border-radius:6px; margin-left:8px;">'
+                     '✓ Qualifié</span>')
+        else:
+            badge = ('<span style="display:inline-flex; align-items:center; gap:4px;'
+                     ' background:rgba(167,139,250,0.15); color:#A78BFA; font-size:10px;'
+                     ' font-weight:bold; padding:2px 8px; border-radius:6px; margin-left:8px;">'
+                     'Vainqueur IA</span>')
         badge1 = badge if eq1 == winner else ""
         badge2 = badge if eq2 == winner else ""
 
+        # Bloc de droite : score reel (+ a.p./t.a.b.) si match joue, sinon confiance IA.
+        if reel:
+            sous_texte = (f'<div style="color: #FBBF24; font-size: 11px; font-weight: 700;'
+                          f' text-transform: uppercase; letter-spacing: 0.5px;">{decision}</div>'
+                          if decision else '')
+            bloc_droite = (
+                f'<div style="color: #10B981; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Résultat</div>'
+                f'<div style="color: #F8FAFC; font-size: 20px; font-weight: 700;">{score}</div>'
+                f'{sous_texte}')
+        else:
+            bloc_droite = (
+                f'<div style="color: #64748B; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Confiance IA</div>'
+                f'<div style="color: #94A3B8; font-size: 20px; font-weight: 700;">{conf:.0f}%</div>')
+
+        # Liseré vert à gauche de la carte pour repérer d'un coup d'œil les matchs déjà joués.
+        bordure = "border: 1px solid #1E293B; border-left: 4px solid #10B981;" if reel else "border: 1px solid #1E293B;"
+
         st.markdown(
-            f'<div style="background-color: #141B2D; border: 1px solid #1E293B;'
+            f'<div style="background-color: #141B2D; {bordure}'
             f' padding: 14px 18px; border-radius: 8px; margin-bottom: 10px;'
             f' display: flex; justify-content: space-between; align-items: center;">'
             f'  <div style="display: flex; align-items: center; gap: 14px; flex: 1;">'
@@ -214,8 +246,7 @@ def afficher_onglet_phase_eliminatoire(modele, encoder, live=False):
             f'     </div>'
             f'  </div>'
             f'  <div style="text-align: right; flex-shrink: 0; padding-left: 16px;">'
-            f'     <div style="color: #64748B; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Confiance IA</div>'
-            f'     <div style="color: #94A3B8; font-size: 20px; font-weight: 700;">{conf:.0f}%</div>'
+            f'     {bloc_droite}'
             f'  </div>'
             f'</div>',
             unsafe_allow_html=True
@@ -237,7 +268,7 @@ def afficher_onglet_phase_eliminatoire(modele, encoder, live=False):
                         unsafe_allow_html=True
                     )
                     for _, m in petite.iterrows():
-                        _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
+                        _creer_card_match(m)
                     st.markdown("<br>", unsafe_allow_html=True)
 
                 st.markdown(
@@ -246,7 +277,7 @@ def afficher_onglet_phase_eliminatoire(modele, encoder, live=False):
                 )
 
             for _, m in matchs_tour.iterrows():
-                _creer_card_match(m["equipe_1"], m["equipe_2"], m["vainqueur"], m["confiance"])
+                _creer_card_match(m)
 
             if tour == "Finale":
                 flag_champ = get_url_drapeau(champion, largeur=320)
