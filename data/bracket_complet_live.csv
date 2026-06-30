@@ -1,33 +1,33 @@
-match,tour,equipe_1,equipe_2,vainqueur,confiance
-73,1/16 de finale,South Africa,Canada,Canada,77.3
-74,1/16 de finale,Germany,Paraguay,Germany,62.8
-75,1/16 de finale,Netherlands,Morocco,Netherlands,53.7
-76,1/16 de finale,Brazil,Japan,Japan,50.2
-77,1/16 de finale,France,Sweden,France,86.3
-78,1/16 de finale,Ivory Coast,Norway,Norway,77.6
-79,1/16 de finale,Mexico,Ecuador,Ecuador,60.9
-80,1/16 de finale,England,DR Congo,England,71.6
-81,1/16 de finale,United States,Bosnia and Herzegovina,United States,57.5
-82,1/16 de finale,Belgium,Senegal,Senegal,78.5
-83,1/16 de finale,Portugal,Croatia,Portugal,50.7
-84,1/16 de finale,Spain,Austria,Spain,81.8
-85,1/16 de finale,Switzerland,Algeria,Switzerland,63.2
-86,1/16 de finale,Argentina,Cape Verde,Argentina,72.0
-87,1/16 de finale,Colombia,Ghana,Colombia,75.4
-88,1/16 de finale,Australia,Egypt,Egypt,67.5
-89,1/8 de finale,Germany,France,Germany,53.4
-90,1/8 de finale,Canada,Netherlands,Netherlands,76.8
-91,1/8 de finale,Japan,Norway,Japan,52.6
-92,1/8 de finale,Ecuador,England,England,89.5
-93,1/8 de finale,Portugal,Spain,Spain,67.1
-94,1/8 de finale,United States,Senegal,Senegal,89.6
-95,1/8 de finale,Argentina,Egypt,Argentina,72.4
-96,1/8 de finale,Switzerland,Colombia,Switzerland,51.1
-97,Quarts de finale,Germany,Netherlands,Germany,59.0
-98,Quarts de finale,Spain,Senegal,Senegal,68.5
-99,Quarts de finale,Japan,England,England,78.0
-100,Quarts de finale,Argentina,Switzerland,Argentina,68.3
-101,Demi-finales,Germany,Senegal,Senegal,62.3
-102,Demi-finales,England,Argentina,Argentina,79.1
-104,Finale,Senegal,Argentina,Argentina,87.7
-103,Petite finale,Germany,England,England,72.7
+match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
+73,1/16 de finale,South Africa,Canada,Canada,100.0,True,0-1,
+74,1/16 de finale,Germany,Paraguay,Paraguay,100.0,True,4-5,t.a.b.
+75,1/16 de finale,Netherlands,Morocco,Morocco,100.0,True,3-4,t.a.b.
+76,1/16 de finale,Brazil,Japan,Brazil,100.0,True,2-1,
+77,1/16 de finale,France,Sweden,France,86.30000305175781,False,,
+78,1/16 de finale,Ivory Coast,Norway,Norway,77.5999984741211,False,,
+79,1/16 de finale,Mexico,Ecuador,Ecuador,60.900001525878906,False,,
+80,1/16 de finale,England,DR Congo,England,71.5999984741211,False,,
+81,1/16 de finale,United States,Bosnia and Herzegovina,United States,57.5,False,,
+82,1/16 de finale,Belgium,Senegal,Senegal,78.5,False,,
+83,1/16 de finale,Portugal,Croatia,Portugal,50.70000076293945,False,,
+84,1/16 de finale,Spain,Austria,Spain,81.80000305175781,False,,
+85,1/16 de finale,Switzerland,Algeria,Switzerland,63.20000076293945,False,,
+86,1/16 de finale,Argentina,Cape Verde,Argentina,72.0,False,,
+87,1/16 de finale,Colombia,Ghana,Colombia,75.4000015258789,False,,
+88,1/16 de finale,Australia,Egypt,Egypt,67.5,False,,
+89,1/8 de finale,Paraguay,France,France,86.19999694824219,False,,
+90,1/8 de finale,Canada,Morocco,Morocco,84.5999984741211,False,,
+91,1/8 de finale,Brazil,Norway,Norway,50.900001525878906,False,,
+92,1/8 de finale,Ecuador,England,England,89.5,False,,
+93,1/8 de finale,Portugal,Spain,Spain,67.0999984741211,False,,
+94,1/8 de finale,United States,Senegal,Senegal,89.5999984741211,False,,
+95,1/8 de finale,Argentina,Egypt,Argentina,72.4000015258789,False,,
+96,1/8 de finale,Switzerland,Colombia,Switzerland,51.099998474121094,False,,
+97,Quarts de finale,France,Morocco,France,57.099998474121094,False,,
+98,Quarts de finale,Spain,Senegal,Senegal,68.5,False,,
+99,Quarts de finale,Norway,England,England,80.69999694824219,False,,
+100,Quarts de finale,Argentina,Switzerland,Argentina,68.30000305175781,False,,
+101,Demi-finales,France,Senegal,Senegal,63.0,False,,
+102,Demi-finales,England,Argentina,Argentina,79.0999984741211,False,,
+104,Finale,Senegal,Argentina,Argentina,87.69999694824219,False,,
+103,Petite finale,France,England,England,76.5999984741211,False,,
