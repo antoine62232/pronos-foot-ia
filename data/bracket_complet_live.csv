@@ -6,7 +6,7 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 77,1/16 de finale,France,Sweden,France,100.0,True,3-0,
 78,1/16 de finale,Ivory Coast,Norway,Norway,100.0,True,1-2,
 79,1/16 de finale,Mexico,Ecuador,Mexico,100.0,True,2-0,
-80,1/16 de finale,England,DR Congo,England,71.5999984741211,False,,
+80,1/16 de finale,England,DR Congo,England,100.0,True,2-1,
 81,1/16 de finale,United States,Bosnia and Herzegovina,United States,57.5,False,,
 82,1/16 de finale,Belgium,Senegal,Senegal,78.5,False,,
 83,1/16 de finale,Portugal,Croatia,Portugal,50.70000076293945,False,,
