@@ -15,7 +15,7 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 86,1/16 de finale,Argentina,Cape Verde,Argentina,100.0,True,3-2,a.p.
 87,1/16 de finale,Colombia,Ghana,Colombia,100.0,True,1-0,
 88,1/16 de finale,Australia,Egypt,Egypt,100.0,True,3-5,t.a.b.
-89,1/8 de finale,Paraguay,France,France,86.19999694824219,False,,
+89,1/8 de finale,Paraguay,France,France,100.0,True,0-1,
 90,1/8 de finale,Canada,Morocco,Morocco,100.0,True,0-3,
 91,1/8 de finale,Brazil,Norway,Norway,50.900001525878906,False,,
 92,1/8 de finale,Mexico,England,England,90.80000305175781,False,,
