@@ -92,5 +92,6 @@ id_match,date,phase,equipe_domicile,equipe_exterieur,buts_domicile,buts_exterieu
 537377,2026-07-05,LAST_16,Brazil,Norway,1,2,AWAY_TEAM,REGULAR
 537378,2026-07-06,LAST_16,Mexico,England,2,3,AWAY_TEAM,REGULAR
 537379,2026-07-06,LAST_16,Portugal,Spain,0,1,AWAY_TEAM,REGULAR
-537380,2026-07-07,LAST_16,United States,Belgium,1,4,AWAY_TEAM,REGULAR
 537381,2026-07-07,LAST_16,Argentina,Egypt,3,2,HOME_TEAM,REGULAR
+537380,2026-07-07,LAST_16,United States,Belgium,1,4,AWAY_TEAM,REGULAR
+537382,2026-07-07,LAST_16,Switzerland,Colombia,0,1,,PENALTY_SHOOTOUT

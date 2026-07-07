@@ -22,11 +22,11 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 93,1/8 de finale,Portugal,Spain,Spain,100.0,True,0-1,
 94,1/8 de finale,United States,Belgium,Belgium,100.0,True,1-4,
 95,1/8 de finale,Argentina,Egypt,Argentina,100.0,True,3-2,
-96,1/8 de finale,Switzerland,Colombia,Switzerland,51.099998474121094,False,,
+96,1/8 de finale,Switzerland,Colombia,Colombia,100.0,True,0-1,t.a.b.
 97,Quarts de finale,France,Morocco,France,57.099998474121094,False,,
 98,Quarts de finale,Spain,Belgium,Spain,53.70000076293945,False,,
 99,Quarts de finale,Norway,England,England,80.69999694824219,False,,
-100,Quarts de finale,Argentina,Switzerland,Argentina,68.30000305175781,False,,
+100,Quarts de finale,Argentina,Colombia,Argentina,56.79999923706055,False,,
 101,Demi-finales,France,Spain,Spain,85.19999694824219,False,,
 102,Demi-finales,England,Argentina,Argentina,79.0999984741211,False,,
 104,Finale,Spain,Argentina,Argentina,56.29999923706055,False,,
