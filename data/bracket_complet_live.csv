@@ -25,7 +25,7 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 96,1/8 de finale,Switzerland,Colombia,Switzerland,100.0,True,4-3,t.a.b.
 97,Quarts de finale,France,Morocco,France,100.0,True,2-0,
 98,Quarts de finale,Spain,Belgium,Spain,100.0,True,2-1,
-99,Quarts de finale,Norway,England,England,80.69999694824219,False,,
+99,Quarts de finale,Norway,England,England,100.0,True,1-2,a.p.
 100,Quarts de finale,Argentina,Switzerland,Argentina,68.30000305175781,False,,
 101,Demi-finales,France,Spain,Spain,85.19999694824219,False,,
 102,Demi-finales,England,Argentina,Argentina,79.0999984741211,False,,
