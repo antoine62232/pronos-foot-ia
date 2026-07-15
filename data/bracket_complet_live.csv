@@ -28,6 +28,6 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 99,Quarts de finale,Norway,England,England,100.0,True,1-2,a.p.
 100,Quarts de finale,Argentina,Switzerland,Argentina,100.0,True,3-1,a.p.
 101,Demi-finales,France,Spain,Spain,100.0,True,0-2,
-102,Demi-finales,England,Argentina,Argentina,79.0999984741211,False,,
+102,Demi-finales,England,Argentina,Argentina,100.0,True,1-2,
 104,Finale,Spain,Argentina,Argentina,56.29999923706055,False,,
 103,Petite finale,France,England,England,76.5999984741211,False,,
