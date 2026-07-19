@@ -29,5 +29,5 @@ match,tour,equipe_1,equipe_2,vainqueur,confiance,reel,score,decision
 100,Quarts de finale,Argentina,Switzerland,Argentina,100.0,True,3-1,a.p.
 101,Demi-finales,France,Spain,Spain,100.0,True,0-2,
 102,Demi-finales,England,Argentina,Argentina,100.0,True,1-2,
-104,Finale,Spain,Argentina,Argentina,56.29999923706055,False,,
+104,Finale,Spain,Argentina,Spain,100.0,True,1-0,a.p.
 103,Petite finale,France,England,England,100.0,True,4-6,
